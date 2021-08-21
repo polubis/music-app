@@ -1,3 +1,33 @@
+.container {
+  padding: 20px;
+  width: max-content;
+}
+
 .fretboard {
-  display: flex;
+  position: relative;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14);
+
+  .fret {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: #f2f2f2;
+  }
+
+  .string {
+    position: absolute;
+    background: #c2c2c2;
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+
+  .sound {
+    position: absolute;
+    z-index: 2;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
 }
