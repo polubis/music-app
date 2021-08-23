@@ -11,7 +11,7 @@ export const NOTE_NAMES = [
   "A",
   "A#",
   "B",
-] as const;
+] as const; // Full octave in every instrument
 export type NoteName = typeof NOTE_NAMES[number];
 export interface Hideable {
   hidden?: boolean;
@@ -19,21 +19,20 @@ export interface Hideable {
 
 export interface Note {
   name: NoteName;
-  position: number;
+  position: number; // Represents value from 0 to 11
 }
 
 export interface Sound {
   note: Note;
 }
 
-export interface GuitarSoundTheme {
-  background: string;
-  color: string;
-}
+export type GuitarSoundsTheme = Record<
+  NoteName,
+  { color: string; background: string }
+>;
 
 export interface GuitarSound extends Sound, Hideable {
-  fret: number;
-  theme: GuitarSoundTheme;
+  fret: number; // from 0 which means open string to n
 }
 
 export interface GuitarString extends Hideable {
@@ -42,3 +41,5 @@ export interface GuitarString extends Hideable {
 }
 
 export type GuitarTuning = NoteName[];
+
+export type FretsMarkers = [number, number, number, number, number];

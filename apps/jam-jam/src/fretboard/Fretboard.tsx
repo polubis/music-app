@@ -1,70 +1,32 @@
 import React from "react";
 import { CSSProperties } from "react";
-import { GuitarSound, GuitarString, GuitarTuning, NOTE_NAMES } from "./models";
+import { FretsMarkers, GuitarSoundsTheme, GuitarString } from "./models";
+import { DEFAULT_FRETS_MARKERS, DEFAULT_THEME, percentage } from "./core";
 
 import css from "./Fretboard.scss";
 
 export interface FretboardProps {
-  fretDistance?: number;
+  fretsCount: number;
   noteSize?: number;
-  stringDistance?: number;
   strings: GuitarString[];
+  theme?: GuitarSoundsTheme;
+  fretsMarkers?: FretsMarkers;
 }
-
-export const createStrings = (
-  tuning: GuitarTuning,
-  frets: number
-): GuitarString[] => {
-  const strings: GuitarString[] = [];
-
-  for (let i = 0; i < tuning.length; i++) {
-    const sound = tuning[i];
-    let acc = NOTE_NAMES.findIndex((currSound) => currSound === sound);
-    const sounds: GuitarSound[] = [];
-
-    for (let j = 0; j <= frets; j++) {
-      sounds.push({
-        fret: j,
-        note: {
-          name: NOTE_NAMES[acc],
-          position: acc,
-        },
-        theme: {
-          background: "red",
-          color: "#000",
-        },
-      });
-      const nextAcc = acc + 1;
-      acc = nextAcc > NOTE_NAMES.length - 1 ? 0 : nextAcc;
-    }
-
-    strings.push({ position: i, sounds });
-  }
-
-  return strings;
-};
-
-export const FIRST_FRET_DISTANCE_DIFF = 25;
-
-export const percentValue = (value: number, percent: number): number =>
-  (value * percent) / 100;
 
 const Fretboard = ({
   strings,
-  fretDistance = 80,
-  stringDistance = 60,
+  fretsCount,
   noteSize = 32,
+  theme = DEFAULT_THEME,
+  fretsMarkers = DEFAULT_FRETS_MARKERS,
 }: FretboardProps) => {
-  if (strings.length === 0) {
-    throw new Error("Strings must be always defined");
-  }
-
-  const stringHeight = percentValue(noteSize, 2);
-  const fretWidth = percentValue(noteSize, 12);
-  const stringHeightStep = percentValue(noteSize, 1.5);
-  const fretsCount = strings[0].sounds.length - 1;
+  const stringHeight = percentage(noteSize, 2);
+  const fretWidth = percentage(noteSize, 12);
+  const stringHeightStep = percentage(noteSize, 1.5);
+  const stringDistance = noteSize * 2 - percentage(noteSize, 20);
   const height = stringDistance * strings.length;
-  const firstFretDistance = fretDistance - FIRST_FRET_DISTANCE_DIFF;
+  const fretDistance = noteSize * 2 + percentage(noteSize, 50);
+  const firstFretDistance = fretDistance - percentage(noteSize, 75);
   const firstStringDistance = stringDistance / 2;
   const width = fretDistance * fretsCount - 1 + firstFretDistance;
 
@@ -81,7 +43,7 @@ const Fretboard = ({
         left: `${firstFretDistance + fretIdx * fretDistance}px`,
         width: `${fretWidth}px`,
       }}
-      data-testid="fret"
+      data-fret={fretIdx}
     />
   ));
 
@@ -92,7 +54,7 @@ const Fretboard = ({
       <div
         key={string.position}
         className={css.string}
-        data-testid="string"
+        data-string={string.position}
         style={{
           top: `${
             firstStringDistance - height / 2 + string.position * stringDistance
@@ -105,20 +67,25 @@ const Fretboard = ({
 
   const leftDistance = noteSize / 2 - fretWidth;
   const topDistance = firstStringDistance;
+  const fontSize = percentage(fretWidth, 36);
   const Sounds = strings.map((string) => (
     <React.Fragment key={string.position}>
       {string.sounds.map((sound) => (
         <button
           key={sound.fret}
           className={css.sound}
+          role="button"
           style={{
             left: `${
-              sound.fret === 0 ? leftDistance : sound.fret * fretDistance
+              sound.fret === 0
+                ? leftDistance
+                : sound.fret * fretDistance + fretWidth
             }px`,
             top: `${topDistance / 2 + string.position * stringDistance}px`,
             height: `${noteSize}px`,
             width: `${noteSize}px`,
-            ...sound.theme,
+            fontSize: `${fontSize}rem`,
+            ...theme[sound.note.name],
           }}
         >
           {sound.note.name}
@@ -129,11 +96,7 @@ const Fretboard = ({
 
   return (
     <div className={css.container}>
-      <div
-        className={css.fretboard}
-        style={fretboardStyle}
-        data-testid="fretboard"
-      >
+      <div className={css.fretboard} style={fretboardStyle}>
         {Frets}
         {Strings}
         {Sounds}

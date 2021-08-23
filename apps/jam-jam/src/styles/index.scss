@@ -1,20 +1,12 @@
 @import "~antd/dist/antd.css";
+@import "./resets.scss";
+
+html {
+  font-size: 62.5%;
+}
 
 body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   font-family: "Roboto", sans-serif;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-button {
-  background: none;
-  border: none;
-
-  &:focus {
-    outline: none;
-  }
 }

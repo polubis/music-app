@@ -1,36 +1,72 @@
-import { GuitarString } from "../models";
+import { GuitarSound, GuitarString, NoteName, NOTE_NAMES } from "../models";
 
-export const _STRING_: GuitarString = {
-  position: 0,
-  sounds: [
-    {
-      note: {
-        name: "C",
-        position: 0,
-      },
-      fret: 0,
-      theme: {
-        background: "red",
-        color: "#fff",
-      },
-    },
-  ],
+const _DEFAULT_SOUND_: GuitarSound = {
+  fret: 0,
+  note: {
+    name: "C",
+    position: 0,
+  },
 };
 
-export const stringsMockBuilder = (strings = [_STRING_]) => {
+export const GuitarSoundMock = (sound = _DEFAULT_SOUND_) => {
   return {
-    add: (string: Partial<GuitarString>) =>
-      stringsMockBuilder([...strings, { ..._STRING_, ...string }]),
-    valueOf: () => strings,
+    setFret: (fret: number) => GuitarSoundMock({ ...sound, fret }),
+    setNote: (name: NoteName, position: number) =>
+      GuitarSoundMock({
+        ...sound,
+        note: {
+          name,
+          position,
+        },
+      }),
+    valueOf: () => sound,
   };
 };
 
-export const _SIX_STRINGS_ = stringsMockBuilder()
-  .add({ position: 2 })
-  .add({
-    position: 3,
-  })
-  .add({ position: 4 })
-  .add({ position: 5 })
-  .add({ position: 6 })
-  .valueOf();
+const _DEFAULT_STRING_: GuitarString = {
+  position: 0,
+  sounds: [],
+};
+
+export const GuitarStringMock = (string = _DEFAULT_STRING_) => {
+  return {
+    setPosition: (position: number) =>
+      GuitarStringMock({ ...string, position }),
+    fillSounds: (start: NoteName, count: number) => {
+      const sounds: GuitarSound[] = [];
+      let acc = NOTE_NAMES.findIndex((note) => note === start);
+
+      for (let i = 0; i < count; i++) {
+        sounds.push({
+          fret: i,
+          note: {
+            name: NOTE_NAMES[acc],
+            position: acc,
+          },
+        });
+
+        const nextAcc = acc + 1;
+        acc = nextAcc > NOTE_NAMES.length - 1 ? 0 : nextAcc;
+      }
+
+      return GuitarStringMock({
+        ...string,
+        sounds,
+      });
+    },
+    valueOf: () => string,
+  };
+};
+
+export const GuitarStringsMock = (strings: GuitarString[] = []) => {
+  return {
+    fromNames: (names: NoteName[], count: number) => {
+      const strings: GuitarString[] = names.map((name, idx) =>
+        GuitarStringMock().setPosition(idx).fillSounds(name, count).valueOf()
+      );
+
+      return GuitarStringsMock(strings);
+    },
+    valueOf: () => strings,
+  };
+};
