@@ -8,7 +8,6 @@ import "./styles/index.scss";
 const strings = createStrings(["E", "B", "G", "D", "A", "E"], 24);
 
 const App = () => {
-  console.log(strings);
   return (
     <div>
       <FretboardVisualizer />

@@ -14,7 +14,7 @@ export const NOTE_NAMES = [
 ] as const; // Full octave in every instrument
 export type NoteName = typeof NOTE_NAMES[number];
 export interface Hideable {
-  hidden?: boolean;
+  hidden: boolean;
 }
 
 export interface Note {
@@ -41,5 +41,3 @@ export interface GuitarString extends Hideable {
 }
 
 export type GuitarTuning = NoteName[];
-
-export type FretsMarkers = [number, number, number, number, number];
