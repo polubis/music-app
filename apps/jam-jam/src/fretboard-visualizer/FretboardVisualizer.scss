@@ -1,0 +1,22 @@
+.visualizer {
+  padding: 20px;
+  width: max-content;
+  position: relative;
+}
+
+.filters {
+  padding: 0 24px 24px 24px;
+  background: #fff;
+  display: flex;
+
+  .fretsRangeSlider,
+  .fretsPicker {
+    display: flex;
+    flex-flow: column;
+    width: 320px;
+  }
+
+  .fretsPicker {
+    margin-left: 24px;
+  }
+}
