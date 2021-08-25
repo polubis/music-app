@@ -64,7 +64,7 @@ export const pickSounds = (
 ): GuitarSound[] => {
   return sounds.map((sound) => ({
     ...sound,
-    hidden: !names.includes(sound.note.name),
+    hidden: sound.hidden ? sound.hidden : !names.includes(sound.note.name),
   }));
 };
 
