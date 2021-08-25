@@ -2,9 +2,9 @@ import React from "react";
 import { render } from "@testing-library/react";
 
 import { Fretboard, FretboardProps } from "../Fretboard";
-import { GuitarString } from "../models";
+import { GuitarString, NOTE_NAMES } from "../models";
 import { GuitarStringsMock } from "./mocks";
-import { DEFAULT_FRETS_MARKERS, DEFAULT_THEME } from "../core";
+import { DEFAULT_THEME } from "../core";
 
 describe("<Fretboard>", () => {
   const _FRETS_COUNT_ = 24;
@@ -18,7 +18,7 @@ describe("<Fretboard>", () => {
     strings: _STRINGS_,
     noteSize: 32,
     theme: DEFAULT_THEME,
-    fretsMarkers: DEFAULT_FRETS_MARKERS,
+    markersDisabled: false,
   };
 
   const renderFretboard = (props: Partial<FretboardProps> = {}) =>
@@ -46,6 +46,33 @@ describe("<Fretboard>", () => {
     expect(getAllByRole("button").length).toBe(
       _STRINGS_.length * _FRETBOARD_PROPS_.fretsCount
     );
+  });
+
+  it("hiddes sounds which have dedicated flag set as truthy", () => {
+    const _FRETS_COUNT_ = 5;
+    const _STRINGS_ = GuitarStringsMock()
+      .fromNames(["E", "B", "G", "D", "A", "E"], _FRETS_COUNT_)
+      .setSoundsHidden(["C"], true)
+      .valueOf();
+
+    const { queryByText } = renderFretboard({
+      fretsCount: _FRETS_COUNT_,
+      strings: _STRINGS_,
+    });
+
+    expect(queryByText("C")).not.toBeInTheDocument();
+  });
+
+  it("draws markers when enabled", () => {
+    const { getAllByRole } = renderFretboard();
+
+    expect(getAllByRole("none").length).toBe(10);
+  });
+
+  it("ignore markers draw when dedicated flag is passed as truthy", () => {
+    const { queryByRole } = renderFretboard({ markersDisabled: true });
+
+    expect(queryByRole("none")).not.toBeInTheDocument();
   });
 
   it("draws every next string with bigger height", () => {

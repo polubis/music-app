@@ -1,9 +1,9 @@
 import {
-  FretsMarkers,
   GuitarSound,
   GuitarSoundsTheme,
   GuitarString,
   GuitarTuning,
+  NoteName,
   NOTE_NAMES,
 } from "./models";
 
@@ -22,27 +22,58 @@ export const DEFAULT_THEME: GuitarSoundsTheme = {
   B: { color: "#ffffff", background: "#612500" },
 };
 
-export const DEFAULT_FRETS_MARKERS: FretsMarkers = [3, 5, 7, 9, 12];
-
-export const increaseFretsMarkers = (
+export const createFretsMarkers = (
   fretsCount: number,
-  fretsMarkers: FretsMarkers
+  steps: number[]
 ): number[] => {
-  const cycles = Math.ceil(fretsCount / NOTE_NAMES.length);
   const markers: number[] = [];
+  let i = 0;
   let acc = 0;
 
-  for (let i = 0; i < cycles; i++) {
-    for (let j = 0; j < fretsMarkers.length; j++) {
-      markers.push(fretsMarkers[j] + acc);
-
-      if (j === fretsMarkers.length - 1) {
-        acc += NOTE_NAMES.length;
-      }
-    }
+  while (acc < fretsCount) {
+    acc += steps[i];
+    markers.push(acc);
+    i = i === steps.length - 1 ? 0 : i + 1;
   }
 
-  return markers;
+  return markers.filter((marker) => marker <= fretsCount);
+};
+
+export const sliceStringSounds = (
+  [from, to]: [number, number],
+  sounds: GuitarSound[]
+) => {
+  return sounds.filter((_, idx) => idx >= from && idx <= to);
+};
+
+export const sliceSoundsInStrings = (
+  range: [number, number],
+  strings: GuitarString[]
+): GuitarString[] => {
+  return strings.map((string) => ({
+    ...string,
+    sounds: sliceStringSounds(range, string.sounds),
+  }));
+};
+
+export const pickSounds = (
+  names: NoteName[],
+  sounds: GuitarSound[]
+): GuitarSound[] => {
+  return sounds.map((sound) => ({
+    ...sound,
+    hidden: !names.includes(sound.note.name),
+  }));
+};
+
+export const pickSoundsInStrings = (
+  names: NoteName[],
+  strings: GuitarString[]
+): GuitarString[] => {
+  return strings.map((string) => ({
+    ...string,
+    sounds: pickSounds(names, string.sounds),
+  }));
 };
 
 export const createStrings = (
@@ -63,12 +94,13 @@ export const createStrings = (
           name: NOTE_NAMES[acc],
           position: acc,
         },
+        hidden: false,
       });
       const nextAcc = acc + 1;
       acc = nextAcc > NOTE_NAMES.length - 1 ? 0 : nextAcc;
     }
 
-    strings.push({ position: i, sounds });
+    strings.push({ position: i, sounds, hidden: false });
   }
 
   return strings;
