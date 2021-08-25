@@ -73,7 +73,7 @@ const Fretboard = ({
       {string.sounds.map((sound) => (
         <button
           key={sound.fret}
-          className={css.sound}
+          className={`${css.sound} ${sound.hidden ? css.hidden : ""}`}
           role="button"
           style={{
             left: `${

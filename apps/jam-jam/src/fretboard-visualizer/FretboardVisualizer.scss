@@ -10,10 +10,15 @@
   display: flex;
 
   .fretsRangeSlider,
-  .fretsPicker {
+  .fretsPicker,
+  .scalePickerContainer {
     display: flex;
     flex-flow: column;
     width: 320px;
+  }
+
+  .scalePicker > *{
+    margin-left: 10px;
   }
 
   .fretsPicker {

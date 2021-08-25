@@ -43,3 +43,10 @@ export interface GuitarString extends Hideable {
 export type GuitarTuning = NoteName[];
 
 export type FretsMarkers = [number, number, number, number, number];
+
+export const GUITAR_SCALES = ["Major"] as const;
+
+export type Scale = {
+  note: NoteName | null;
+  scale: typeof GUITAR_SCALES[number] | null;
+};

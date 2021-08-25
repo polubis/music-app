@@ -5,7 +5,9 @@ import {
   GuitarString,
   GuitarTuning,
   NOTE_NAMES,
+  Scale,
 } from "./models";
+import { major } from "./scales";
 
 export const DEFAULT_THEME: GuitarSoundsTheme = {
   C: { color: "#ffffff", background: "#002766" },
@@ -47,7 +49,8 @@ export const increaseFretsMarkers = (
 
 export const createStrings = (
   tuning: GuitarTuning,
-  frets: number
+  frets: number,
+  scale?: Scale | null
 ): GuitarString[] => {
   const strings: GuitarString[] = [];
 
@@ -69,6 +72,13 @@ export const createStrings = (
     }
 
     strings.push({ position: i, sounds });
+  }
+
+  if (scale?.note && scale.scale) {
+    //we need to switch functions which generate guitar scales
+    if (scale.note === "C" && scale.scale === "Major") {
+      return major(strings, scale.note);
+    }
   }
 
   return strings;
