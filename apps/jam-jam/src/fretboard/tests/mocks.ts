@@ -6,10 +6,12 @@ const _DEFAULT_SOUND_: GuitarSound = {
     name: "C",
     position: 0,
   },
+  hidden: false,
 };
 
 export const GuitarSoundMock = (sound = _DEFAULT_SOUND_) => {
   return {
+    setHidden: (hidden: boolean) => GuitarSoundMock({ ...sound, hidden }),
     setFret: (fret: number) => GuitarSoundMock({ ...sound, fret }),
     setNote: (name: NoteName, position: number) =>
       GuitarSoundMock({
@@ -26,10 +28,20 @@ export const GuitarSoundMock = (sound = _DEFAULT_SOUND_) => {
 const _DEFAULT_STRING_: GuitarString = {
   position: 0,
   sounds: [],
+  hidden: false,
 };
 
 export const GuitarStringMock = (string = _DEFAULT_STRING_) => {
   return {
+    setSoundsHidden: (names: NoteName[], hidden: boolean) =>
+      GuitarStringMock({
+        ...string,
+        sounds: string.sounds.map((sound) =>
+          GuitarSoundMock(sound)
+            .setHidden(names.includes(sound.note.name) ? hidden : false)
+            .valueOf()
+        ),
+      }),
     setPosition: (position: number) =>
       GuitarStringMock({ ...string, position }),
     fillSounds: (start: NoteName, count: number) => {
@@ -43,6 +55,7 @@ export const GuitarStringMock = (string = _DEFAULT_STRING_) => {
             name: NOTE_NAMES[acc],
             position: acc,
           },
+          hidden: false,
         });
 
         const nextAcc = acc + 1;
@@ -66,6 +79,18 @@ export const GuitarStringsMock = (strings: GuitarString[] = []) => {
       );
 
       return GuitarStringsMock(strings);
+    },
+    setSoundsHidden: (names: NoteName[], hidden: boolean) => {
+      const result = strings.map((string) => ({
+        ...string,
+        sounds: string.sounds.map((sound) =>
+          GuitarSoundMock(sound)
+            .setHidden(names.includes(sound.note.name) ? hidden : false)
+            .valueOf()
+        ),
+      }));
+
+      return GuitarStringsMock(result);
     },
     valueOf: () => strings,
   };

@@ -24,10 +24,10 @@ const createAlias = (paths) => {
 
 const Environment = (mode, paths) => {
   console.log(`App is running in ${mode} mode`);
-  const { isDev, isProd } = getEnvs();
+  const { isDev, isProd } = getEnvs(mode);
 
   const alias = createAlias(paths);
-
+  console.log(isDev);
   const config = {
     mode,
     devtool: isDev ? "inline-source-map" : false,
