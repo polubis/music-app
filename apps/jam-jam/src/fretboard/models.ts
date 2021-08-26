@@ -40,4 +40,7 @@ export interface GuitarString extends Hideable {
   sounds: GuitarSound[];
 }
 
-export type GuitarTuning = NoteName[];
+export interface GuitarTuning {
+  name: string;
+  notes: NoteName[];
+}

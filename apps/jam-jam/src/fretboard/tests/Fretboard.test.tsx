@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 
 import { Fretboard, FretboardProps } from "../Fretboard";
-import { GuitarString, NOTE_NAMES } from "../models";
+import { GuitarString } from "../models";
 import { GuitarStringsMock } from "./mocks";
 import { DEFAULT_THEME } from "../core";
 
@@ -61,6 +61,14 @@ describe("<Fretboard>", () => {
     });
 
     expect(queryByText("C")).not.toBeInTheDocument();
+  });
+
+  it("draws identifiers", () => {
+    const { container } = renderFretboard();
+
+    expect(container.querySelectorAll(`[data-identifier]`).length).toBe(
+      _FRETBOARD_PROPS_.fretsCount + 1
+    );
   });
 
   it("draws markers when enabled", () => {
