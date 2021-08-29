@@ -47,6 +47,6 @@ export type FretsMarkers = [number, number, number, number, number];
 export const GUITAR_SCALES = ["Major"] as const;
 
 export type Scale = {
-  note: NoteName | null;
+  key: NoteName | null;
   scale: typeof GUITAR_SCALES[number] | null;
 };

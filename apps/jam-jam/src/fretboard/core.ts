@@ -5,9 +5,7 @@ import {
   GuitarTuning,
   NoteName,
   NOTE_NAMES,
-  Scale,
 } from "./models";
-import { major } from "./scales";
 
 export const DEFAULT_THEME: GuitarSoundsTheme = {
   C: { color: "#ffffff", background: "#002766" },
@@ -64,7 +62,7 @@ export const pickSounds = (
 ): GuitarSound[] => {
   return sounds.map((sound) => ({
     ...sound,
-    hidden: sound.hidden ? sound.hidden : !names.includes(sound.note.name),
+    hidden: !names.includes(sound.note.name),
   }));
 };
 
@@ -80,8 +78,7 @@ export const pickSoundsInStrings = (
 
 export const createStrings = (
   tuning: GuitarTuning,
-  frets: number,
-  scale?: Scale | null
+  frets: number
 ): GuitarString[] => {
   const strings: GuitarString[] = [];
 
@@ -104,13 +101,6 @@ export const createStrings = (
     }
 
     strings.push({ position: i, sounds, hidden: false });
-  }
-
-  if (scale?.note && scale.scale) {
-    //we need to switch functions which generate guitar scales
-    if (scale.note === "C" && scale.scale === "Major") {
-      return major(strings, scale.note);
-    }
   }
 
   return strings;

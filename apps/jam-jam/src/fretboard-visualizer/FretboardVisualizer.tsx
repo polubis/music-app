@@ -26,13 +26,14 @@ import {
   Scale,
 } from "../fretboard/models";
 import Checkbox from "antd/lib/checkbox/Checkbox";
+import { pickScaleInStrings } from "../fretboard/scales";
 
 type RadioSelectValue = NoteName | "all" | "none" | "";
 
 interface Filters {
   range: [number, number];
   fretsCount: number;
-  scale: Scale | null;
+  scale: Scale;
   markersDisabled: boolean;
   pickedNoteNames: NoteName[];
 }
@@ -45,7 +46,7 @@ const FILTERS: Filters = {
   fretsCount: 24,
   markersDisabled: false,
   pickedNoteNames: [...NOTE_NAMES],
-  scale: null,
+  scale: { key: null, scale: null },
 };
 
 const getRadioGroupValue = (pickedNoteNames: NoteName[]): RadioSelectValue => {
@@ -66,10 +67,6 @@ const getRadioGroupValue = (pickedNoteNames: NoteName[]): RadioSelectValue => {
 
 const FretboardVisualizer = () => {
   const [filters, setFilters] = useState(FILTERS);
-  const [scaleHandle, setScaleHandle] = useState<Scale>({
-    note: null,
-    scale: null,
-  });
 
   const handleRangeChange = (range: [number, number]) => {
     setFilters({ ...filters, range });
@@ -83,29 +80,23 @@ const FretboardVisualizer = () => {
   };
 
   const handleGuitarScaleChange = (scale: typeof GUITAR_SCALES[number]) => {
-    setScaleHandle({
-      ...scaleHandle,
-      scale: scale,
+    setFilters({
+      ...filters,
+      scale: {
+        key: filters.scale.key,
+        scale: scale,
+      },
     });
-    if (scaleHandle.note) {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        scale: { note: scaleHandle.note, scale: scale },
-      }));
-    }
   };
 
-  const handleGuitarScaleNoteChange = (note: NoteName) => {
-    setScaleHandle({
-      ...scaleHandle,
-      note: note,
+  const handleGuitarScaleNoteChange = (key: NoteName) => {
+    setFilters({
+      ...filters,
+      scale: {
+        key: key,
+        scale: filters.scale.scale,
+      },
     });
-    if (scaleHandle.scale) {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        scale: { note: note, scale: scaleHandle.scale },
-      }));
-    }
   };
 
   const handleMarkersDisabledChange = (checked: boolean) => {
@@ -155,12 +146,15 @@ const FretboardVisualizer = () => {
   const { Option } = Select;
 
   const strings = useMemo(() => {
-    const result = sliceSoundsInStrings(
+    const slicedSounds = sliceSoundsInStrings(
       range,
-      createStrings(["E", "B", "G", "D", "A", "E"], fretsCount, scale)
+      createStrings(["E", "B", "G", "D", "A", "E"], fretsCount)
     );
 
-    return pickSoundsInStrings(pickedNoteNames, result);
+    const pickedSounds = pickSoundsInStrings(pickedNoteNames, slicedSounds);
+    const pickedScale = pickScaleInStrings(pickedSounds, scale);
+
+    return pickedScale;
   }, [filters]);
 
   return (
@@ -191,6 +185,7 @@ const FretboardVisualizer = () => {
           <Title level={5}>Scale</Title>
           <div className={css.scalePicker}>
             <Select style={{ width: 120 }} onChange={handleGuitarScaleChange}>
+              <Option value="">None</Option>
               {GUITAR_SCALES.map((scale: string) => {
                 return (
                   <Option key={scale} value={scale}>
@@ -203,10 +198,11 @@ const FretboardVisualizer = () => {
               style={{ width: 120 }}
               onChange={handleGuitarScaleNoteChange}
             >
-              {NOTE_NAMES.map((note: string) => {
+              <Option value="">None</Option>
+              {NOTE_NAMES.map((key: string) => {
                 return (
-                  <Option key={note} value={note}>
-                    {note}
+                  <Option key={key} value={key}>
+                    {key}
                   </Option>
                 );
               })}
