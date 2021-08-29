@@ -79,7 +79,9 @@ const FretboardVisualizer = () => {
     });
   };
 
-  const handleGuitarScaleChange = (scale: typeof GUITAR_SCALES[number]) => {
+  const handleGuitarScaleChange = (
+    scale: typeof GUITAR_SCALES[number] | null
+  ) => {
     setFilters({
       ...filters,
       scale: {
@@ -89,7 +91,7 @@ const FretboardVisualizer = () => {
     });
   };
 
-  const handleGuitarScaleNoteChange = (key: NoteName) => {
+  const handleGuitarScaleNoteChange = (key: NoteName | null) => {
     setFilters({
       ...filters,
       scale: {
@@ -184,7 +186,13 @@ const FretboardVisualizer = () => {
         <div className={css.scalePickerContainer}>
           <Title level={5}>Scale</Title>
           <div className={css.scalePicker}>
-            <Select style={{ width: 120 }} onChange={handleGuitarScaleChange}>
+            <Select
+              style={{ width: 120 }}
+              onChange={(value) =>
+                handleGuitarScaleChange(value === "" ? null : value)
+              }
+              defaultValue=""
+            >
               <Option value="">None</Option>
               {GUITAR_SCALES.map((scale: string) => {
                 return (
@@ -196,7 +204,10 @@ const FretboardVisualizer = () => {
             </Select>
             <Select
               style={{ width: 120 }}
-              onChange={handleGuitarScaleNoteChange}
+              onChange={(value) =>
+                handleGuitarScaleNoteChange(value === "" ? null : value)
+              }
+              defaultValue=""
             >
               <Option value="">None</Option>
               {NOTE_NAMES.map((key: string) => {
