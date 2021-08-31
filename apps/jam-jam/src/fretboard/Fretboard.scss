@@ -35,9 +35,22 @@
   .sound {
     position: absolute;
     z-index: 3;
-    width: 32px;
-    height: 32px;
     border-radius: 50%;
     cursor: pointer;
+  }
+
+  .fretIdentifier {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f6f6f6;
+    color: #000;
+    border-radius: 50%;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14);
+
+    & > * {
+      margin-bottom: 0;
+    }
   }
 }

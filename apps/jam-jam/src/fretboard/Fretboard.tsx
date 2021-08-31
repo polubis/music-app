@@ -1,9 +1,11 @@
-import React from "react";
-import { CSSProperties } from "react";
+import React, { CSSProperties } from "react";
+import { Typography } from "antd";
 import { GuitarSoundsTheme, GuitarString } from "./models";
 import { createFretsMarkers, DEFAULT_THEME, percentage } from "./core";
 
 import css from "./Fretboard.scss";
+
+const { Paragraph } = Typography;
 
 export interface FretboardProps {
   fretsCount: number;
@@ -66,7 +68,7 @@ const Fretboard = ({
 
   const leftDistance = noteSize / 2 - fretWidth;
   const topDistance = firstStringDistance;
-  const fontSize = percentage(fretWidth, 36);
+  const soundFontSize = percentage(fretWidth, 36);
   const Sounds = strings.map((string) => (
     <React.Fragment key={string.position}>
       {string.sounds.map((sound) =>
@@ -84,7 +86,7 @@ const Fretboard = ({
               top: `${topDistance / 2 + string.position * stringDistance}px`,
               height: `${noteSize}px`,
               width: `${noteSize}px`,
-              fontSize: `${fontSize}rem`,
+              fontSize: `${soundFontSize}rem`,
               ...theme[sound.note.name],
             }}
           >
@@ -122,6 +124,32 @@ const Fretboard = ({
         />
       ));
 
+  const fretIdentifiersY = -(noteSize + percentage(noteSize, 50));
+  const fretIdentifierSize = percentage(noteSize, 90);
+  const fretIdentifierFontSize = percentage(fretWidth, 30);
+  const FretIdentifiers = Array.from({ length: fretsCount + 1 }).map(
+    (_, idx) => (
+      <div
+        className={css.fretIdentifier}
+        key={idx}
+        data-identifier={idx}
+        style={{
+          bottom: `${fretIdentifiersY}px`,
+          left: `${
+            idx === 0
+              ? firstFretDistance / 2 - fretIdentifierSize / 2
+              : idx * fretDistance + fretWidth
+          }px`,
+          height: `${fretIdentifierSize}px`,
+          width: `${fretIdentifierSize}px`,
+          fontSize: `${fretIdentifierFontSize}rem`,
+        }}
+      >
+        <Paragraph>{idx}</Paragraph>
+      </div>
+    )
+  );
+
   return (
     <div className={css.container}>
       <div className={css.fretboard} style={fretboardStyle}>
@@ -129,6 +157,7 @@ const Fretboard = ({
         {Strings}
         {Markers}
         {Sounds}
+        {FretIdentifiers}
       </div>
     </div>
   );

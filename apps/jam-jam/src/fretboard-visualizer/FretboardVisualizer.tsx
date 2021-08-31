@@ -9,35 +9,41 @@ import {
   Typography,
 } from "antd";
 import React, { useMemo, useState } from "react";
-import { DownOutlined } from "@ant-design/icons";
+import { DownOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   createStrings,
   pickSoundsInStrings,
   sliceSoundsInStrings,
+  TUNINGS,
 } from "../fretboard/core";
 import { Fretboard } from "../fretboard/Fretboard";
 
 import css from "./FretboardVisualizer.scss";
-import { NoteName, NOTE_NAMES } from "../fretboard/models";
-import Checkbox from "antd/lib/checkbox/Checkbox";
+import { GuitarTuning, NoteName, NOTE_NAMES } from "../fretboard/models";
+import { Checkbox } from "antd";
 
 type RadioSelectValue = NoteName | "all" | "none" | "";
 
 interface Filters {
+  tuning: GuitarTuning;
   range: [number, number];
   fretsCount: number;
   markersDisabled: boolean;
   pickedNoteNames: NoteName[];
+  stringsCount: number;
 }
 
 const { Title } = Typography;
 
+const MAX_STRINGS_COUNT = 10;
 const MAX_FRETS_COUNT = 30;
 const FILTERS: Filters = {
+  tuning: TUNINGS[0],
   range: [0, MAX_FRETS_COUNT],
   fretsCount: 24,
   markersDisabled: false,
   pickedNoteNames: [...NOTE_NAMES],
+  stringsCount: TUNINGS[0].notes.length,
 };
 
 const getRadioGroupValue = (pickedNoteNames: NoteName[]): RadioSelectValue => {
@@ -101,7 +107,6 @@ const FretboardVisualizer = () => {
   };
 
   const handleManyNotePick = (noteName: NoteName, checked: boolean): void => {
-    console.log(noteName, checked);
     setFilters({
       ...filters,
       pickedNoteNames: checked
@@ -112,28 +117,72 @@ const FretboardVisualizer = () => {
     });
   };
 
-  const { range, fretsCount, markersDisabled, pickedNoteNames } = filters;
+  const handleTuningPick = (tuning: GuitarTuning) => {
+    setFilters({
+      ...filters,
+      tuning,
+      stringsCount: tuning.notes.length,
+    });
+  };
+
+  const handleStringChange = (stringsCount: number) => {
+    if (stringsCount < filters.tuning.notes.length) {
+      setFilters({
+        ...filters,
+        stringsCount,
+        tuning: {
+          name: "Custom",
+          notes: filters.tuning.notes.filter(
+            (_, idx) => idx <= stringsCount - 1
+          ),
+        },
+      });
+      return;
+    }
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      stringsCount,
+      tuning: {
+        name: "Custom",
+        notes: [
+          ...filters.tuning.notes,
+          ...Array.from({
+            length: stringsCount - prevFilters.stringsCount,
+          }).map(() => filters.tuning.notes[0]),
+        ],
+      },
+    }));
+  };
+
+  const {
+    range,
+    fretsCount,
+    markersDisabled,
+    pickedNoteNames,
+    tuning,
+    stringsCount,
+  } = filters;
 
   const strings = useMemo(() => {
-    const result = sliceSoundsInStrings(
-      range,
-      createStrings(["E", "B", "G", "D", "A", "E"], fretsCount)
+    const result = pickSoundsInStrings(
+      pickedNoteNames,
+      sliceSoundsInStrings(range, createStrings(tuning.notes, fretsCount))
     );
 
-    return pickSoundsInStrings(pickedNoteNames, result);
+    return result;
   }, [filters]);
 
   return (
     <div className={css.visualizer}>
       <header className={css.filters}>
-        <div className={css.rangeSlider}>
-          <Title level={5}>Range</Title>
+        <div className={css.stringsManager}>
+          <Title level={5}>Manage strings</Title>
           <Slider
-            range
-            min={0}
-            value={range}
-            max={fretsCount}
-            onChange={handleRangeChange}
+            min={1}
+            value={stringsCount}
+            max={MAX_STRINGS_COUNT}
+            onChange={handleStringChange}
           />
         </div>
 
@@ -147,8 +196,19 @@ const FretboardVisualizer = () => {
           />
         </div>
 
+        <div className={css.rangeSlider}>
+          <Title level={5}>Range</Title>
+          <Slider
+            range
+            min={0}
+            value={range}
+            max={fretsCount}
+            onChange={handleRangeChange}
+          />
+        </div>
+
         <div className={css.markersSwitch}>
-          <Title level={5}>Markers</Title>
+          <Title level={5}>Disable markers</Title>
 
           <Switch
             checked={markersDisabled}
@@ -198,10 +258,101 @@ const FretboardVisualizer = () => {
         >
           <Button className={css.notePicker} type="primary">
             {pickedNoteNames.length}{" "}
-            {pickedNoteNames.length <= 1 ? "note" : "notes"} selected
+            {pickedNoteNames.length === 1 ? "note" : "notes"} selected
             <DownOutlined />
           </Button>
         </Dropdown>
+
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.ItemGroup key="custom" title="Custom tunings">
+                <Radio.Group
+                  style={{ padding: "10px" }}
+                  value={
+                    TUNINGS.some((tun) => tun.name === tuning.name)
+                      ? ""
+                      : "custom"
+                  }
+                  onChange={(e) => handleTuningPick(e.target.value)}
+                >
+                  <Radio value="custom">
+                    Custom [{tuning.notes.join(",")}]
+                  </Radio>
+                </Radio.Group>
+              </Menu.ItemGroup>
+              <Menu.ItemGroup key="standard" title="Standard tunings">
+                <Radio.Group
+                  style={{ padding: "10px" }}
+                  value={tuning}
+                  onChange={(e) => handleTuningPick(e.target.value)}
+                >
+                  {TUNINGS.filter((tuning) =>
+                    tuning.name.toLowerCase().includes("standard")
+                  ).map((tuning) => (
+                    <Radio key={tuning.name} value={tuning}>
+                      {tuning.name} [{tuning.notes.join(",")}]
+                    </Radio>
+                  ))}
+                </Radio.Group>
+              </Menu.ItemGroup>
+              <Menu.ItemGroup key="drop" title="Drop tunings">
+                <Radio.Group
+                  style={{ padding: "10px" }}
+                  value={tuning}
+                  onChange={(e) => handleTuningPick(e.target.value)}
+                >
+                  {TUNINGS.filter((tuning) =>
+                    tuning.name.toLowerCase().includes("drop")
+                  ).map((tuning) => (
+                    <Radio key={tuning.name} value={tuning}>
+                      {tuning.name} [{tuning.notes.join(",")}]
+                    </Radio>
+                  ))}
+                </Radio.Group>
+              </Menu.ItemGroup>
+              <Menu.ItemGroup key="open" title="Open tunings">
+                <Radio.Group
+                  style={{ padding: "10px" }}
+                  value={tuning}
+                  onChange={(e) => handleTuningPick(e.target.value)}
+                >
+                  {TUNINGS.filter((tuning) =>
+                    tuning.name.toLowerCase().includes("open")
+                  ).map((tuning) => (
+                    <Radio key={tuning.name} value={tuning}>
+                      {tuning.name} [{tuning.notes.join(",")}]
+                    </Radio>
+                  ))}
+                </Radio.Group>
+              </Menu.ItemGroup>
+              <Menu.ItemGroup key="other" title="Other">
+                <Radio.Group
+                  style={{ padding: "10px" }}
+                  value={tuning}
+                  onChange={(e) => handleTuningPick(e.target.value)}
+                >
+                  {TUNINGS.filter(
+                    (tuning) =>
+                      !tuning.name.toLowerCase().includes("drop") &&
+                      !tuning.name.toLowerCase().includes("standard") &&
+                      !tuning.name.toLowerCase().includes("open")
+                  ).map((tuning) => (
+                    <Radio key={tuning.name} value={tuning}>
+                      {tuning.name} [{tuning.notes.join(",")}]
+                    </Radio>
+                  ))}
+                </Radio.Group>
+              </Menu.ItemGroup>
+            </Menu>
+          }
+        >
+          <Button className={css.tuningPicker} type="primary">
+            Tuning: {tuning.name} [{tuning.notes.join(",")}]
+            <DownOutlined />
+          </Button>
+        </Dropdown>
+        <Button type="primary" size="middle" icon={<PlusOutlined />} />
       </header>
 
       <Fretboard

@@ -22,6 +22,57 @@ export const DEFAULT_THEME: GuitarSoundsTheme = {
   B: { color: "#ffffff", background: "#612500" },
 };
 
+export const TUNINGS: GuitarTuning[] = [
+  {
+    name: "E standard",
+    notes: ["E", "B", "G", "D", "A", "E"],
+  },
+  {
+    name: "Drop D",
+    notes: ["D", "A", "D", "G", "B", "E"],
+  },
+  {
+    name: "Double Drop D",
+    notes: ["D", "A", "D", "G", "B", "D"],
+  },
+  {
+    name: "DADGAD",
+    notes: ["D", "A", "D", "G", "A", "D"],
+  },
+  {
+    name: "Open D",
+    notes: ["D", "A", "D", "F#", "A", "D"],
+  },
+  {
+    name: "Open E",
+    notes: ["E", "B", "E", "G#", "B", "E"],
+  },
+  {
+    name: "Open G",
+    notes: ["D", "G", "D", "G", "B", "D"],
+  },
+  {
+    name: "Open A",
+    notes: ["E", "A", "E", "A", "C#", "E"],
+  },
+  {
+    name: "DGC-GCD",
+    notes: ["D", "G", "C", "G", "C", "D"],
+  },
+  {
+    name: "Open C6",
+    notes: ["C", "A", "C", "G", "C", "E"],
+  },
+  {
+    name: "Open C",
+    notes: ["C", "G", "C", "G", "G", "E"],
+  },
+  {
+    name: "EEEEBE",
+    notes: ["E", "E", "E", "E", "B", "E"],
+  },
+];
+
 export const createFretsMarkers = (
   fretsCount: number,
   steps: number[]
@@ -77,13 +128,13 @@ export const pickSoundsInStrings = (
 };
 
 export const createStrings = (
-  tuning: GuitarTuning,
+  notes: NoteName[],
   frets: number
 ): GuitarString[] => {
   const strings: GuitarString[] = [];
 
-  for (let i = 0; i < tuning.length; i++) {
-    const sound = tuning[i];
+  for (let i = 0; i < notes.length; i++) {
+    const sound = notes[i];
     let acc = NOTE_NAMES.findIndex((currSound) => currSound === sound);
     const sounds: GuitarSound[] = [];
 
