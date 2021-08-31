@@ -1,0 +1,11 @@
+@import "styles/mixins";
+
+$fretboardBg: #2a333a;
+$stringBg: #868686;
+
+.neck {
+  position: relative;
+  display: flex;
+
+  //   background: $bg;
+}

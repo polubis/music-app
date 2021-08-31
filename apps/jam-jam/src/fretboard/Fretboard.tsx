@@ -49,6 +49,10 @@ const Fretboard = ({
   ));
 
   const Strings = strings.map((string) => {
+    if (string.hidden) {
+      return null;
+    }
+
     const height = stringHeight + stringHeightStep * string.position;
 
     return (

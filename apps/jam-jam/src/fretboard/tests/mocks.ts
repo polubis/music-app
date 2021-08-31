@@ -42,6 +42,11 @@ export const GuitarStringMock = (string = _DEFAULT_STRING_) => {
             .valueOf()
         ),
       }),
+    setHidden: (hidden: boolean) =>
+      GuitarStringMock({
+        ...string,
+        hidden,
+      }),
     setPosition: (position: number) =>
       GuitarStringMock({ ...string, position }),
     fillSounds: (start: NoteName, count: number) => {
@@ -92,6 +97,17 @@ export const GuitarStringsMock = (strings: GuitarString[] = []) => {
 
       return GuitarStringsMock(result);
     },
+    setStringsHidden: (positions: number[], hidden: boolean) =>
+      GuitarStringsMock(
+        strings.map((string) =>
+          positions.includes(string.position)
+            ? {
+                ...string,
+                hidden,
+              }
+            : string
+        )
+      ),
     valueOf: () => strings,
   };
 };

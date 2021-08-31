@@ -63,6 +63,21 @@ describe("<Fretboard>", () => {
     expect(queryByText("C")).not.toBeInTheDocument();
   });
 
+  it("hiddes strings which have dedicated flag set as truthy", () => {
+    const _FRETS_COUNT_ = 5;
+    const _STRINGS_ = GuitarStringsMock()
+      .fromNames(["E", "B", "G", "D", "A", "E"], _FRETS_COUNT_)
+      .setStringsHidden([0, 1], true)
+      .valueOf();
+
+    const { container } = renderFretboard({
+      fretsCount: _FRETS_COUNT_,
+      strings: _STRINGS_,
+    });
+
+    expect(container.querySelectorAll(`[data-string]`).length).toBe(4);
+  });
+
   it("draws identifiers", () => {
     const { container } = renderFretboard();
 

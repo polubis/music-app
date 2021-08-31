@@ -159,3 +159,21 @@ export const createStrings = (
 
 export const percentage = (value: number, percent: number): number =>
   (value * percent) / 100;
+
+export const setStringsVisibilityByRange = (
+  strings: GuitarString[],
+  range: [number, number]
+): GuitarString[] => {
+  return strings.map((string) =>
+    string.position + 1 >= range[0] && string.position + 1 <= range[1]
+      ? { ...string, hidden: false }
+      : {
+          ...string,
+          hidden: true,
+          sounds: string.sounds.map((sound) => ({
+            ...sound,
+            hidden: true,
+          })),
+        }
+  );
+};
