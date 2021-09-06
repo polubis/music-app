@@ -2,6 +2,7 @@ import {
   createFretsMarkers,
   pickSounds,
   pickSoundsInStrings,
+  setStringsVisibilityByRange,
   sliceSoundsInStrings,
   sliceStringSounds,
 } from "../core";
@@ -80,6 +81,42 @@ describe("sliceStringSounds()", () => {
         true,
         true,
       ]);
+    });
+  });
+
+  describe("setStringsVisibilityByRange()", () => {
+    it("sets strings visiblity", () => {
+      const _RANGE_ = [1, 3] as [number, number];
+      const strings = GuitarStringsMock()
+        .fromNames(["E", "B", "G", "D", "A", "E"], 24)
+        .valueOf();
+      const stringsResult = setStringsVisibilityByRange(strings, _RANGE_);
+
+      expect(stringsResult[0].hidden).toBeFalsy();
+      expect(stringsResult[1].hidden).toBeFalsy();
+      expect(stringsResult[2].hidden).toBeFalsy();
+      expect(stringsResult[3].hidden).toBeTruthy();
+      expect(stringsResult[4].hidden).toBeTruthy();
+      expect(stringsResult[5].hidden).toBeTruthy();
+    });
+
+    it("sets strings sounds visibility", () => {
+      const _FRETS_ = 24;
+      const _RANGE_ = [1, 2] as [number, number];
+      const strings = GuitarStringsMock()
+        .fromNames(["E", "B", "G"], _FRETS_)
+        .valueOf();
+      const stringsResult = setStringsVisibilityByRange(strings, _RANGE_);
+
+      expect(
+        stringsResult[0].sounds.filter((sound) => sound.hidden).length
+      ).toBe(0);
+      expect(
+        stringsResult[1].sounds.filter((sound) => sound.hidden).length
+      ).toBe(0);
+      expect(
+        stringsResult[2].sounds.filter((sound) => sound.hidden).length
+      ).toBe(_FRETS_);
     });
   });
 });

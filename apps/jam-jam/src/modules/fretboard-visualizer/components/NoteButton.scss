@@ -1,0 +1,13 @@
+@import "styles/theme";
+
+.btn {
+  border-radius: 50%;
+  border: 1px solid $appBg;
+  font-family: inherit;
+  font-size: 1.6rem;
+  height: 40px;
+  width: 40px;
+  color: $appBg;
+  font-weight: bold;
+  cursor: pointer;
+}

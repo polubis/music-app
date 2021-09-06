@@ -13,6 +13,7 @@ import { DownOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   createStrings,
   pickSoundsInStrings,
+  setStringsVisibilityByRange,
   sliceSoundsInStrings,
   TUNINGS,
 } from "../fretboard/core";
@@ -31,15 +32,19 @@ interface Filters {
   markersDisabled: boolean;
   pickedNoteNames: NoteName[];
   stringsCount: number;
+  stringsRange: [number, number];
 }
 
 const { Title } = Typography;
 
 const MAX_STRINGS_COUNT = 10;
+const MIN_STRINGS_COUNT = 1;
+const MIN_FRETS_COUNt = 0;
 const MAX_FRETS_COUNT = 30;
 const FILTERS: Filters = {
   tuning: TUNINGS[0],
-  range: [0, MAX_FRETS_COUNT],
+  range: [MIN_FRETS_COUNt, MAX_FRETS_COUNT],
+  stringsRange: [MIN_STRINGS_COUNT, MAX_STRINGS_COUNT],
   fretsCount: 24,
   markersDisabled: false,
   pickedNoteNames: [...NOTE_NAMES],
@@ -125,7 +130,14 @@ const FretboardVisualizer = () => {
     });
   };
 
-  const handleStringChange = (stringsCount: number) => {
+  const handleStringsRangeChange = (stringsRange: [number, number]): void => {
+    setFilters({
+      ...filters,
+      stringsRange,
+    });
+  };
+
+  const handleStringsCountChange = (stringsCount: number) => {
     if (stringsCount < filters.tuning.notes.length) {
       setFilters({
         ...filters,
@@ -162,12 +174,16 @@ const FretboardVisualizer = () => {
     pickedNoteNames,
     tuning,
     stringsCount,
+    stringsRange,
   } = filters;
 
   const strings = useMemo(() => {
-    const result = pickSoundsInStrings(
-      pickedNoteNames,
-      sliceSoundsInStrings(range, createStrings(tuning.notes, fretsCount))
+    const result = setStringsVisibilityByRange(
+      pickSoundsInStrings(
+        pickedNoteNames,
+        sliceSoundsInStrings(range, createStrings(tuning.notes, fretsCount))
+      ),
+      stringsRange
     );
 
     return result;
@@ -182,7 +198,7 @@ const FretboardVisualizer = () => {
             min={1}
             value={stringsCount}
             max={MAX_STRINGS_COUNT}
-            onChange={handleStringChange}
+            onChange={handleStringsCountChange}
           />
         </div>
 
@@ -204,6 +220,17 @@ const FretboardVisualizer = () => {
             value={range}
             max={fretsCount}
             onChange={handleRangeChange}
+          />
+        </div>
+
+        <div className={css.rangeSlider}>
+          <Title level={5}>Strings range</Title>
+          <Slider
+            range
+            min={MIN_STRINGS_COUNT}
+            value={stringsRange}
+            max={stringsCount}
+            onChange={handleStringsRangeChange}
           />
         </div>
 

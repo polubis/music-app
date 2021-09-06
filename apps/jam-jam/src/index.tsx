@@ -1,17 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { FretboardVisualizer } from "./fretboard-visualizer";
-import { createStrings } from "./fretboard/core";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./styles/index.scss";
-
-const strings = createStrings(["E", "B", "G", "D", "A", "E"], 24);
+import { FretboardVisualizer as FirstFretboardVisualizer } from "./fretboard-visualizer";
+import { Neck } from "./modules/fretboard-visualizer/Neck";
 
 const App = () => {
   return (
-    <div>
-      <FretboardVisualizer />
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/fretboard-visualizer">
+          <Neck />
+        </Route>
+        <Route exact path="/">
+          <FirstFretboardVisualizer />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 
