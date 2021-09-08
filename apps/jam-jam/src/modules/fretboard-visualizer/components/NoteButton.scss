@@ -1,6 +1,8 @@
 @import "styles/theme";
+@import "styles/mixins";
 
 .btn {
+  @include unselectable;
   border-radius: 50%;
   border: 1px solid $appBg;
   font-family: inherit;
@@ -10,4 +12,10 @@
   color: $appBg;
   font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.24);
+
+  &.unactive {
+    background: transparent;
+    color: $white;
+  }
 }

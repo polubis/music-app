@@ -1,0 +1,26 @@
+@import "styles/theme";
+@import "styles/mixins";
+
+.heading {
+  color: $black;
+}
+
+.row {
+  @include row;
+
+  &:not(:last-of-type) {
+    margin-bottom: 12px;
+  }
+
+  & > *:first-of-type {
+    margin-right: 12px;
+  }
+}
+
+.commonTuningSelect {
+  width: 250px;
+}
+
+.addStringBtn {
+  margin-top: 20px;
+}

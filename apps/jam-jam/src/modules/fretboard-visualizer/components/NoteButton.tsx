@@ -1,4 +1,4 @@
-import React from "react";
+import React, { DetailedHTMLProps, ButtonHTMLAttributes } from "react";
 
 import {
   NotePosition,
@@ -9,14 +9,36 @@ import {
 
 import css from "./NoteButton.scss";
 
-interface NoteButtonProps {
+interface NoteButtonProps
+  extends Omit<
+    DetailedHTMLProps<
+      ButtonHTMLAttributes<HTMLButtonElement>,
+      HTMLButtonElement
+    >,
+    "children"
+  > {
   position: NotePosition;
   notation: NoteNotation;
+  unactive?: boolean;
 }
 
-const NoteButton = ({ notation, position }: NoteButtonProps) => {
+const NoteButton = ({
+  className = "",
+  style = {},
+  notation,
+  unactive,
+  position,
+  ...props
+}: NoteButtonProps) => {
   return (
-    <button className={css.btn} style={{ background: NOTES_THEME[position] }}>
+    <button
+      {...props}
+      className={`${css.btn} ${className} ${unactive ? css.unactive : ""}`}
+      style={{
+        ...style,
+        ...(unactive ? {} : { background: NOTES_THEME[position] }),
+      }}
+    >
       {getNoteName(notation, position)}
     </button>
   );
