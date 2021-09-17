@@ -1,0 +1,105 @@
+@import "styles/theme";
+@import "styles/mixins";
+
+.container {
+  overflow-y: auto;
+  padding-bottom: 42px;
+  cursor: grab;
+
+  .strings {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+
+    .string {
+      position: absolute;
+      background: #868686;
+      width: calc(100% - 32px);
+      right: 0;
+
+      @for $i from 1 through 10 {
+        &:nth-of-type(#{$i}) {
+          height: #{$i}px;
+
+          @if $i == 1 {
+            top: #{12 + 20}px;
+          } @else {
+            top: #{(($i * (12 + 40)) - 20) - $i / 2}px;
+          }
+        }
+      }
+    }
+  }
+
+  &.rotated .strings {
+    transform: rotate(180deg);
+    
+    .string {
+      right: unset;
+      left: 0;
+    }
+  }
+
+  .fretboard {
+    display: flex;
+    width: max-content;
+    position: relative;
+
+    .fret {
+      @include colXCenter;
+      position: relative;
+      padding: 12px 0 0 0;
+      background: $fillPrimary;
+      width: 80px;
+      flex-shrink: 0;
+      border-left: 2px solid #182329;
+      border-right: 2px solid #182329;
+
+      &:first-of-type {
+        border-left: none;
+        background: none;
+        border-right: 5px solid #6a6e70;
+      }
+
+      &:nth-of-type(2) {
+        border-left: none;
+      }
+
+      &:last-of-type {
+        border-right: none;
+      }
+
+      .note {
+        margin-bottom: 12px;
+        z-index: 1;
+      }
+
+      .marker {
+        @include col;
+        align-items: center;
+        position: absolute;
+        bottom: -30px;
+        color: $white;
+
+        &.halfMarker {
+          bottom: -34px;
+
+          &::before {
+            width: 12px;
+            height: 12px;
+          }
+        }
+
+        &::before {
+          content: "";
+          width: 10px;
+          height: 10px;
+          border: 1px solid #182329;
+          border-radius: 50%;
+          background: #6a6e70;
+          margin-bottom: 4px;
+        }
+      }
+    }
+  }
+}

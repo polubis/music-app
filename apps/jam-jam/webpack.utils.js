@@ -27,10 +27,10 @@ const Environment = (mode, paths) => {
   const { isDev, isProd } = getEnvs(mode);
 
   const alias = createAlias(paths);
-  console.log(isDev);
+
   const config = {
     mode,
-    devtool: isDev ? "inline-source-map" : false,
+    devtool: isDev ? "inline-source-map" : "none",
     entry: path.resolve(__dirname, "src/index.tsx"),
     resolve: {
       extensions: [".ts", ".tsx", ".js"],
@@ -69,6 +69,10 @@ const Environment = (mode, paths) => {
           test: /\.scss$/,
           include: path.resolve(__dirname, alias.styles),
           use: ["style-loader", "css-loader", "sass-loader"],
+        },
+        {
+          test: /\.css$/,
+          use: ["style-loader", "css-loader"],
         },
         {
           test: /\.html$/,

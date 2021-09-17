@@ -1,0 +1,82 @@
+@import "styles/theme";
+@import "styles/mixins";
+
+.container {
+  background: $appBg;
+  min-height: 100vh;
+
+  .header {
+    @include row;
+    padding: 32px 200px 52px 200px;
+
+    .heading {
+      margin-right: auto;
+    }
+  }
+
+  .tiles {
+    @include wrap;
+    padding: 32px 200px 52px 200px;
+
+    .tile {
+      @include col;
+      padding: 22px;
+      border-radius: 2px;
+      background: $fillPrimary;
+      border: 1px solid $black;
+      width: 350px;
+
+      .tileHeader {
+        @include row;
+
+        .tileHeading {
+          margin-right: auto;
+        }
+      }
+
+      .notes {
+        display: grid;
+        margin-top: 24px;
+        justify-content: space-between;
+        grid-template-columns: repeat(6, auto);
+        grid-template-rows: auto;
+        gap: 12px 0;
+      }
+    }
+  }
+
+  .filters {
+    @include row;
+    padding: 32px 200px 52px 200px;
+
+    .filter {
+      @include col;
+
+      &:not(:last-of-type) {
+        margin-right: 42px;
+      }
+
+      .slider {
+        margin: 12px 0 0 0;
+
+        &:hover {
+          .ant-slider-track {
+            background-color: $primary;
+          }
+        }
+
+        .ant-slider-track {
+          background-color: $primary;
+        }
+
+        .ant-slider-handle {
+          border: solid 2px $primary;
+        }
+      }
+
+      &:last-of-type {
+        margin-left: auto;
+      }
+    }
+  }
+}
