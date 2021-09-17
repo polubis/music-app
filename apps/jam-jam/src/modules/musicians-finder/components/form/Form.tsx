@@ -42,6 +42,7 @@ export const Form = () => {
     if (isValidForm) {
       history.push("/map");
     } else {
+      console.log(data);
       console.log("is invalid"); //alert implementation needed
     }
   };
@@ -65,21 +66,24 @@ export const Form = () => {
       <div className={css.element}>
         Guitar Expirience
         <Slider
-          range
-          min={1}
+          min={0}
           max={5}
-          onChange={(e) => onChangeHandler(`${e[1]}`, "exp")}
+          defaultValue={0}
+          onChange={(e) => onChangeHandler(`${e}`, "exp")}
         />
       </div>
       <div className={css.element}>
         Genre
-        <Select onChange={(e) => console.log(e)}>
+        <Select onChange={(e) => onChangeHandler(`${e}`, "genre")}>
           <Option value="rock">Rock</Option>
           <Option value="blues">Blues</Option>
         </Select>
       </div>
       <div className={css.element}>
-        <Button type="primary" onClick={onLocationButtonClick}>
+        <Button
+          type={data.lng && data.lat ? "primary" : "dashed"}
+          onClick={onLocationButtonClick}
+        >
           Location
         </Button>
       </div>
