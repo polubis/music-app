@@ -30,7 +30,7 @@ const Environment = (mode, paths) => {
 
   const config = {
     mode,
-    devtool: isDev ? "inline-source-map" : "none",
+    devtool: isDev ? "inline-source-map" : false,
     entry: path.resolve(__dirname, "src/index.tsx"),
     resolve: {
       extensions: [".ts", ".tsx", ".js"],
