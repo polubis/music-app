@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import GoogleMapReact from "google-map-react";
 import { useUserForm } from "../../../../providers/user-form-provider";
+import { SmileOutlined } from "@ant-design/icons";
+import css from "./Map.scss";
+
 interface user {
   id: string;
   lat: number;
@@ -14,7 +17,7 @@ export const Map = () => {
     zoom: 11,
   };
 
-  //temporary user database
+  //temporary users database
   const users: user[] = [
     {
       id: "0",
@@ -39,6 +42,15 @@ export const Map = () => {
   );
 };
 
-const Marker = (props: any) => {
-  return <div className="SuperAwesomePin">V</div>;
+interface MarkerProps {
+  lat: number;
+  lng: number;
+}
+
+const Marker = ({ lat, lng }: MarkerProps) => {
+  return (
+    <div className={css.pin}>
+      <SmileOutlined />
+    </div>
+  );
 };
