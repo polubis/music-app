@@ -1,5 +1,6 @@
 import { Button } from "antd";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
+import { useToggle } from "dk";
 import {
   GuitarStringTuning,
   NoteNotation,
@@ -24,19 +25,7 @@ const TuningPicker = ({
   isLeftOrientation,
   onChange,
 }: TuningPickerProps) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const [isOpen, { open, close }] = useToggle();
 
   const currentTuningName = useMemo(
     () => getTuningName(notation, tunings, tuning),
@@ -45,19 +34,19 @@ const TuningPicker = ({
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" onClick={open}>
         {currentTuningName}
       </Button>
-      {isModalVisible && (
+      {isOpen && (
         <TuningPickerModal
           tuning={tuning}
           notation={notation}
           tunings={tunings}
           isLeftOrientation={isLeftOrientation}
           currentTuningName={currentTuningName}
-          onOk={handleOk}
+          onOk={close}
           onChange={onChange}
-          onCancel={handleCancel}
+          onCancel={close}
         />
       )}
     </>

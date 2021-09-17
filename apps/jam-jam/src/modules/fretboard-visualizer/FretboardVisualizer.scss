@@ -26,6 +26,14 @@
       border: 1px solid $black;
       width: 350px;
 
+      &:last-of-type {
+        margin-left: 24px;
+      }
+
+      .scalePicker {
+        margin-top: auto;
+      }
+
       .tileHeader {
         @include row;
 

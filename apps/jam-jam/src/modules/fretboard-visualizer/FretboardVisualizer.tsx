@@ -12,7 +12,13 @@ import {
   MAX_NOTES_COUNT,
   GuitarOrientation,
 } from "./models";
-import { Fretboard, NoteButton, TuningPicker, ChangeLog } from "./components";
+import {
+  Fretboard,
+  NoteButton,
+  TuningPicker,
+  ChangeLog,
+  ScalePicker,
+} from "./components";
 import { Switch, Slider } from "antd";
 
 import css from "./FretboardVisualizer.scss";
@@ -27,6 +33,7 @@ const FretboardVisualizer = () => {
       updateNotesCount,
       updateNotesRange,
       updateTuning,
+      updateScale,
     },
   ] = useGuitarStringsFilters();
 
@@ -66,6 +73,18 @@ const FretboardVisualizer = () => {
               />
             ))}
           </div>
+        </div>
+        <div className={css.tile}>
+          <Heading className={css.tileHeading} variant="medium">
+            Scales
+          </Heading>
+
+          <ScalePicker
+            notation={filters.notation}
+            className={css.scalePicker}
+            hiddenPositions={filters.hiddenPositions}
+            onChange={updateScale}
+          />
         </div>
       </section>
 
