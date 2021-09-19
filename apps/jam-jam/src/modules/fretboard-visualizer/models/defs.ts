@@ -36,10 +36,13 @@ export const NOTES_OCTAVES = [0, 1, 2, 3, 4, 5, 6, 7, 8] as const;
 export const FIRST_NOTE_OCTAVE = NOTES_OCTAVES[0];
 export const LAST_NOTE_OCTAVE = NOTES_OCTAVES[NOTES_OCTAVES.length - 1];
 
+export enum NoteNotation {
+  Sharp = "#",
+  Bmoll = "b",
+}
+
 export type SharpNoteName = typeof SHARP_NOTE_NAMES[number];
 export type BNoteName = typeof B_NOTE_NAMES[number];
-export type SharpNoteNotation = "#";
-export type BNoteNotation = "b";
 export type NoteName = SharpNoteName | BNoteName;
 export type NoteOctave = typeof NOTES_OCTAVES[number];
 
@@ -53,9 +56,7 @@ export interface Identified {
 
 export type NotePosition = typeof NOTES_POSITIONS[number];
 
-export type NoteNotation = SharpNoteNotation | BNoteNotation;
-
-export interface Note extends Identified {
+export interface Note extends Identified, Hideable {
   octave: number; // 0 - 7 - 8 octaves on piano
   name: NoteName; // C - B or second notation
   position: NotePosition; // 0 - 11 - 12 notes
@@ -83,7 +84,41 @@ export type NotesTheme = [
   NoteTheme
 ];
 
-export interface GuitarStringTuning {
+export interface GuitarStringTuning extends Identified {
   octave: NoteOctave;
   position: NotePosition;
 }
+
+export enum GuitarOrientation {
+  Left = "left",
+  Right = "right",
+}
+
+export type NotesRange = [number, number];
+
+export interface GuitarStringsFilters {
+  orientation: GuitarOrientation;
+  notation: NoteNotation;
+  hiddenPositions: NotePosition[];
+  notesCount: number;
+  notesRange: NotesRange;
+  tuning: GuitarStringTuning[];
+}
+
+export enum TuningCategory {
+  Open = "Open",
+  Drop = "Drop",
+  Standard = "Standard",
+  Alternate = "Alternate",
+}
+
+export interface DescribedGuitarStringTuning {
+  name: string;
+  category: TuningCategory;
+  tuning: GuitarStringTuning[];
+}
+
+export type GroupedDescribedGuitarTunings = Record<
+  TuningCategory,
+  DescribedGuitarStringTuning[]
+>;

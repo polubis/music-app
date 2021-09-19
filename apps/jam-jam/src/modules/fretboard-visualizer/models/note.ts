@@ -4,7 +4,6 @@ import {
   SHARP_NOTE_NAMES,
   B_NOTE_NAMES,
   LAST_NOTE_POSITION,
-  SharpNoteNotation,
   BNoteName,
   SharpNoteName,
   NotesTheme,
@@ -12,12 +11,21 @@ import {
   NoteOctave,
   FIRST_NOTE_OCTAVE,
   LAST_NOTE_OCTAVE,
+  NotesRange,
 } from "./defs";
 import { isBNotation, isSharpNotation } from "./notation";
 
-type PickNoteNotation<T extends NoteNotation> = T extends SharpNoteNotation
+type PickNoteNotation<T extends NoteNotation> = T extends NoteNotation.Sharp
   ? SharpNoteName
   : BNoteName;
+
+export const DEFAULT_NUMBER_OF_NOTES = 24;
+export const MIN_NOTES_COUNT = 1;
+export const MAX_NOTES_COUNT = 28;
+export const DEFAULT_NOTES_RANGE: NotesRange = [
+  MIN_NOTES_COUNT,
+  DEFAULT_NUMBER_OF_NOTES,
+];
 
 export const isNotePosition = (position: number): position is NotePosition =>
   position >= FIRST_NOTE_POSITION && position <= LAST_NOTE_POSITION;

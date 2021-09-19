@@ -10,6 +10,9 @@ import {
 } from "./defs";
 import { getNoteName, isNotePosition } from "./note";
 
+export const MAX_STRINGS_COUNT = 10;
+export const MIN_STRINGS_COUNT = 1;
+
 export const createGuitarString = (
   id: number,
   position: NotePosition,
@@ -60,9 +63,9 @@ export const createGuitarString = (
 export const createGuitarStrings = (
   tuning: GuitarStringTuning[],
   notation: NoteNotation,
-  count: number
+  notesCount: number
 ): GuitarString[] => {
-  return tuning.map(({ octave, position }, i) =>
-    createGuitarString(i, position, octave, count, notation)
+  return tuning.map(({ octave, position, id }) =>
+    createGuitarString(id, position, octave, notesCount, notation)
   );
 };
