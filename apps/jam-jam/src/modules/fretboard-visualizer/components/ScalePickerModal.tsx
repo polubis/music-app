@@ -11,6 +11,8 @@ import {
   SCALES,
   createKeyedScale,
   KeyedScale,
+  Scale,
+  ScaleMode,
   SCALE_INTERVAL_NOTATION_DICT,
 } from "../models";
 
@@ -30,13 +32,33 @@ const { Title } = Typography;
 interface ScalePickerModalFormData {
   key: NotePosition;
   type: ScaleType;
+  modeName: string;
 }
 
+const findScale = (type: ScaleType): Scale => {
+  const foundScale = SCALES.find((scale) => scale.type === type);
+
+  if (foundScale === undefined) {
+    throw new Error("findScale() [SCALE_NOT_FOUND]");
+  }
+
+  return foundScale;
+};
+
+const findMode = (modes: ScaleMode[], modeName: string): ScaleMode => {
+  const foundMode = modes.find((mode) => mode.name === modeName);
+
+  if (foundMode === undefined) {
+    throw new Error("pickScale() [MODE_IN_SCALE_NOT_FOUND]");
+  }
+
+  return foundMode;
+};
+
 const pickScale = (formData: ScalePickerModalFormData): KeyedScale => {
-  return createKeyedScale(
-    formData.key,
-    SCALES.find(({ type }) => type === formData.type)!
-  );
+  const foundScale = findScale(formData.type);
+  const foundMode = findMode(foundScale.modes, formData.modeName);
+  return createKeyedScale(formData.key, foundScale, foundMode);
 };
 
 const ScalePickerModal = ({
@@ -50,6 +72,7 @@ const ScalePickerModal = ({
   const [formData, setFormData] = useState<ScalePickerModalFormData>({
     key: FIRST_NOTE_POSITION,
     type: ScaleType.Major,
+    modeName: SCALES[0].modes[0].name,
   });
   const [pickedScale, setPickedScale] = useState(pickScale(formData));
 
@@ -64,9 +87,21 @@ const ScalePickerModal = ({
   };
 
   const handleTypeChange = (type: ScaleType): void => {
+    const foundScale = findScale(type);
     const newFormData: ScalePickerModalFormData = {
       ...formData,
       type,
+      modeName: findMode(foundScale.modes, foundScale.modes[0].name).name,
+    };
+    const pickedScale = pickScale(newFormData);
+    setFormData(newFormData);
+    setPickedScale(pickedScale);
+  };
+
+  const handleModeChange = (modeName: string): void => {
+    const newFormData: ScalePickerModalFormData = {
+      ...formData,
+      modeName,
     };
     const pickedScale = pickScale(newFormData);
     setFormData(newFormData);
@@ -117,8 +152,22 @@ const ScalePickerModal = ({
         >
           {SCALES.map((scale) => (
             <Option key={scale.type} value={scale.type}>
-              {scale.type}:{" "}
-              {scale.pattern
+              {scale.type}
+            </Option>
+          ))}
+        </Select>
+      </div>
+      <div className={css.row}>
+        <Title level={5}>Scale mode</Title>
+        <Select
+          value={formData.modeName}
+          style={{ width: "100%" }}
+          onChange={handleModeChange}
+        >
+          {pickedScale.modes.map((mode) => (
+            <Option key={mode.name} value={mode.name}>
+              {mode.name}:{" "}
+              {mode.pattern
                 .map((position) => SCALE_INTERVAL_NOTATION_DICT[position])
                 .join(",")}
             </Option>
