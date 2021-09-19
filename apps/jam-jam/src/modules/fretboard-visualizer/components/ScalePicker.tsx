@@ -1,11 +1,8 @@
 import { Button } from "antd";
 import { useToggle } from "dk";
-import React from "react";
 
 import { ScalePickerModal } from "./ScalePickerModal";
 import { NoteNotation, NotePosition } from "../models";
-
-import css from "./ScalePicker.scss";
 
 interface ScalePickerProps {
   className?: string;

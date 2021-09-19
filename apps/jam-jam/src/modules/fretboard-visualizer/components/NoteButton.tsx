@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps, ButtonHTMLAttributes } from "react";
+import { DetailedHTMLProps, ButtonHTMLAttributes } from "react";
 
 import {
   NotePosition,
@@ -7,7 +7,7 @@ import {
   NOTES_THEME,
 } from "../models";
 
-import css from "./NoteButton.scss";
+import css from "./NoteButton.module.less";
 
 interface NoteButtonProps
   extends Omit<

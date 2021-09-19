@@ -1,8 +1,7 @@
-import React from "react";
 import GoogleMapReact from "google-map-react";
-import { useUserForm } from "../../../../providers/user-form-provider";
+import { useUserForm } from "providers/user-form-provider";
 import { SmileOutlined } from "@ant-design/icons";
-import css from "./Map.scss";
+import css from "./Map.module.less";
 
 interface user {
   id: string;

@@ -1,41 +1,38 @@
 import { Button } from "antd";
-import React, { useMemo } from "react";
 import { useToggle } from "dk";
 import {
   GuitarStringTuning,
   NoteNotation,
-  getTuningName,
   DescribedGuitarStringTuning,
 } from "../models";
 
 import { TuningPickerModal } from "./TuningPickerModal";
 
 export interface TuningPickerProps {
+  className?: string;
   notation: NoteNotation;
   tunings: DescribedGuitarStringTuning[];
   tuning: GuitarStringTuning[];
   isLeftOrientation: boolean;
+  currentTuningName: string;
   onChange: (tuning: GuitarStringTuning[]) => void;
 }
 
 const TuningPicker = ({
+  className = "",
   notation,
   tuning,
   tunings,
   isLeftOrientation,
+  currentTuningName,
   onChange,
 }: TuningPickerProps) => {
   const [isOpen, { open, close }] = useToggle();
 
-  const currentTuningName = useMemo(
-    () => getTuningName(notation, tunings, tuning),
-    [notation, tunings, tuning]
-  );
-
   return (
-    <>
+    <div className={className}>
       <Button type="primary" onClick={open}>
-        {currentTuningName}
+        Set tuning
       </Button>
       {isOpen && (
         <TuningPickerModal
@@ -49,7 +46,7 @@ const TuningPicker = ({
           onCancel={close}
         />
       )}
-    </>
+    </div>
   );
 };
 

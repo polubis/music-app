@@ -1,6 +1,6 @@
 import { Button, Modal, Select, Tooltip, Form } from "antd";
 import { PlusCircleOutlined, DeleteOutlined } from "@ant-design/icons";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   GuitarStringTuning,
   NoteNotation,
@@ -13,7 +13,7 @@ import {
   groupTunings,
 } from "../models";
 
-import css from "./TuningPickerModal.scss";
+import css from "./TuningPickerModal.module.less";
 
 const { Item } = Form;
 
@@ -158,7 +158,7 @@ const TuningPickerModal = ({
         <Item key={id} label={`String ${id + 1}`}>
           <Select
             value={position}
-            style={{ width: 120 }}
+            style={{ width: 120, marginLeft: "6px" }}
             onChange={(pickedPosition) => handleSelect(pickedPosition, id)}
           >
             {NOTES_POSITIONS.map((position) => (

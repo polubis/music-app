@@ -95,8 +95,8 @@ export interface GuitarStringTuning extends Identified {
 }
 
 export enum GuitarOrientation {
-  Left = "left",
-  Right = "right",
+  Left = "Left",
+  Right = "Right",
 }
 
 export type NotesRange = [number, number];
@@ -111,10 +111,10 @@ export interface GuitarStringsFilters {
 }
 
 export enum TuningCategory {
-  Open = "open",
-  Drop = "drop",
-  Standard = "standard",
-  Alternate = "alternate",
+  Open = "Open",
+  Drop = "Drop",
+  Standard = "Standard",
+  Alternate = "Alternate",
 }
 
 export interface DescribedGuitarStringTuning {
@@ -129,13 +129,13 @@ export type GroupedDescribedGuitarTunings = Record<
 >;
 
 export enum ScaleType {
-  Major = "major",
-  MelodicMinor = "melodic minor",
-  HarmonicMinor = "harmonic minor",
-  HarmonicMajor = "harmonic major",
-  Augmented = "augmented",
-  Diminished = "diminished",
-  WholeTone = "whole tone",
+  Major = "Major",
+  MelodicMinor = "Melodic minor",
+  HarmonicMinor = "Harmonic minor",
+  HarmonicMajor = "Harmonic major",
+  Augmented = "Augmented",
+  Diminished = "Diminished",
+  WholeTone = "Whole tone",
 }
 
 export interface ScaleMode {

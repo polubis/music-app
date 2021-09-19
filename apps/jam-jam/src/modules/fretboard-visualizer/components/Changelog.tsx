@@ -1,7 +1,5 @@
 import { Button, Collapse, Modal } from "antd";
-import React, { useState } from "react";
-
-import css from "./ChangeLog.scss";
+import { useState } from "react";
 
 const { Panel } = Collapse;
 
@@ -42,11 +40,12 @@ const ChangeLog = () => {
             <p>- Option to setup guitar tuning</p>
             <p>- Option to maintain number of guitar strings and frets</p>
             <p>- Adding an opinion form to send a review</p>
+            <p>- Add option to pick scale on fretboard</p>
+            <p>- Improve fretboard scroll on mobiles / desktop</p>
+            <p>- Add option to save fretboard state and use it later</p>
           </Panel>
           <Panel header="Version 1.0.1 - working on" key="2">
-            <p>- Add option to pick scale on fretboard</p>
             <p>- Polish language support</p>
-            <p>- Improve fretboard scroll on mobiles / desktop</p>
           </Panel>
           <Panel header="Version 1.0.2" key="3">
             <p>- Add option to pick chords on fretboard</p>
@@ -55,7 +54,6 @@ const ChangeLog = () => {
           </Panel>
           <Panel header="Version 1.0.3" key="4">
             <p>- Add option to log in and create account</p>
-            <p>- Add option to save fretboard state and use it later</p>
             <p>- Improve initial load performance</p>
           </Panel>
           <Panel header="Version 2.0.0" key="5">

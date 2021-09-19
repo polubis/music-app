@@ -1,4 +1,4 @@
-import { Modal, Select, Typography } from "antd";
+import { Modal, Select, Form } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import { NoteButton } from "./NoteButton";
 import {
@@ -16,7 +16,7 @@ import {
   SCALE_INTERVAL_NOTATION_DICT,
 } from "../models";
 
-import css from "./ScalePickerModal.scss";
+import css from "./ScalePickerModal.module.less";
 
 interface ScalePickerModalProps {
   notation: NoteNotation;
@@ -27,7 +27,7 @@ interface ScalePickerModalProps {
 }
 
 const { Option } = Select;
-const { Title } = Typography;
+const { Item } = Form;
 
 interface ScalePickerModalFormData {
   key: NotePosition;
@@ -129,56 +129,62 @@ const ScalePickerModal = ({
       onOk={onOk}
       onCancel={handleCancel}
     >
-      <div className={css.row}>
-        <Title level={5}>Scale key</Title>
-        <Select
-          value={formData.key}
-          style={{ width: "100%" }}
-          onChange={handleKeyChange}
-        >
-          {NOTES_POSITIONS.map((position) => (
-            <Option key={position} value={position}>
-              {getNoteName(notation, position)}
-            </Option>
-          ))}
-        </Select>
-      </div>
-      <div className={css.row}>
-        <Title level={5}>Scale type</Title>
-        <Select
-          value={formData.type}
-          style={{ width: "100%" }}
-          onChange={handleTypeChange}
-        >
-          {SCALES.map((scale) => (
-            <Option key={scale.type} value={scale.type}>
-              {scale.type}
-            </Option>
-          ))}
-        </Select>
-      </div>
-      <div className={css.row}>
-        <Title level={5}>Scale mode</Title>
-        <Select
-          value={formData.modeName}
-          style={{ width: "100%" }}
-          onChange={handleModeChange}
-        >
-          {pickedScale.modes.map((mode) => (
-            <Option key={mode.name} value={mode.name}>
-              {mode.name}:{" "}
-              {mode.pattern
-                .map((position) => SCALE_INTERVAL_NOTATION_DICT[position])
-                .join(",")}
-            </Option>
-          ))}
-        </Select>
-      </div>
-      <div className={css.preview}>
-        {pickedScale.positions.map((position, idx) => (
-          <NoteButton key={idx} position={position} notation={notation} />
-        ))}
-      </div>
+      <Form layout="vertical">
+        <Item label="Scale key">
+          <Select
+            value={formData.key}
+            style={{ width: "100%" }}
+            onChange={handleKeyChange}
+          >
+            {NOTES_POSITIONS.map((position) => (
+              <Option key={position} value={position}>
+                {getNoteName(notation, position)}
+              </Option>
+            ))}
+          </Select>
+        </Item>
+        <Item label="Scale type">
+          <Select
+            value={formData.type}
+            style={{ width: "100%" }}
+            onChange={handleTypeChange}
+          >
+            {SCALES.map((scale) => (
+              <Option key={scale.type} value={scale.type}>
+                {scale.type}
+              </Option>
+            ))}
+          </Select>
+        </Item>
+        <Item label="Scale mode">
+          <Select
+            value={formData.modeName}
+            style={{ width: "100%" }}
+            onChange={handleModeChange}
+          >
+            {pickedScale.modes.map((mode) => (
+              <Option key={mode.name} value={mode.name}>
+                {mode.name}:{" "}
+                {mode.pattern
+                  .map((position) => SCALE_INTERVAL_NOTATION_DICT[position])
+                  .join(",")}
+              </Option>
+            ))}
+          </Select>
+        </Item>
+        <Item label="Preview">
+          <div className={css.preview}>
+            {pickedScale.positions.map((position, idx) => (
+              <NoteButton
+                className={css.previewBtn}
+                key={idx}
+                position={position}
+                notation={notation}
+              />
+            ))}
+          </div>
+        </Item>
+      </Form>
     </Modal>
   );
 };

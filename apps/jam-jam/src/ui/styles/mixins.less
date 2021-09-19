@@ -1,24 +1,24 @@
-@mixin row {
+.row {
   display: flex;
   align-items: center;
 }
 
-@mixin col {
+.col {
   display: flex;
   flex-flow: column;
 }
 
-@mixin colXCenter {
-  @include col;
+.colXCenter {
+  .col();
   align-items: center;
 }
 
-@mixin wrap {
+.wrap {
   display: flex;
   flex-flow: wrap;
 }
 
-@mixin unselectable {
+.unselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
