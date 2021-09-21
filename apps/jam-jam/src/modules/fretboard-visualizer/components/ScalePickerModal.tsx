@@ -1,5 +1,5 @@
-import { Modal, Select, Form } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
+import { Modal, Select, Form, Typography } from "antd";
+import { useEffect, useMemo, useState } from "react";
 import { NoteButton } from "./NoteButton";
 import {
   NOTES_POSITIONS,
@@ -26,6 +26,7 @@ interface ScalePickerModalProps {
   onCancel: () => void;
 }
 
+const { Link } = Typography;
 const { Option } = Select;
 const { Item } = Form;
 
@@ -183,6 +184,15 @@ const ScalePickerModal = ({
               />
             ))}
           </div>
+        </Item>
+
+        <Item label="How scales works?">
+          <Link
+            href="https://www.youtube.com/watch?v=Vq2xt2D3e3E&t=881s"
+            target="_blank"
+          >
+            Scales tutorial by NewJazz
+          </Link>
         </Item>
       </Form>
     </Modal>
