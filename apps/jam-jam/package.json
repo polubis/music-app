@@ -1,6 +1,6 @@
 {
-  "name": "jam-jam-client",
-  "version": "0.1.0",
+  "name": "jam-jam",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.4",
