@@ -1,6 +1,6 @@
-import { Button, Modal, Typography, Select, Tooltip } from "antd";
+import { Button, Modal, Select, Tooltip, Form } from "antd";
 import { PlusCircleOutlined, DeleteOutlined } from "@ant-design/icons";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   GuitarStringTuning,
   NoteNotation,
@@ -13,7 +13,9 @@ import {
   groupTunings,
 } from "../models";
 
-import css from "./TuningPickerModal.scss";
+import css from "./TuningPickerModal.module.less";
+
+const { Item } = Form;
 
 interface TuningPickerModalProps {
   currentTuningName: string;
@@ -26,7 +28,6 @@ interface TuningPickerModalProps {
   onCancel: () => void;
 }
 
-const { Title } = Typography;
 const { Option, OptGroup } = Select;
 
 interface TuningPickerModalFormData {
@@ -129,35 +130,35 @@ const TuningPickerModal = ({
       onOk={onOk}
       onCancel={handleCancel}
     >
-      <div className={css.row}>
-        <Title level={5}>Common tunings</Title>
-        <Select
-          value={currentTuningName}
-          className={css.commonTuningSelect}
-          onChange={handleCommonTuningSelect}
-        >
-          {Object.entries(groupedTunings).map(([category, tunings]) => (
-            <OptGroup label={category} key={category}>
-              {tunings.map(({ name, tuning }) => (
-                <Option key={name} value={name}>
-                  {name}: (
-                  {tuning
-                    .map((item) => getNoteName(notation, item.position))
-                    .join(",")}
-                  )
-                </Option>
-              ))}
-            </OptGroup>
-          ))}
-        </Select>
-      </div>
+      <Form layout="vertical">
+        <Item label="Common tunings">
+          <Select
+            value={currentTuningName}
+            className={css.commonTuningSelect}
+            onChange={handleCommonTuningSelect}
+          >
+            {Object.entries(groupedTunings).map(([category, tunings]) => (
+              <OptGroup label={category} key={category}>
+                {tunings.map(({ name, tuning }) => (
+                  <Option key={name} value={name}>
+                    {name}: (
+                    {tuning
+                      .map((item) => getNoteName(notation, item.position))
+                      .join(",")}
+                    )
+                  </Option>
+                ))}
+              </OptGroup>
+            ))}
+          </Select>
+        </Item>
+      </Form>
 
       {formData.tuning.map(({ position, id }, itemIdx) => (
-        <div className={css.row} key={id}>
-          <Title level={5}>String {id + 1}</Title>
+        <Item key={id} label={`String ${id + 1}`}>
           <Select
             value={position}
-            style={{ width: 120 }}
+            style={{ width: 120, marginLeft: "6px" }}
             onChange={(pickedPosition) => handleSelect(pickedPosition, id)}
           >
             {NOTES_POSITIONS.map((position) => (
@@ -171,6 +172,7 @@ const TuningPickerModal = ({
             : itemIdx === formData.tuning.length - 1) && (
             <Tooltip title="Remove string">
               <Button
+                className={css.removeStringBtn}
                 type="ghost"
                 disabled={formData.tuning.length === MIN_STRINGS_COUNT}
                 shape="circle"
@@ -179,7 +181,7 @@ const TuningPickerModal = ({
               />
             </Tooltip>
           )}
-        </div>
+        </Item>
       ))}
       <Button
         type="primary"

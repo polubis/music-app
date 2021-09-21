@@ -1,9 +1,7 @@
-import React from "react";
-
 import { GuitarString, Note } from "../models";
 import { NoteButton } from "./NoteButton";
 
-import css from "./Fretboard.scss";
+import css from "./Fretboard.module.less";
 
 interface FretboardProps {
   className?: string;

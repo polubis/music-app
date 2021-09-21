@@ -1,10 +1,9 @@
-@import "styles/theme";
-@import "styles/mixins";
+@import "~ui/styles/theme.less";
+@import "~ui/styles/mixins.less";
 
 .container {
   overflow-y: auto;
   padding-bottom: 42px;
-  cursor: grab;
 
   .strings {
     height: 100%;
@@ -17,23 +16,28 @@
       width: calc(100% - 32px);
       right: 0;
 
-      @for $i from 1 through 10 {
-        &:nth-of-type(#{$i}) {
-          height: #{$i}px;
+      .position-string(10);
+      .position-string(@n, @i: 1) when (@i =< @n) {
+        &:nth-of-type(@{i}) {
+          height: ~"@{i}px";
 
-          @if $i == 1 {
-            top: #{12 + 20}px;
-          } @else {
-            top: #{(($i * (12 + 40)) - 20) - $i / 2}px;
+          & when (@i > 1) {
+            @base: calc(((~"@{i}" * (12px + 40px)) - 20px));
+            top: calc(@base - @i / 2 * 1px);
+          }
+
+          & when (@i < 2) {
+            top: calc(12px + 20px);
           }
         }
+        .position-string(@n, (@i + 1));
       }
     }
   }
 
   &.rotated .strings {
     transform: rotate(180deg);
-    
+
     .string {
       right: unset;
       left: 0;
@@ -46,14 +50,14 @@
     position: relative;
 
     .fret {
-      @include colXCenter;
+      .colXCenter();
       position: relative;
       padding: 12px 0 0 0;
-      background: $fillPrimary;
+      background: @fillPrimary;
       width: 80px;
       flex-shrink: 0;
-      border-left: 2px solid #182329;
-      border-right: 2px solid #182329;
+      border-left: 2px solid @appBg;
+      border-right: 2px solid @appBg;
 
       &:first-of-type {
         border-left: none;
@@ -75,11 +79,11 @@
       }
 
       .marker {
-        @include col;
+        .col();
         align-items: center;
         position: absolute;
         bottom: -30px;
-        color: $white;
+        color: @white;
 
         &.halfMarker {
           bottom: -34px;
@@ -94,7 +98,7 @@
           content: "";
           width: 10px;
           height: 10px;
-          border: 1px solid #182329;
+          border: 1px solid @appBg;
           border-radius: 50%;
           background: #6a6e70;
           margin-bottom: 4px;

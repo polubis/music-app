@@ -5,3 +5,4 @@ export * from "./guitarString";
 export * from "./useGuitarStringsFilters";
 export * from "./guitar";
 export * from "./guitarStringTuning";
+export * from "./scale";

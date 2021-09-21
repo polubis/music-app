@@ -1,66 +1,52 @@
 import { Button } from "antd";
-import React, { useMemo, useState } from "react";
+import { useToggle } from "dk";
 import {
   GuitarStringTuning,
   NoteNotation,
-  getTuningName,
   DescribedGuitarStringTuning,
 } from "../models";
 
 import { TuningPickerModal } from "./TuningPickerModal";
 
 export interface TuningPickerProps {
+  className?: string;
   notation: NoteNotation;
   tunings: DescribedGuitarStringTuning[];
   tuning: GuitarStringTuning[];
   isLeftOrientation: boolean;
+  currentTuningName: string;
   onChange: (tuning: GuitarStringTuning[]) => void;
 }
 
 const TuningPicker = ({
+  className = "",
   notation,
   tuning,
   tunings,
   isLeftOrientation,
+  currentTuningName,
   onChange,
 }: TuningPickerProps) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const currentTuningName = useMemo(
-    () => getTuningName(notation, tunings, tuning),
-    [notation, tunings, tuning]
-  );
+  const [isOpen, { open, close }] = useToggle();
 
   return (
-    <>
-      <Button type="primary" onClick={showModal}>
-        {currentTuningName}
+    <div className={className}>
+      <Button type="primary" onClick={open}>
+        Set tuning
       </Button>
-      {isModalVisible && (
+      {isOpen && (
         <TuningPickerModal
           tuning={tuning}
           notation={notation}
           tunings={tunings}
           isLeftOrientation={isLeftOrientation}
           currentTuningName={currentTuningName}
-          onOk={handleOk}
+          onOk={close}
           onChange={onChange}
-          onCancel={handleCancel}
+          onCancel={close}
         />
       )}
-    </>
+    </div>
   );
 };
 

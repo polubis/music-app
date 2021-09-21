@@ -1,0 +1,88 @@
+@import "~ui/styles/theme.less";
+@import "~ui/styles/mixins.less";
+@import "~ui/styles/media.less";
+
+.container {
+  background: @appBg;
+  min-height: 100vh;
+
+  .layout {
+    .col();
+    margin: 0 auto;
+    width: 100%;
+    padding: 24px 24px 12px 24px;
+
+    @media @desktop {
+      width: 1120px;
+    }
+
+    .header {
+      .row();
+
+      & > h2 {
+        margin: 0 auto 0 0;
+        color: @white;
+      }
+    }
+
+    .filters {
+      display: grid;
+      gap: 12px;
+      padding: 28px 0 12px 0;
+
+      @media @desktop {
+        grid-template-columns: 400px 340px 1fr;
+      }
+
+      .tile {
+        .col();
+        padding: 18px;
+        border-radius: 2px;
+        background: @fillPrimary;
+        border: 1px solid @black;
+
+        .scalePicker,
+        .tuningPicker {
+          margin-right: 16px;
+        }
+
+        .settingsForm {
+          margin-top: 24px;
+
+          label {
+            color: @white;
+          }
+
+          .ant-form-item {
+            margin-bottom: 0;
+          }
+        }
+
+        h5 {
+          color: @white;
+        }
+
+        .tileHeader {
+          .row();
+
+          & > h5 {
+            margin: 0 auto 0 0;
+          }
+        }
+
+        .notes {
+          .wrap();
+          margin: 24px auto 0 0;
+          gap: 8px;
+
+          @media @mobileUp {
+            grid-template-columns: repeat(6, auto);
+            grid-template-rows: auto;
+            display: grid;
+            gap: 12px;
+          }
+        }
+      }
+    }
+  }
+}
