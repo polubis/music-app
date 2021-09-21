@@ -162,3 +162,8 @@ export const SCALE_INTERVAL_NOTATION_DICT: Record<
   2: "W",
   3: "WH",
 };
+
+export interface NamedGuitarStringsFilters {
+  name: string;
+  filters: GuitarStringsFilters;
+}

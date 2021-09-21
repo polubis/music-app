@@ -11,6 +11,7 @@ import {
   MAX_NOTES_COUNT,
   GuitarOrientation,
   getTuningName,
+  useGuitarStringsFiltersSave,
 } from "./models";
 import {
   Fretboard,
@@ -19,11 +20,11 @@ import {
   ChangeLog,
   ScalePicker,
 } from "./components";
-import { Switch, Slider, Typography, Form, Button } from "antd";
+import { Switch, Slider, Typography, Form, Button, Empty, Tag } from "antd";
 
 import css from "./FretboardVisualizer.module.less";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 const { Item } = Form;
 
 const FretboardVisualizer = () => {
@@ -37,6 +38,7 @@ const FretboardVisualizer = () => {
       updateNotesRange,
       updateTuning,
       updateScale,
+      applyFilters,
     },
   ] = useGuitarStringsFilters();
 
@@ -44,6 +46,14 @@ const FretboardVisualizer = () => {
     () => getTuningName(filters.notation, tunings, filters.tuning),
     [filters.notation, tunings, filters.tuning]
   );
+
+  const {
+    saveFilters,
+    currentSavedFilters,
+    savedFiltersList,
+    areSavedFiltersUsed,
+    removeFilters,
+  } = useGuitarStringsFiltersSave(filters);
 
   return (
     <div className={css.container}>
@@ -132,10 +142,56 @@ const FretboardVisualizer = () => {
           </div>
 
           <div className={css.tile}>
-            <header className={css.tileHeader}>
-              <Title level={5}>Saved settings</Title>
-              <Button type="primary">Save</Button>
-            </header>
+            {savedFiltersList.length > 0 ? (
+              <>
+                <header className={css.tileHeader}>
+                  <Title level={5}>Saved filters</Title>
+                  <Button
+                    type="primary"
+                    disabled={areSavedFiltersUsed}
+                    onClick={saveFilters}
+                  >
+                    Save
+                  </Button>
+                </header>
+                <div className={css.tags}>
+                  {savedFiltersList.map((savedFilters, idx) => (
+                    <Tag
+                      closable
+                      key={savedFilters.name}
+                      onClick={() => applyFilters(savedFilters.filters)}
+                      onClose={() => removeFilters(savedFilters.name)}
+                      color={
+                        currentSavedFilters?.name === savedFilters.name
+                          ? "green"
+                          : "geekblue"
+                      }
+                    >
+                      {savedFilters.name}
+                    </Tag>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <Empty
+                imageStyle={{
+                  height: 60,
+                }}
+                description={
+                  <Text className={css.noSavedFilters}>
+                    No saved filters yet?
+                  </Text>
+                }
+              >
+                <Button
+                  type="primary"
+                  disabled={areSavedFiltersUsed}
+                  onClick={saveFilters}
+                >
+                  Save filters
+                </Button>
+              </Empty>
+            )}
           </div>
         </section>
       </div>

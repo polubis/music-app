@@ -55,23 +55,24 @@ export const useGuitarStringsFilters = () => {
   const [filters, setFilters] = useState(FILTERS);
   const [strings, setStrings] = useState(STRINGS);
 
+  const applyFilters = (filters: GuitarStringsFilters): void => {
+    setFilters(filters);
+    setStrings(generateGuitarStrings(filters));
+  };
+
   const toggleNotesNotation = (): void => {
-    const newFilters: GuitarStringsFilters = {
+    applyFilters({
       ...filters,
       notation: getOppositeNotation(filters.notation),
-    };
-    setFilters(newFilters);
-    setStrings(generateGuitarStrings(newFilters));
+    });
   };
 
   const toggleOrientation = (): void => {
-    const newFilters: GuitarStringsFilters = {
+    applyFilters({
       ...filters,
       tuning: [...filters.tuning].reverse(),
       orientation: getOppositeOrientation(filters.orientation),
-    };
-    setFilters(newFilters);
-    setStrings(generateGuitarStrings(newFilters));
+    });
     setTunings(reverseTunings(tunings));
   };
 
@@ -82,45 +83,31 @@ export const useGuitarStringsFilters = () => {
           (currPosition) => currPosition !== position
         )
       : [...filters.hiddenPositions, position];
-    const newFilters: GuitarStringsFilters = {
+    applyFilters({
       ...filters,
       hiddenPositions: newHiddenPositions,
-    };
-
-    setFilters(newFilters);
-    setStrings(generateGuitarStrings(newFilters));
+    });
   };
 
   const updateNotesCount = (notesCount: number): void => {
-    const newFilters: GuitarStringsFilters = { ...filters, notesCount };
-    setFilters(newFilters);
-    setStrings(generateGuitarStrings(newFilters));
+    applyFilters({ ...filters, notesCount });
   };
 
   const updateNotesRange = (notesRange: NotesRange): void => {
-    const newFilters: GuitarStringsFilters = { ...filters, notesRange };
-    setFilters(newFilters);
-    setStrings(generateGuitarStrings(newFilters));
+    applyFilters({ ...filters, notesRange });
   };
 
   const updateTuning = (tuning: GuitarStringTuning[]): void => {
-    const newFilters: GuitarStringsFilters = {
-      ...filters,
-      tuning,
-    };
-    setFilters(newFilters);
-    setStrings(generateGuitarStrings(newFilters));
+    applyFilters({ ...filters, tuning });
   };
 
   const updateScale = (positions: NotePosition[]): void => {
-    const newFilters: GuitarStringsFilters = {
+    applyFilters({
       ...filters,
       hiddenPositions: NOTES_POSITIONS.filter(
         (position) => !positions.includes(position)
       ),
-    };
-    setFilters(newFilters);
-    setStrings(generateGuitarStrings(newFilters));
+    });
   };
 
   return [
@@ -132,6 +119,7 @@ export const useGuitarStringsFilters = () => {
       updateNotesCount,
       updateNotesRange,
       updateTuning,
+      applyFilters,
       updateScale,
     },
   ] as const;
