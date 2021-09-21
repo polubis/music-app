@@ -1,7 +1,6 @@
-import React from "react";
-import css from "./Form.scss";
+import css from "./Form.module.less";
 import { UserData } from "../../models";
-import { useUserForm } from "../../../../providers/user-form-provider";
+import { useUserForm } from "providers/user-form-provider";
 import { useHistory } from "react-router";
 import { Button, Select, Radio, Slider, Input } from "antd";
 

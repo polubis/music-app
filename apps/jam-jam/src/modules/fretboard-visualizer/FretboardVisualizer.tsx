@@ -1,6 +1,5 @@
-import React from "react";
+import { useMemo } from "react";
 
-import { Heading } from "ui";
 import {
   useGuitarStringsFilters,
   isSharpNotation,
@@ -11,11 +10,21 @@ import {
   MIN_NOTES_COUNT,
   MAX_NOTES_COUNT,
   GuitarOrientation,
+  getTuningName,
 } from "./models";
-import { Fretboard, NoteButton, TuningPicker, ChangeLog } from "./components";
-import { Switch, Slider } from "antd";
+import {
+  Fretboard,
+  NoteButton,
+  TuningPicker,
+  ChangeLog,
+  ScalePicker,
+} from "./components";
+import { Switch, Slider, Typography, Form, Button } from "antd";
 
-import css from "./FretboardVisualizer.scss";
+import css from "./FretboardVisualizer.module.less";
+
+const { Title } = Typography;
+const { Item } = Form;
 
 const FretboardVisualizer = () => {
   const [
@@ -27,90 +36,109 @@ const FretboardVisualizer = () => {
       updateNotesCount,
       updateNotesRange,
       updateTuning,
+      updateScale,
     },
   ] = useGuitarStringsFilters();
 
+  const currentTuningName = useMemo(
+    () => getTuningName(filters.notation, tunings, filters.tuning),
+    [filters.notation, tunings, filters.tuning]
+  );
+
   return (
     <div className={css.container}>
-      <header className={css.header}>
-        <Heading className={css.heading} variant="large">
-          Fretboard visualizer version: 1.0.0
-        </Heading>
+      <div className={css.layout}>
+        <header className={css.header}>
+          <Title level={2}>JamJam</Title>
+          <ChangeLog />
+        </header>
 
-        <ChangeLog />
-      </header>
+        <section className={css.filters}>
+          <div className={css.tile}>
+            <header className={css.tileHeader}>
+              <Title level={5}>Guitar</Title>
 
-      <section className={css.tiles}>
-        <div className={css.tile}>
-          <header className={css.tileHeader}>
-            <Heading className={css.tileHeading} variant="medium">
-              Notes
-            </Heading>
-
-            <Switch
-              checked={isSharpNotation(filters.notation)}
-              checkedChildren={NoteNotation.Sharp}
-              unCheckedChildren={NoteNotation.Bmoll}
-              onChange={toggleNotesNotation}
-            />
-          </header>
-
-          <div className={css.notes}>
-            {NOTES_POSITIONS.map((position) => (
-              <NoteButton
-                key={position}
-                position={position}
+              <TuningPicker
+                className={css.tuningPicker}
+                tunings={tunings}
+                tuning={filters.tuning}
+                currentTuningName={currentTuningName}
+                isLeftOrientation={
+                  filters.orientation === GuitarOrientation.Left
+                }
                 notation={filters.notation}
-                unactive={filters.hiddenPositions.includes(position)}
-                onClick={() => toggleNotesHidden(position)}
+                onChange={updateTuning}
               />
-            ))}
+
+              <Switch
+                checked={isRightOrientation(filters.orientation)}
+                checkedChildren="Right"
+                unCheckedChildren="Left"
+                onChange={toggleOrientation}
+              />
+            </header>
+
+            <Form className={css.settingsForm}>
+              <Item label="Number of notes" style={{ marginBottom: "4px" }}>
+                <Slider
+                  min={MIN_NOTES_COUNT}
+                  max={MAX_NOTES_COUNT}
+                  value={filters.notesCount}
+                  onChange={updateNotesCount}
+                />
+              </Item>
+              <Item label="Visible notes" style={{ marginBottom: 0 }}>
+                <Slider
+                  min={MIN_NOTES_COUNT}
+                  max={filters.notesCount}
+                  range
+                  value={filters.notesRange}
+                  onChange={updateNotesRange}
+                />
+              </Item>
+            </Form>
           </div>
-        </div>
-      </section>
 
-      <section className={css.filters}>
-        <div className={css.filter}>
-          <TuningPicker
-            tunings={tunings}
-            tuning={filters.tuning}
-            isLeftOrientation={filters.orientation === GuitarOrientation.Left}
-            notation={filters.notation}
-            onChange={updateTuning}
-          />
-        </div>
-        <div className={css.filter}>
-          <Heading variant="medium">Number of notes</Heading>
-          <Slider
-            className={css.slider}
-            min={MIN_NOTES_COUNT}
-            max={MAX_NOTES_COUNT}
-            value={filters.notesCount}
-            onChange={updateNotesCount}
-          />
-        </div>
+          <div className={css.tile}>
+            <header className={css.tileHeader}>
+              <Title level={5}>Notes</Title>
 
-        <div className={css.filter}>
-          <Heading variant="medium">Visible notes</Heading>
-          <Slider
-            className={css.slider}
-            min={MIN_NOTES_COUNT}
-            max={filters.notesCount}
-            range
-            value={filters.notesRange}
-            onChange={updateNotesRange}
-          />
-        </div>
+              <ScalePicker
+                notation={filters.notation}
+                className={css.scalePicker}
+                hiddenPositions={filters.hiddenPositions}
+                onChange={updateScale}
+              />
 
-        <div className={css.filter}>
-          <Switch
-            checked={isRightOrientation(filters.orientation)}
-            checkedChildren="Right hand"
-            unCheckedChildren="Left hand"
-            onChange={toggleOrientation}
-          />
-        </div>
-      </section>
+              <Switch
+                checked={isSharpNotation(filters.notation)}
+                checkedChildren={NoteNotation.Sharp}
+                unCheckedChildren={NoteNotation.Bmoll}
+                onChange={toggleNotesNotation}
+              />
+            </header>
+
+            <div className={css.notes}>
+              {NOTES_POSITIONS.map((position) => (
+                <NoteButton
+                  key={position}
+                  position={position}
+                  notation={filters.notation}
+                  unactive={filters.hiddenPositions.includes(position)}
+                  onClick={() => toggleNotesHidden(position)}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className={css.tile}>
+            <header className={css.tileHeader}>
+              <Title level={5}>Saved settings</Title>
+              <Button type="primary">Save</Button>
+            </header>
+          </div>
+        </section>
+      </div>
 
       <Fretboard
         leftHanded={isLeftOrientation(filters.orientation)}
