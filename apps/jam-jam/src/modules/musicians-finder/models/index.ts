@@ -1,8 +1,10 @@
+import { InstrumentsType, MusicGenresType } from "../utils";
+
 export type UserData = {
   nick: string;
-  instrument: string;
-  exp: string;
-  genre: string;
-  lat: string;
-  lng: string;
+  instrument: InstrumentsType | null;
+  exp: number | null;
+  genre: MusicGenresType | null;
+  lat: string | null;
+  lng: string | null;
 };

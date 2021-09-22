@@ -1,4 +1,9 @@
-.map {
+.leaflet-container {
+    width: 100vw;
+    height: 100vh;
+}
+
+  .map {
     height: "500px";
     width: "100%";
 }
@@ -6,4 +11,10 @@
 .pin {
     font-size: 20px;
     color: green;
+}
+
+.myPositionMarker {
+    height: 100px;
+    width: 100px;
+    // background: red;
 }

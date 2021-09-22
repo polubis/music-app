@@ -4,14 +4,15 @@ import { UserData } from "../../models";
 import { useUserForm } from "../../../../providers/user-form-provider";
 import { useHistory } from "react-router";
 import { Button, Select, Radio, Slider, Input } from "antd";
+import { AimOutlined } from "@ant-design/icons";
+import { MusicGenres, Instruments } from "../../utils/index";
 
 export const Form = () => {
   const { Option } = Select;
-
   const { data, setUserData } = useUserForm();
   const history = useHistory();
 
-  const onChangeHandler = (value: string, key: keyof UserData) => {
+  const onChangeHandler = (value: string | number, key: keyof UserData) => {
     setUserData({
       ...data,
       [key]: value,
@@ -42,13 +43,13 @@ export const Form = () => {
     if (isValidForm) {
       history.push("/map");
     } else {
-      console.log(data);
-      console.log("is invalid"); //alert implementation needed
+      console.log("Form is invalid", data); //alert implementation needed
     }
   };
 
   return (
     <div className={css.form}>
+      <h1>User form</h1>
       <Input
         className={css.element}
         placeholder="Nickname"
@@ -56,27 +57,33 @@ export const Form = () => {
       />
       <div className={css.element}>
         Instrument
-        <Radio
-          value="guitar"
-          onChange={(e) => onChangeHandler(e.target.value, "instrument")}
-        >
-          Guitar
-        </Radio>
+        {Instruments.map((key) => (
+          <Radio
+            key={key}
+            onChange={(e) => onChangeHandler(e.target.value, "instrument")}
+            value={key}
+          >
+            {key}
+          </Radio>
+        ))}
       </div>
       <div className={css.element}>
-        Guitar Expirience
+        Guitar Experience
         <Slider
           min={0}
           max={5}
           defaultValue={0}
-          onChange={(e) => onChangeHandler(`${e}`, "exp")}
+          onChange={(e) => onChangeHandler(e, "exp")}
         />
       </div>
       <div className={css.element}>
         Genre
         <Select onChange={(e) => onChangeHandler(`${e}`, "genre")}>
-          <Option value="rock">Rock</Option>
-          <Option value="blues">Blues</Option>
+          {MusicGenres.map((key) => (
+            <Option key={key} value={key}>
+              {key}
+            </Option>
+          ))}
         </Select>
       </div>
       <div className={css.element}>
@@ -84,7 +91,7 @@ export const Form = () => {
           type={data.lng && data.lat ? "primary" : "dashed"}
           onClick={onLocationButtonClick}
         >
-          Location
+          <AimOutlined /> Location
         </Button>
       </div>
       <div className={css.element}>
