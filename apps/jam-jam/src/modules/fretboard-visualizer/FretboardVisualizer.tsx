@@ -24,7 +24,7 @@ import { Switch, Slider, Typography, Form, Button, Empty, Tag } from "antd";
 
 import css from "./FretboardVisualizer.module.less";
 import { useEffect } from "react";
-import { pageview } from "react-ga";
+import { pageview, initialize } from "react-ga";
 
 const { Title, Text } = Typography;
 const { Item } = Form;
@@ -58,6 +58,7 @@ const FretboardVisualizer = () => {
   } = useGuitarStringsFiltersSave(filters);
 
   useEffect(() => {
+    initialize("UA-200798883-1");
     pageview("/fretboard-visualizer");
   }, []);
 
