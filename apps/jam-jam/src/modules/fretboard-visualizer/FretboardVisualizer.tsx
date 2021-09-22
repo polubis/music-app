@@ -21,8 +21,10 @@ import {
   ScalePicker,
 } from "./components";
 import { Switch, Slider, Typography, Form, Button, Empty, Tag } from "antd";
+import { pageview } from "react-ga";
 
 import css from "./FretboardVisualizer.module.less";
+import { useLayoutEffect } from "react";
 
 const { Title, Text } = Typography;
 const { Item } = Form;
@@ -54,6 +56,10 @@ const FretboardVisualizer = () => {
     areSavedFiltersUsed,
     removeFilters,
   } = useGuitarStringsFiltersSave(filters);
+
+  useLayoutEffect(() => {
+    pageview(window.location.pathname + window.location.search);
+  }, []);
 
   return (
     <div className={css.container}>
