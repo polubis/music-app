@@ -39,7 +39,7 @@ const createScale = (
 
 export const SCALES: Scale[] = [
   createScale([2, 2, 1, 2, 2, 2, 1], ScaleType.Major, [
-    "Major",
+    "Ionian",
     "Dorian",
     "Phrygian",
     "Lydian",
