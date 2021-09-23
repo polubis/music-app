@@ -46,10 +46,14 @@ const ChangeLog = () => {
           </Panel>
           <Panel header="Version 1.0.1 - working on" key="2">
             <p>- Polish language support</p>
+            <p>- Improve notes range picking</p>
+            <p>- Add option to play note in speakers</p>
+            <p>- Improve display on desktop and mobile</p>
+            <p>- Improve guitar orientation change</p>
           </Panel>
           <Panel header="Version 1.0.2" key="3">
             <p>- Add option to pick chords on fretboard</p>
-            <p>- Add option to play note in speakers</p>
+            <p>- Add option to play chords in speakers</p>
             <p>- Improve initial load performance</p>
           </Panel>
           <Panel header="Version 1.0.3" key="4">
