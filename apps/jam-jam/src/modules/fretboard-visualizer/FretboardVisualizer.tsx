@@ -12,6 +12,8 @@ import {
   GuitarOrientation,
   getTuningName,
   useGuitarStringsFiltersSave,
+  useNotesPlay,
+  Note,
 } from "./models";
 import {
   Fretboard,
@@ -21,6 +23,7 @@ import {
   ScalePicker,
 } from "./components";
 import { Switch, Slider, Typography, Form, Button, Empty, Tag } from "antd";
+import { SoundOutlined } from "@ant-design/icons";
 
 import css from "./FretboardVisualizer.module.less";
 import { useEffect } from "react";
@@ -56,6 +59,12 @@ const FretboardVisualizer = () => {
     removeFilters,
   } = useGuitarStringsFiltersSave(filters);
 
+  const { update, play, isEnabled, isEnabling } = useNotesPlay();
+
+  const handleFretboardNoteClick = (note: Note): void => {
+    isEnabled ? play(note) : toggleNotesHidden(note.position);
+  };
+
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
       import("react-ga").then(({ initialize, pageview }) => {
@@ -70,6 +79,7 @@ const FretboardVisualizer = () => {
       <div className={css.layout}>
         <header className={css.header}>
           <Title level={2}>JamJam</Title>
+
           <ChangeLog />
         </header>
 
@@ -88,6 +98,15 @@ const FretboardVisualizer = () => {
                 }
                 notation={filters.notation}
                 onChange={updateTuning}
+              />
+
+              <Switch
+                checkedChildren={<SoundOutlined />}
+                unCheckedChildren={<SoundOutlined />}
+                loading={isEnabling}
+                checked={isEnabled}
+                onChange={update}
+                className={css.switch}
               />
 
               <Switch
@@ -209,7 +228,7 @@ const FretboardVisualizer = () => {
       <Fretboard
         leftHanded={isLeftOrientation(filters.orientation)}
         strings={strings}
-        onNoteClick={(note) => toggleNotesHidden(note.position)}
+        onNoteClick={handleFretboardNoteClick}
       />
     </div>
   );
