@@ -13,11 +13,11 @@ interface STATE {
 const defaultState: STATE = {
   data: {
     nick: "",
-    instrument: "",
-    exp: "",
-    genre: "",
-    lat: "",
-    lng: "",
+    instrument: null,
+    exp: null,
+    genre: null,
+    lat: null,
+    lng: null,
   },
   setUserData: () => {},
 };
