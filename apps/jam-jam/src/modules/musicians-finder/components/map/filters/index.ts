@@ -1,8 +1,8 @@
 import {
   InstrumentsType,
   MusicGenresType,
-} from "src/modules/musicians-finder/utils";
-import { UserData } from "src/modules/musicians-finder/models/index";
+} from "modules/musicians-finder/utils";
+import { UserData } from "modules/musicians-finder/models/index";
 
 export const filterByInstruments = (
   users: UserData[],
