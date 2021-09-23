@@ -32,7 +32,7 @@ const TuningPicker = ({
   return (
     <div className={className}>
       <Button type="primary" onClick={open}>
-        Set tuning
+        Tuning
       </Button>
       {isOpen && (
         <TuningPickerModal

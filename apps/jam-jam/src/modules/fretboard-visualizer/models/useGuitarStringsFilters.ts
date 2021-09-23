@@ -22,10 +22,11 @@ const generateGuitarStrings = (
   filters: GuitarStringsFilters
 ): GuitarString[] => {
   const { tuning, notation, hiddenPositions, notesCount, notesRange } = filters;
+  const fretsCount = notesCount + 1;
 
-  const strings = createGuitarStrings(tuning, notation, notesCount);
+  const strings = createGuitarStrings(tuning, notation, fretsCount);
 
-  const [from, to] = [notesRange[0] - 1, notesRange[1] - 1];
+  const [from, to] = [notesRange[0], notesRange[1]];
   const positionsDict = hiddenPositions.reduce<
     Partial<Record<NotePosition, boolean>>
   >((acc, position) => ({ ...acc, [position]: true }), {});
@@ -33,7 +34,9 @@ const generateGuitarStrings = (
   strings.forEach((string) => {
     string.notes.forEach((note, noteIdx) => {
       note.hidden =
-        !(noteIdx >= from && noteIdx <= to) || positionsDict[note.position];
+        noteIdx === 0
+          ? false
+          : positionsDict[note.position] || !(noteIdx >= from && noteIdx <= to);
     });
   });
 
@@ -89,11 +92,15 @@ export const useGuitarStringsFilters = () => {
     });
   };
 
-  const updateNotesCount = (notesCount: number): void => {
-    applyFilters({ ...filters, notesCount });
+  const updateFretsCount = (notesCount: number): void => {
+    applyFilters({
+      ...filters,
+      notesCount,
+      notesRange: [filters.notesRange[0], notesCount],
+    });
   };
 
-  const updateNotesRange = (notesRange: NotesRange): void => {
+  const updateFretsRange = (notesRange: NotesRange): void => {
     applyFilters({ ...filters, notesRange });
   };
 
@@ -116,8 +123,8 @@ export const useGuitarStringsFilters = () => {
       toggleNotesNotation,
       toggleOrientation,
       toggleNotesHidden,
-      updateNotesCount,
-      updateNotesRange,
+      updateFretsCount,
+      updateFretsRange,
       updateTuning,
       applyFilters,
       updateScale,

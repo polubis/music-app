@@ -22,7 +22,7 @@ const ScalePicker = ({
   return (
     <div className={className}>
       <Button type="primary" onClick={open}>
-        Pick scale
+        Scales
       </Button>
 
       {isOpen && (

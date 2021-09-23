@@ -38,8 +38,8 @@ const FretboardVisualizer = () => {
       toggleNotesNotation,
       toggleOrientation,
       toggleNotesHidden,
-      updateNotesCount,
-      updateNotesRange,
+      updateFretsCount,
+      updateFretsRange,
       updateTuning,
       updateScale,
       applyFilters,
@@ -118,21 +118,21 @@ const FretboardVisualizer = () => {
             </header>
 
             <Form className={css.settingsForm}>
-              <Item label="Number of notes" style={{ marginBottom: "4px" }}>
+              <Item label="Frets count" className={css.item}>
                 <Slider
                   min={MIN_NOTES_COUNT}
                   max={MAX_NOTES_COUNT}
                   value={filters.notesCount}
-                  onChange={updateNotesCount}
+                  onChange={updateFretsCount}
                 />
               </Item>
-              <Item label="Visible notes" style={{ marginBottom: 0 }}>
+              <Item label="Visible frets" className={css.item}>
                 <Slider
                   min={MIN_NOTES_COUNT}
                   max={filters.notesCount}
                   range
                   value={filters.notesRange}
-                  onChange={updateNotesRange}
+                  onChange={updateFretsRange}
                 />
               </Item>
             </Form>
