@@ -9,7 +9,6 @@ import {
   NOTES_POSITIONS,
   MIN_NOTES_COUNT,
   MAX_NOTES_COUNT,
-  GuitarOrientation,
   getTuningName,
   useGuitarStringsFiltersSave,
   useNotesPlay,
@@ -93,9 +92,6 @@ const FretboardVisualizer = () => {
                 tunings={tunings}
                 tuning={filters.tuning}
                 currentTuningName={currentTuningName}
-                isLeftOrientation={
-                  filters.orientation === GuitarOrientation.Left
-                }
                 notation={filters.notation}
                 onChange={updateTuning}
               />

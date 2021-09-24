@@ -14,17 +14,28 @@ import { getOppositeNotation } from "./notation";
 import {
   getOppositeOrientation,
   DEFAULT_GUITAR_STRINGS_TUNING,
+  isLeftOrientation,
 } from "./guitar";
 import { DEFAULT_NUMBER_OF_NOTES, DEFAULT_NOTES_RANGE } from "./note";
-import { reverseTunings, COMMON_TUNINGS } from "./guitarStringTuning";
+import { COMMON_TUNINGS } from "./guitarStringTuning";
 
 const generateGuitarStrings = (
   filters: GuitarStringsFilters
 ): GuitarString[] => {
-  const { tuning, notation, hiddenPositions, notesCount, notesRange } = filters;
+  const {
+    tuning,
+    notation,
+    hiddenPositions,
+    orientation,
+    notesCount,
+    notesRange,
+  } = filters;
   const fretsCount = notesCount + 1;
+  const reversedTuning = isLeftOrientation(orientation)
+    ? [...tuning].reverse()
+    : tuning;
 
-  const strings = createGuitarStrings(tuning, notation, fretsCount);
+  const strings = createGuitarStrings(reversedTuning, notation, fretsCount);
 
   const [from, to] = [notesRange[0], notesRange[1]];
   const positionsDict = hiddenPositions.reduce<
@@ -73,10 +84,8 @@ export const useGuitarStringsFilters = () => {
   const toggleOrientation = (): void => {
     applyFilters({
       ...filters,
-      tuning: [...filters.tuning].reverse(),
       orientation: getOppositeOrientation(filters.orientation),
     });
-    setTunings(reverseTunings(tunings));
   };
 
   const toggleNotesHidden = (position: NotePosition): void => {

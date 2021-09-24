@@ -13,7 +13,6 @@ export interface TuningPickerProps {
   notation: NoteNotation;
   tunings: DescribedGuitarStringTuning[];
   tuning: GuitarStringTuning[];
-  isLeftOrientation: boolean;
   currentTuningName: string;
   onChange: (tuning: GuitarStringTuning[]) => void;
 }
@@ -23,7 +22,6 @@ const TuningPicker = ({
   notation,
   tuning,
   tunings,
-  isLeftOrientation,
   currentTuningName,
   onChange,
 }: TuningPickerProps) => {
@@ -39,7 +37,6 @@ const TuningPicker = ({
           tuning={tuning}
           notation={notation}
           tunings={tunings}
-          isLeftOrientation={isLeftOrientation}
           currentTuningName={currentTuningName}
           onOk={close}
           onChange={onChange}

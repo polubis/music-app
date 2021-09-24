@@ -22,7 +22,6 @@ interface TuningPickerModalProps {
   notation: NoteNotation;
   tunings: DescribedGuitarStringTuning[];
   tuning: GuitarStringTuning[];
-  isLeftOrientation: boolean;
   onChange: (tuning: GuitarStringTuning[]) => void;
   onOk: () => void;
   onCancel: () => void;
@@ -39,7 +38,6 @@ const TuningPickerModal = ({
   notation,
   tuning,
   tunings,
-  isLeftOrientation,
   onChange,
   onOk,
   onCancel,
@@ -78,19 +76,11 @@ const TuningPickerModal = ({
       tuning: [...formData.tuning],
     };
 
-    if (isLeftOrientation) {
-      newFormData.tuning.unshift({
-        octave: formData.tuning[0].octave,
-        id: formData.tuning[0].id + 1,
-        position: 0,
-      });
-    } else {
-      newFormData.tuning.push({
-        octave: formData.tuning[formData.tuning.length - 1].octave,
-        id: formData.tuning[formData.tuning.length - 1].id + 1,
-        position: 0,
-      });
-    }
+    newFormData.tuning.push({
+      octave: formData.tuning[formData.tuning.length - 1].octave,
+      id: formData.tuning[formData.tuning.length - 1].id + 1,
+      position: 0,
+    });
 
     setFormData(newFormData);
     onChange(newFormData.tuning);
@@ -167,9 +157,7 @@ const TuningPickerModal = ({
               </Option>
             ))}
           </Select>
-          {(isLeftOrientation
-            ? itemIdx === 0
-            : itemIdx === formData.tuning.length - 1) && (
+          {itemIdx === formData.tuning.length - 1 && (
             <Tooltip title="Remove string">
               <Button
                 className={css.removeStringBtn}
