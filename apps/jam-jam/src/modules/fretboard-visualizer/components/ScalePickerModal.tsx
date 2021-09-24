@@ -85,6 +85,7 @@ const ScalePickerModal = ({
     const pickedScale = pickScale(newFormData);
     setFormData(newFormData);
     setPickedScale(pickedScale);
+    onChange(pickedScale.positions);
   };
 
   const handleTypeChange = (type: ScaleType): void => {
@@ -97,6 +98,7 @@ const ScalePickerModal = ({
     const pickedScale = pickScale(newFormData);
     setFormData(newFormData);
     setPickedScale(pickedScale);
+    onChange(pickedScale.positions);
   };
 
   const handleModeChange = (modeName: string): void => {
@@ -107,6 +109,7 @@ const ScalePickerModal = ({
     const pickedScale = pickScale(newFormData);
     setFormData(newFormData);
     setPickedScale(pickedScale);
+    onChange(pickedScale.positions);
   };
 
   const handleCancel = (): void => {
@@ -118,13 +121,9 @@ const ScalePickerModal = ({
     onCancel();
   };
 
-  useEffect(() => {
-    onChange(pickedScale.positions);
-  }, [pickedScale]);
-
   return (
     <Modal
-      title="Pick scale"
+      title="Scales"
       visible
       okText="Apply"
       onOk={onOk}
