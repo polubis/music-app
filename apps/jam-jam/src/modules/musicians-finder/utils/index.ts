@@ -1,5 +1,7 @@
 import { UserData } from "../../../modules/musicians-finder/models/index";
 
+export const MAP_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+
 export type MusicGenresType =
   | "Blues"
   | "Classic"

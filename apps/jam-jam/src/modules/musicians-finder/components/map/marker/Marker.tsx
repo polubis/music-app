@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Marker as MapMarker } from "react-leaflet";
 import { divIcon } from "leaflet";
 import ReactDOMServer from "react-dom/server";
 import { EnvironmentFilled, UserOutlined } from "@ant-design/icons";
 import { Modal, Row, Col } from "antd";
-import css from "./Marker.module.less";
 import { UserData } from "modules/musicians-finder/models";
-
+import { useToggle } from "dk";
+import css from "./Marker.module.less";
 interface MarkerProps {
   position: { lat: number; lng: number };
   type: "primary" | "secondary";
@@ -14,22 +14,10 @@ interface MarkerProps {
 }
 
 export const Marker = ({ position, type, user }: MarkerProps) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isOpen, { open, close }] = useToggle();
   const styles = {
     primary: css.primary,
     secondary: css.secondary,
-  };
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
   };
 
   const userMarker = divIcon({
@@ -40,15 +28,15 @@ export const Marker = ({ position, type, user }: MarkerProps) => {
   return (
     <>
       <MapMarker
-        eventHandlers={{ click: showModal }}
+        eventHandlers={{ click: open }}
         position={position}
         icon={userMarker}
       />
       <Modal
-        visible={isModalVisible}
-        onOk={handleOk}
+        visible={isOpen}
+        onOk={close}
         cancelText="Close"
-        onCancel={handleCancel}
+        onCancel={close}
       >
         <div className={css.modal}>
           <Row>

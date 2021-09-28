@@ -1,39 +1,16 @@
-import React, { useMemo, useState } from "react";
+import React, {useEffect} from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-import { Select, Slider } from "antd";
-import { temporaryUsers } from "../../utils/index";
-import { useUserForm } from "../../../../providers/user-form-provider";
-import { UserData } from "../../../../modules/musicians-finder/models/index";
+import { useUserForm, useUsersFiltering } from "providers";
 import { Marker } from "./marker/Marker";
-import {
-  MusicGenresType,
-  InstrumentsType,
-  MusicGenres,
-  Instruments,
-} from "../../utils/index";
-import {
-  filterByExp,
-  filterByGenres,
-  filterByInstruments,
-} from "./filters/index";
 import css from "./Map.module.less";
-
-interface Filters {
-  instruments: InstrumentsType[];
-  exp: number;
-  genres: MusicGenresType[];
-}
-
-const FILTERS: Filters = {
-  instruments: Instruments,
-  exp: 5,
-  genres: MusicGenres,
-};
-
-const { Option } = Select;
+import { FilteringPanel } from "../filtering-panel/FilteringPanel";
+import { MAP_URL } from "modules/musicians-finder/utils";
+import { UserData } from "modules/musicians-finder/models";
+import { useHistory } from "react-router";
 
 export const Map = () => {
-  const [filters, setFilters] = useState(FILTERS);
+  const history = useHistory();
+  const { users } = useUsersFiltering();
   const { data } = useUserForm();
   const defaultProps = {
     center: {
@@ -43,67 +20,27 @@ export const Map = () => {
     zoom: 11,
   };
 
-  const onInstrumentsChange = (arr: InstrumentsType[]) =>
-    setFilters({ ...filters, instruments: arr.length ? arr : Instruments });
-
-  const onGenresChange = (arr: MusicGenresType[]) =>
-    setFilters({ ...filters, genres: arr.length ? arr : MusicGenres });
-
-  const onExpChange = (exp: number) => setFilters({ ...filters, exp: exp });
-
-  const users: UserData[] = useMemo(() => {
-    const filteredByInstruments = filterByInstruments(
-      temporaryUsers,
-      filters.instruments
+  useEffect(() => {
+    const isValidForm: boolean = Object.keys(data).reduce(
+      (acc: boolean, curr: string) =>
+        acc && Boolean(data[curr as keyof UserData]),
+      true
     );
-    const filteredByExp = filterByExp(filteredByInstruments, filters.exp);
-    const filteredByGenres = filterByGenres(filteredByExp, filters.genres);
-
-    return filteredByGenres;
-  }, [filters]);
+    
+    if(!isValidForm) {
+      history.push("/form")
+    }
+  }, [])
 
   return (
-    <div>
-      <Select
-        mode="multiple"
-        allowClear
-        placeholder="Instruments"
-        style={{ width: "200px" }}
-        onChange={onInstrumentsChange}
-      >
-        {Instruments.map((el) => (
-          <Option key={el} value={el}>
-            {el}
-          </Option>
-        ))}
-      </Select>
-      <Select
-        mode="multiple"
-        allowClear
-        placeholder="Genres"
-        style={{ width: "200px" }}
-        onChange={onGenresChange}
-      >
-        {MusicGenres.map((el) => (
-          <Option key={el} value={el}>
-            {el}
-          </Option>
-        ))}
-      </Select>
-      <p>Experience</p>
-      <Slider
-        min={0}
-        max={5}
-        defaultValue={5}
-        style={{ width: "200px" }}
-        onChange={onExpChange}
-      />
+    <div className={css['map-container']}>
+      <FilteringPanel />
       <MapContainer
         className={css["leaflet-container"]}
         center={defaultProps.center}
         zoom={12}
       >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <TileLayer url={MAP_URL} />
         <Marker position={defaultProps.center} type="secondary" user={data} />
         {users.map((u, i) => {
           return (

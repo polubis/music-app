@@ -1,13 +1,13 @@
 import css from "./Form.module.less";
 import { UserData } from "../../models";
-import { useUserForm } from "providers/user-form-provider";
+import { useUserForm } from "providers";
 import { useHistory } from "react-router";
 import { Button, Select, Radio, Slider, Input } from "antd";
 import { AimOutlined } from "@ant-design/icons";
 import { MusicGenres, Instruments } from "../../utils/index";
+const { Option } = Select;
 
 export const Form = () => {
-  const { Option } = Select;
   const { data, setUserData } = useUserForm();
   const history = useHistory();
 
