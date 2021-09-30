@@ -42,9 +42,8 @@ const Fretboard = ({
             {notes.map((note) => (
               <NoteButton
                 className={css.note}
-                style={{
-                  visibility: note.hidden ? "hidden" : "visible",
-                }}
+                uncolored={note.hidden}
+                ghosty={note.hidden}
                 key={note.id}
                 position={note.position}
                 notation={note.notation}

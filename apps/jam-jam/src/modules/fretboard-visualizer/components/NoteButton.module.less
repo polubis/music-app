@@ -14,8 +14,17 @@
   cursor: pointer;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.24);
 
-  &.unactive {
-    background: transparent;
+  &.uncolored {
+    background: @fillPrimary;
     color: @white;
+  }
+
+  &.ghosty {
+    opacity: 0;
+    transition: 0.2s opacity ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }

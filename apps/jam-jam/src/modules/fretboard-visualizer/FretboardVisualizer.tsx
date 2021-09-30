@@ -152,7 +152,7 @@ const FretboardVisualizer = () => {
                   key={position}
                   position={position}
                   notation={filters.notation}
-                  unactive={filters.hiddenPositions.includes(position)}
+                  uncolored={filters.hiddenPositions.includes(position)}
                   onClick={() => toggleNotesHidden(position)}
                 />
               ))}
