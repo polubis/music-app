@@ -65,7 +65,6 @@ const FILTERS: GuitarStringsFilters = {
 const STRINGS = generateGuitarStrings(FILTERS);
 
 export const useGuitarStringsFilters = () => {
-  const [tunings, setTunings] = useState(COMMON_TUNINGS);
   const [filters, setFilters] = useState(FILTERS);
   const [strings, setStrings] = useState(STRINGS);
 
@@ -127,7 +126,7 @@ export const useGuitarStringsFilters = () => {
   };
 
   return [
-    { strings, filters, tunings },
+    { strings, filters, tunings: COMMON_TUNINGS },
     {
       toggleNotesNotation,
       toggleOrientation,

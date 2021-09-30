@@ -1,34 +1,22 @@
 import { Button, Collapse, Modal } from "antd";
-import { useState } from "react";
+import { useToggle } from "dk";
 
 const { Panel } = Collapse;
 
 const ChangeLog = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const [open, { toggle }] = useToggle();
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" onClick={toggle}>
         Changelog
       </Button>
       <Modal
         title="What's added ?"
-        visible={isModalVisible}
-        onOk={handleOk}
+        visible={open}
+        onOk={toggle}
         cancelText="Close"
-        onCancel={handleCancel}
+        onCancel={toggle}
       >
         {/* ADD LAZY LOADING */}
         {/* ADD OCTAVE PICK ON TUNING CHANGE */}
