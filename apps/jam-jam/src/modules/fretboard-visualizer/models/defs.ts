@@ -36,8 +36,8 @@ export const NOTES_OCTAVES = [0, 1, 2, 3, 4, 5, 6, 7, 8] as const;
 export const FIRST_NOTE_OCTAVE = NOTES_OCTAVES[0];
 export const LAST_NOTE_OCTAVE = NOTES_OCTAVES[NOTES_OCTAVES.length - 1];
 
-export const SCALE_INTERVALS = [1, 2, 3] as const;
-export const SCALE_INTERVALS_NOTATION = ["H", "W", "WH"] as const;
+export const SCALE_INTERVALS = [1, 2, 3, 4] as const;
+export const SCALE_INTERVALS_NOTATION = ["H", "W", "WH", "WW"] as const;
 
 export enum NoteNotation {
   Sharp = "#",
@@ -136,6 +136,8 @@ export enum ScaleType {
   Augmented = "Augmented",
   Diminished = "Diminished",
   WholeTone = "Whole tone",
+  Pentatonic = "Pentatonic",
+  Hemitonic = "Hemitonic",
 }
 
 export interface ScaleMode {
@@ -161,6 +163,7 @@ export const SCALE_INTERVAL_NOTATION_DICT: Record<
   1: "H",
   2: "W",
   3: "WH",
+  4: "WW",
 };
 
 export interface NamedGuitarStringsFilters {

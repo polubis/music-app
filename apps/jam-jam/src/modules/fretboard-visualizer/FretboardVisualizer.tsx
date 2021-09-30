@@ -55,7 +55,8 @@ const FretboardVisualizer = () => {
   const { update, play, isEnabled, isEnabling } = useNotesPlay();
 
   const handleFretboardNoteClick = (note: Note): void => {
-    isEnabled ? play(note) : toggleNotesHidden(note.position);
+    isEnabled && play(note);
+    toggleNotesHidden(note.position);
   };
 
   useEffect(() => {
@@ -73,6 +74,15 @@ const FretboardVisualizer = () => {
         <header className={css.header}>
           <Title level={2}>JamJam</Title>
 
+          <Switch
+            checkedChildren={<SoundOutlined />}
+            unCheckedChildren={<SoundOutlined />}
+            loading={isEnabling}
+            checked={isEnabled}
+            onChange={update}
+            className={css.switch}
+          />
+
           <ChangeLog />
         </header>
 
@@ -87,15 +97,6 @@ const FretboardVisualizer = () => {
                 tuning={filters.tuning}
                 notation={filters.notation}
                 onChange={updateTuning}
-              />
-
-              <Switch
-                checkedChildren={<SoundOutlined />}
-                unCheckedChildren={<SoundOutlined />}
-                loading={isEnabling}
-                checked={isEnabled}
-                onChange={update}
-                className={css.switch}
               />
 
               <Switch

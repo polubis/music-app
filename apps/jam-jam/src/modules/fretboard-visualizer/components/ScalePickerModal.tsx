@@ -1,5 +1,5 @@
 import { Modal, Select, Form, Typography } from "antd";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { NoteButton } from "./NoteButton";
 import {
   NOTES_POSITIONS,
@@ -174,14 +174,16 @@ const ScalePickerModal = ({
         </Item>
         <Item label="Preview">
           <div className={css.preview}>
-            {pickedScale.positions.map((position, idx) => (
-              <NoteButton
-                className={css.previewBtn}
-                key={idx}
-                position={position}
-                notation={notation}
-              />
-            ))}
+            {pickedScale.positions
+              .filter((_, idx) => idx < pickedScale.positions.length - 1)
+              .map((position, idx) => (
+                <NoteButton
+                  className={css.previewBtn}
+                  key={idx}
+                  position={position}
+                  notation={notation}
+                />
+              ))}
           </div>
         </Item>
 
