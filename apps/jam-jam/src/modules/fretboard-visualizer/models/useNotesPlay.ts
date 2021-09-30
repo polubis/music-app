@@ -7,7 +7,6 @@ export const useNotesPlay = () => {
 
   const enable = (): void => {
     setIsEnabling(true);
-
     import("tone").then(() => {
       setIsEnabled(true);
       setIsEnabling(false);
@@ -20,8 +19,18 @@ export const useNotesPlay = () => {
 
   const play = (note: Note): void => {
     import("tone").then((Tone) => {
-      const synth = new Tone.PluckSynth().toDestination();
-      synth.triggerAttackRelease(`${note.name}${note.octave}`, "8n");
+      const sampler = new Tone.Sampler({
+        urls: {
+          A2: "A2.mp3",
+        },
+        release: 1,
+        volume: 0.25,
+        baseUrl: "http://localhost:3000/guitar/",
+      }).toDestination();
+
+      Tone.loaded().then(() => {
+        sampler.triggerAttackRelease(`${note.name}${note.octave}`, 1);
+      });
     });
   };
 

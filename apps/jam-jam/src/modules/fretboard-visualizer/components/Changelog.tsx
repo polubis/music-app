@@ -38,6 +38,7 @@ const ChangeLog = () => {
         {/* PLAY NOTES SEQUENCE ON SCALE CHANGE AND TUNING CHANGE */}
         {/* THINK ABOUT CLICKING ITEMS FROM OUTER RANGE IN FRETS */}
         {/* ADD CONFIRM DELETE PROMPT */}
+        {/* DISPLAY OCTAVES */}
         <Collapse defaultActiveKey={["1"]}>
           <Panel header="Version 1.0.0 - done" key="1">
             <p>- Notes notation switch</p>
