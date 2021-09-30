@@ -11,6 +11,7 @@ import {
   NotePosition,
   DescribedGuitarStringTuning,
   groupTunings,
+  getTuningName,
 } from "../models";
 
 import css from "./TuningPickerModal.module.less";
@@ -18,7 +19,6 @@ import css from "./TuningPickerModal.module.less";
 const { Item } = Form;
 
 interface TuningPickerModalProps {
-  currentTuningName: string;
   notation: NoteNotation;
   tunings: DescribedGuitarStringTuning[];
   tuning: GuitarStringTuning[];
@@ -34,7 +34,6 @@ interface TuningPickerModalFormData {
 }
 
 const TuningPickerModal = ({
-  currentTuningName,
   notation,
   tuning,
   tunings,
@@ -112,6 +111,11 @@ const TuningPickerModal = ({
 
   const groupedTunings = useMemo(() => groupTunings(tunings), [tunings]);
 
+  const selectValue = useMemo(
+    () => getTuningName(notation, tunings, formData.tuning),
+    [formData, tunings, notation]
+  );
+
   return (
     <Modal
       title="Edit tuning"
@@ -123,7 +127,7 @@ const TuningPickerModal = ({
       <Form layout="vertical">
         <Item label="Common tunings">
           <Select
-            value={currentTuningName}
+            value={selectValue}
             className={css.commonTuningSelect}
             onChange={handleCommonTuningSelect}
           >
@@ -134,6 +138,7 @@ const TuningPickerModal = ({
                     {name}: (
                     {tuning
                       .map((item) => getNoteName(notation, item.position))
+                      .reverse()
                       .join(",")}
                     )
                   </Option>

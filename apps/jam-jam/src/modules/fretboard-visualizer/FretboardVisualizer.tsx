@@ -9,7 +9,6 @@ import {
   NOTES_POSITIONS,
   MIN_NOTES_COUNT,
   MAX_NOTES_COUNT,
-  getTuningName,
   useGuitarStringsFiltersSave,
   useNotesPlay,
   Note,
@@ -44,11 +43,6 @@ const FretboardVisualizer = () => {
       applyFilters,
     },
   ] = useGuitarStringsFilters();
-
-  const currentTuningName = useMemo(
-    () => getTuningName(filters.notation, tunings, filters.tuning),
-    [filters.notation, tunings, filters.tuning]
-  );
 
   const {
     saveFilters,
@@ -91,7 +85,6 @@ const FretboardVisualizer = () => {
                 className={css.tuningPicker}
                 tunings={tunings}
                 tuning={filters.tuning}
-                currentTuningName={currentTuningName}
                 notation={filters.notation}
                 onChange={updateTuning}
               />
