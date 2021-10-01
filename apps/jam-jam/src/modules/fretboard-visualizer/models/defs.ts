@@ -108,6 +108,7 @@ export interface GuitarStringsFilters {
   notesCount: number;
   notesRange: NotesRange;
   tuning: GuitarStringTuning[];
+  octavesDisplayed: boolean;
 }
 
 export enum TuningCategory {

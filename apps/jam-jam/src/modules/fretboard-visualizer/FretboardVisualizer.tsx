@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-
 import {
   useGuitarStringsFilters,
   isSharpNotation,
@@ -21,7 +19,7 @@ import {
   ScalePicker,
 } from "./components";
 import { Switch, Slider, Typography, Form, Button, Empty, Tag } from "antd";
-import { SoundOutlined } from "@ant-design/icons";
+import { SoundOutlined, FontSizeOutlined } from "@ant-design/icons";
 
 import css from "./FretboardVisualizer.module.less";
 import { useEffect } from "react";
@@ -41,6 +39,7 @@ const FretboardVisualizer = () => {
       updateTuning,
       updateScale,
       applyFilters,
+      toggleOctavesDisplayed,
     },
   ] = useGuitarStringsFilters();
 
@@ -74,15 +73,6 @@ const FretboardVisualizer = () => {
         <header className={css.header}>
           <Title level={2}>JamJam</Title>
 
-          <Switch
-            checkedChildren={<SoundOutlined />}
-            unCheckedChildren={<SoundOutlined />}
-            loading={isEnabling}
-            checked={isEnabled}
-            onChange={update}
-            className={css.switch}
-          />
-
           <ChangeLog />
         </header>
 
@@ -97,6 +87,15 @@ const FretboardVisualizer = () => {
                 tuning={filters.tuning}
                 notation={filters.notation}
                 onChange={updateTuning}
+              />
+
+              <Switch
+                checkedChildren={<SoundOutlined />}
+                unCheckedChildren={<SoundOutlined />}
+                loading={isEnabling}
+                checked={isEnabled}
+                onChange={update}
+                className={css.switch}
               />
 
               <Switch
@@ -137,6 +136,14 @@ const FretboardVisualizer = () => {
                 className={css.scalePicker}
                 hiddenPositions={filters.hiddenPositions}
                 onChange={updateScale}
+              />
+
+              <Switch
+                className={css.switch}
+                checked={filters.octavesDisplayed}
+                checkedChildren={<FontSizeOutlined />}
+                unCheckedChildren={<FontSizeOutlined />}
+                onChange={toggleOctavesDisplayed}
               />
 
               <Switch
@@ -217,6 +224,7 @@ const FretboardVisualizer = () => {
 
       <Fretboard
         leftHanded={isLeftOrientation(filters.orientation)}
+        octavesDisplayed={filters.octavesDisplayed}
         strings={strings}
         onNoteClick={handleFretboardNoteClick}
       />

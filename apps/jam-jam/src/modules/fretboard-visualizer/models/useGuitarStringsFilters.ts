@@ -61,6 +61,7 @@ const FILTERS: GuitarStringsFilters = {
   hiddenPositions: [],
   notesCount: DEFAULT_NUMBER_OF_NOTES,
   notesRange: DEFAULT_NOTES_RANGE,
+  octavesDisplayed: false,
 };
 const STRINGS = generateGuitarStrings(FILTERS);
 
@@ -125,6 +126,10 @@ export const useGuitarStringsFilters = () => {
     });
   };
 
+  const toggleOctavesDisplayed = (): void => {
+    applyFilters({ ...filters, octavesDisplayed: !filters.octavesDisplayed });
+  };
+
   return [
     { strings, filters, tunings: COMMON_TUNINGS },
     {
@@ -136,6 +141,7 @@ export const useGuitarStringsFilters = () => {
       updateTuning,
       applyFilters,
       updateScale,
+      toggleOctavesDisplayed,
     },
   ] as const;
 };

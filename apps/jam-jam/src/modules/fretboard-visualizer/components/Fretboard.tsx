@@ -6,6 +6,7 @@ import css from "./Fretboard.module.less";
 interface FretboardProps {
   className?: string;
   leftHanded?: boolean;
+  octavesDisplayed?: boolean;
   strings: GuitarString[];
   onNoteClick?: (note: Note) => void;
 }
@@ -17,6 +18,7 @@ const MARKERS = [3, 5, 7, 9, 12, 15, 17, 19, 21, 24].reduce<
 const Fretboard = ({
   className = "",
   leftHanded,
+  octavesDisplayed,
   strings,
   onNoteClick = () => {},
 }: FretboardProps) => {
@@ -44,6 +46,7 @@ const Fretboard = ({
                 className={css.note}
                 uncolored={note.hidden}
                 ghosty={note.hidden}
+                octave={octavesDisplayed ? note.octave : undefined}
                 key={note.id}
                 position={note.position}
                 notation={note.notation}

@@ -21,6 +21,7 @@ interface NoteButtonProps
   notation: NoteNotation;
   uncolored?: boolean;
   ghosty?: boolean;
+  octave?: number;
 }
 
 const NoteButton = ({
@@ -29,6 +30,7 @@ const NoteButton = ({
   notation,
   uncolored,
   ghosty,
+  octave,
   position,
   ...props
 }: NoteButtonProps) => {
@@ -43,7 +45,8 @@ const NoteButton = ({
         ...(uncolored ? {} : { background: NOTES_THEME[position] }),
       }}
     >
-      {getNoteName(notation, position)}
+      <span className={css.name}>{getNoteName(notation, position)}</span>
+      {octave !== undefined && <span className={css.octave}>{octave}</span>}
     </button>
   );
 };

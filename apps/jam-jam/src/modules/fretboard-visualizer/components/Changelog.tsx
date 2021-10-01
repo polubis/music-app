@@ -47,6 +47,7 @@ const ChangeLog = () => {
             <p>- Add option to play note in speakers</p>
             <p>- Improve display on desktop and mobile</p>
             <p>- Improve guitar orientation change</p>
+            <p>- Add option to display octaves</p>
           </Panel>
           <Panel header="Version 1.0.2" key="3">
             <p>- Add option to pick chords on fretboard</p>
