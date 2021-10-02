@@ -19,8 +19,6 @@ const Changelog = () => {
         onCancel={toggle}
       >
         {/* ADD OCTAVE PICK ON TUNING CHANGE */}
-        {/* ADD PROMPT IF NO SAMPLE FOR NOTE */}
-        {/* ADD NEW BADGE */}
         {/* ADD OPTION TO DISPLAY CURRENTLY USED SCALE AND TUNING */}
         {/* PLAY NOTES SEQUENCE ON SCALE CHANGE AND TUNING CHANGE */}
         {/* THINK ABOUT CLICKING ITEMS FROM OUTER RANGE IN FRETS */}
