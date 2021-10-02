@@ -14,18 +14,30 @@ import { getOppositeNotation } from "./notation";
 import {
   getOppositeOrientation,
   DEFAULT_GUITAR_STRINGS_TUNING,
+  isLeftOrientation,
 } from "./guitar";
 import { DEFAULT_NUMBER_OF_NOTES, DEFAULT_NOTES_RANGE } from "./note";
-import { reverseTunings, COMMON_TUNINGS } from "./guitarStringTuning";
+import { COMMON_TUNINGS } from "./guitarStringTuning";
 
 const generateGuitarStrings = (
   filters: GuitarStringsFilters
 ): GuitarString[] => {
-  const { tuning, notation, hiddenPositions, notesCount, notesRange } = filters;
+  const {
+    tuning,
+    notation,
+    hiddenPositions,
+    orientation,
+    notesCount,
+    notesRange,
+  } = filters;
+  const fretsCount = notesCount + 1;
+  const reversedTuning = isLeftOrientation(orientation)
+    ? [...tuning].reverse()
+    : tuning;
 
-  const strings = createGuitarStrings(tuning, notation, notesCount);
+  const strings = createGuitarStrings(reversedTuning, notation, fretsCount);
 
-  const [from, to] = [notesRange[0] - 1, notesRange[1] - 1];
+  const [from, to] = [notesRange[0], notesRange[1]];
   const positionsDict = hiddenPositions.reduce<
     Partial<Record<NotePosition, boolean>>
   >((acc, position) => ({ ...acc, [position]: true }), {});
@@ -33,7 +45,9 @@ const generateGuitarStrings = (
   strings.forEach((string) => {
     string.notes.forEach((note, noteIdx) => {
       note.hidden =
-        !(noteIdx >= from && noteIdx <= to) || positionsDict[note.position];
+        noteIdx === 0
+          ? false
+          : positionsDict[note.position] || !(noteIdx >= from && noteIdx <= to);
     });
   });
 
@@ -47,11 +61,11 @@ const FILTERS: GuitarStringsFilters = {
   hiddenPositions: [],
   notesCount: DEFAULT_NUMBER_OF_NOTES,
   notesRange: DEFAULT_NOTES_RANGE,
+  octavesDisplayed: false,
 };
 const STRINGS = generateGuitarStrings(FILTERS);
 
 export const useGuitarStringsFilters = () => {
-  const [tunings, setTunings] = useState(COMMON_TUNINGS);
   const [filters, setFilters] = useState(FILTERS);
   const [strings, setStrings] = useState(STRINGS);
 
@@ -70,10 +84,8 @@ export const useGuitarStringsFilters = () => {
   const toggleOrientation = (): void => {
     applyFilters({
       ...filters,
-      tuning: [...filters.tuning].reverse(),
       orientation: getOppositeOrientation(filters.orientation),
     });
-    setTunings(reverseTunings(tunings));
   };
 
   const toggleNotesHidden = (position: NotePosition): void => {
@@ -89,11 +101,15 @@ export const useGuitarStringsFilters = () => {
     });
   };
 
-  const updateNotesCount = (notesCount: number): void => {
-    applyFilters({ ...filters, notesCount });
+  const updateFretsCount = (notesCount: number): void => {
+    applyFilters({
+      ...filters,
+      notesCount,
+      notesRange: [filters.notesRange[0], notesCount],
+    });
   };
 
-  const updateNotesRange = (notesRange: NotesRange): void => {
+  const updateFretsRange = (notesRange: NotesRange): void => {
     applyFilters({ ...filters, notesRange });
   };
 
@@ -110,17 +126,22 @@ export const useGuitarStringsFilters = () => {
     });
   };
 
+  const toggleOctavesDisplayed = (): void => {
+    applyFilters({ ...filters, octavesDisplayed: !filters.octavesDisplayed });
+  };
+
   return [
-    { strings, filters, tunings },
+    { strings, filters, tunings: COMMON_TUNINGS },
     {
       toggleNotesNotation,
       toggleOrientation,
       toggleNotesHidden,
-      updateNotesCount,
-      updateNotesRange,
+      updateFretsCount,
+      updateFretsRange,
       updateTuning,
       applyFilters,
       updateScale,
+      toggleOctavesDisplayed,
     },
   ] as const;
 };

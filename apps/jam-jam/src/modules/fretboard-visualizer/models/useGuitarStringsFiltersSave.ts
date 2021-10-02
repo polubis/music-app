@@ -3,10 +3,13 @@ import { useMemo } from "react";
 import { message } from "antd";
 import { GuitarStringsFilters, NamedGuitarStringsFilters } from "./defs";
 import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 
 const COOKIE_NAME = "savedFiltersList";
 
 export const useGuitarStringsFiltersSave = (filters: GuitarStringsFilters) => {
+  const { t } = useTranslation();
+
   const [{ savedFiltersList: savedFiltersListCookie }, setCookie] = useCookies([
     COOKIE_NAME,
   ]);
@@ -29,9 +32,9 @@ export const useGuitarStringsFiltersSave = (filters: GuitarStringsFilters) => {
 
     setCookie(COOKIE_NAME, [
       ...savedFiltersList,
-      { name: `Filters ${savedFiltersList.length + 1}`, filters },
+      { name: savedFiltersList.length + 1, filters },
     ]);
-    message.success("Filters has been saved");
+    message.success(t("FiltersHasBeenSaved"));
   };
 
   const removeFilters = (name: string): void => {
@@ -39,7 +42,7 @@ export const useGuitarStringsFiltersSave = (filters: GuitarStringsFilters) => {
       COOKIE_NAME,
       savedFiltersList.filter((savedFilter) => savedFilter.name !== name)
     );
-    message.success(`Filters with name: ${name} has been removed`);
+    message.success(t("FiltersRemoved", { name }));
   };
 
   return {

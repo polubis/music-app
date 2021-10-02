@@ -185,9 +185,12 @@ export const getTuningName = (
   return foundTuning
     ? `${foundTuning.name}: ${formatTuningNoteNames(
         notation,
-        foundTuning.tuning
+        [...foundTuning.tuning].reverse()
       )}`
-    : `Custom tuning: ${formatTuningNoteNames(notation, tuning)}`;
+    : `Custom tuning: ${formatTuningNoteNames(
+        notation,
+        [...tuning].reverse()
+      )}`;
 };
 
 export const reverseTunings = (

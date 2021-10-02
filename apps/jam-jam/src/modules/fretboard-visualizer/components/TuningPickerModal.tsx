@@ -11,21 +11,23 @@ import {
   NotePosition,
   DescribedGuitarStringTuning,
   groupTunings,
+  getTuningName,
 } from "../models";
 
 import css from "./TuningPickerModal.module.less";
+import { PlayManyButton } from "./PlayManyButton";
+import { useTranslation } from "react-i18next";
 
 const { Item } = Form;
 
 interface TuningPickerModalProps {
-  currentTuningName: string;
   notation: NoteNotation;
   tunings: DescribedGuitarStringTuning[];
   tuning: GuitarStringTuning[];
-  isLeftOrientation: boolean;
   onChange: (tuning: GuitarStringTuning[]) => void;
   onOk: () => void;
   onCancel: () => void;
+  onPlay: () => void;
 }
 
 const { Option, OptGroup } = Select;
@@ -35,15 +37,15 @@ interface TuningPickerModalFormData {
 }
 
 const TuningPickerModal = ({
-  currentTuningName,
   notation,
   tuning,
   tunings,
-  isLeftOrientation,
   onChange,
   onOk,
   onCancel,
+  onPlay,
 }: TuningPickerModalProps) => {
+  const { t } = useTranslation();
   const initTuning = useMemo(() => tuning, []);
   const [formData, setFormData] = useState<TuningPickerModalFormData>({
     tuning: [...initTuning],
@@ -78,19 +80,11 @@ const TuningPickerModal = ({
       tuning: [...formData.tuning],
     };
 
-    if (isLeftOrientation) {
-      newFormData.tuning.unshift({
-        octave: formData.tuning[0].octave,
-        id: formData.tuning[0].id + 1,
-        position: 0,
-      });
-    } else {
-      newFormData.tuning.push({
-        octave: formData.tuning[formData.tuning.length - 1].octave,
-        id: formData.tuning[formData.tuning.length - 1].id + 1,
-        position: 0,
-      });
-    }
+    newFormData.tuning.push({
+      octave: formData.tuning[formData.tuning.length - 1].octave,
+      id: formData.tuning[formData.tuning.length - 1].id + 1,
+      position: 0,
+    });
 
     setFormData(newFormData);
     onChange(newFormData.tuning);
@@ -122,18 +116,24 @@ const TuningPickerModal = ({
 
   const groupedTunings = useMemo(() => groupTunings(tunings), [tunings]);
 
+  const selectValue = useMemo(
+    () => getTuningName(notation, tunings, formData.tuning),
+    [formData, tunings, notation]
+  );
+
   return (
     <Modal
-      title="Edit tuning"
+      title={t("EditTuning")}
       visible
-      okText="Apply"
+      okText={t("Apply")}
+      cancelText={t("Cancel")}
       onOk={onOk}
       onCancel={handleCancel}
     >
       <Form layout="vertical">
-        <Item label="Common tunings">
+        <Item label={t("CommonTunings")}>
           <Select
-            value={currentTuningName}
+            value={selectValue}
             className={css.commonTuningSelect}
             onChange={handleCommonTuningSelect}
           >
@@ -144,6 +144,7 @@ const TuningPickerModal = ({
                     {name}: (
                     {tuning
                       .map((item) => getNoteName(notation, item.position))
+                      .reverse()
                       .join(",")}
                     )
                   </Option>
@@ -155,7 +156,7 @@ const TuningPickerModal = ({
       </Form>
 
       {formData.tuning.map(({ position, id }, itemIdx) => (
-        <Item key={id} label={`String ${id + 1}`}>
+        <Item key={id} label={`${t("String")} ${id + 1}`}>
           <Select
             value={position}
             style={{ width: 120, marginLeft: "6px" }}
@@ -167,10 +168,8 @@ const TuningPickerModal = ({
               </Option>
             ))}
           </Select>
-          {(isLeftOrientation
-            ? itemIdx === 0
-            : itemIdx === formData.tuning.length - 1) && (
-            <Tooltip title="Remove string">
+          {itemIdx === formData.tuning.length - 1 && (
+            <Tooltip title={t("RemoveString")}>
               <Button
                 className={css.removeStringBtn}
                 type="ghost"
@@ -189,9 +188,12 @@ const TuningPickerModal = ({
         disabled={formData.tuning.length === MAX_STRINGS_COUNT}
         icon={<PlusCircleOutlined />}
         onClick={handleAddString}
+        style={{ marginRight: "15px" }}
       >
-        Add string
+        {t("AddString")}
       </Button>
+
+      <PlayManyButton onClick={onPlay} />
     </Modal>
   );
 };

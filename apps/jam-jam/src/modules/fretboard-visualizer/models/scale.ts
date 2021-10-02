@@ -83,6 +83,20 @@ export const SCALES: Scale[] = [
     "Augmented",
     "Inverted augmented",
   ]),
+  createScale([3, 2, 2, 3, 2], ScaleType.Pentatonic, [
+    "Pentatonic 1",
+    "Pentatonic 2",
+    "Pentatonic 3",
+    "Pentatonic 4",
+    "Pentatonic 5",
+  ]),
+  createScale([1, 4, 2, 1, 4], ScaleType.Hemitonic, [
+    "Hemitonic 1",
+    "Hemitonic 2",
+    "Hemitonic 3",
+    "Hemitonic 4",
+    "Hemitonic 5",
+  ]),
 ];
 
 export const createKeyedScale = (

@@ -1,14 +1,16 @@
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import { useToggle } from "dk";
 
 import { ScalePickerModal } from "./ScalePickerModal";
 import { NoteNotation, NotePosition } from "../models";
+import { useTranslation } from "react-i18next";
 
 interface ScalePickerProps {
   className?: string;
   hiddenPositions: NotePosition[];
   notation: NoteNotation;
   onChange: (positions: NotePosition[]) => void;
+  onPlay: (positions: NotePosition[]) => void;
 }
 
 const ScalePicker = ({
@@ -16,14 +18,18 @@ const ScalePicker = ({
   className = "",
   notation,
   onChange,
+  onPlay,
 }: ScalePickerProps) => {
   const [isOpen, { open, close }] = useToggle();
+  const { t } = useTranslation();
 
   return (
     <div className={className}>
-      <Button type="primary" onClick={open}>
-        Pick scale
-      </Button>
+      <Tooltip title={t("ScalesTooltip")}>
+        <Button type="primary" onClick={open}>
+          {t("Scales")}
+        </Button>
+      </Tooltip>
 
       {isOpen && (
         <ScalePickerModal
@@ -32,6 +38,7 @@ const ScalePicker = ({
           notation={notation}
           onOk={close}
           onCancel={close}
+          onPlay={onPlay}
         />
       )}
     </div>

@@ -20,7 +20,7 @@
     "body": [
       "import React from 'react'",
       "",
-      "import css from \"./${1}.scss\"",
+      "import css from \"./${1}.less\"",
       "",
       "interface ${1}Props {}",
       "",
