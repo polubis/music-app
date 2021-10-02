@@ -20,6 +20,8 @@ import { SoundOutlined, FontSizeOutlined } from "@ant-design/icons";
 import css from "./FretboardVisualizer.module.less";
 import { useEffect } from "react";
 import { withLazy } from "dk";
+import { LanguageSelect } from "components";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 const { Item } = Form;
@@ -38,6 +40,7 @@ const Changelog = withLazy(() =>
 );
 
 const FretboardVisualizer = () => {
+  const { t } = useTranslation();
   const [
     { strings, filters, tunings },
     {
@@ -100,13 +103,15 @@ const FretboardVisualizer = () => {
         <header className={css.header}>
           <Title level={2}>JamJam</Title>
 
+          <LanguageSelect />
+
           <Changelog />
         </header>
 
         <section className={css.filters}>
           <div className={css.tile}>
             <header className={css.tileHeader}>
-              <Title level={5}>Guitar</Title>
+              <Title level={5}>{t("Guitar")}</Title>
 
               <TuningPicker
                 className={css.tuningPicker}
@@ -117,7 +122,7 @@ const FretboardVisualizer = () => {
                 onPlay={handleTuningPlay}
               />
 
-              <Tooltip title="Turns on/off sound">
+              <Tooltip title={t("SoundTooltip")}>
                 <Switch
                   checkedChildren={<SoundOutlined />}
                   unCheckedChildren={<SoundOutlined />}
@@ -128,18 +133,18 @@ const FretboardVisualizer = () => {
                 />
               </Tooltip>
 
-              <Tooltip title="Changes guitar orientation to left/right">
+              <Tooltip title={t("GuitarOrientationTooltip")}>
                 <Switch
                   checked={isRightOrientation(filters.orientation)}
-                  checkedChildren="Right"
-                  unCheckedChildren="Left"
+                  checkedChildren={t("Right")}
+                  unCheckedChildren={t("Left")}
                   onChange={toggleOrientation}
                 />
               </Tooltip>
             </header>
 
             <Form className={css.settingsForm}>
-              <Item label="Frets count" className={css.item}>
+              <Item label={t("FretsCount")} className={css.item}>
                 <Slider
                   min={MIN_NOTES_COUNT}
                   max={MAX_NOTES_COUNT}
@@ -147,7 +152,7 @@ const FretboardVisualizer = () => {
                   onChange={updateFretsCount}
                 />
               </Item>
-              <Item label="Visible frets" className={css.item}>
+              <Item label={t("VisibleFrets")} className={css.item}>
                 <Slider
                   min={MIN_NOTES_COUNT}
                   max={filters.notesCount}
@@ -161,7 +166,7 @@ const FretboardVisualizer = () => {
 
           <div className={css.tile}>
             <header className={css.tileHeader}>
-              <Title level={5}>Notes</Title>
+              <Title level={5}>{t("Notes")}</Title>
 
               <ScalePicker
                 notation={filters.notation}
@@ -171,7 +176,7 @@ const FretboardVisualizer = () => {
                 onPlay={handleScalePlay}
               />
 
-              <Tooltip title="Shows/hides octaves numbers in notes">
+              <Tooltip title={t("OctaveDisplayTooltip")}>
                 <Switch
                   className={css.switch}
                   checked={filters.octavesDisplayed}
@@ -181,7 +186,7 @@ const FretboardVisualizer = () => {
                 />
               </Tooltip>
 
-              <Tooltip title="Changes notes notation">
+              <Tooltip title={t("NotationTooltip")}>
                 <Switch
                   checked={isSharpNotation(filters.notation)}
                   checkedChildren={NoteNotation.Sharp}

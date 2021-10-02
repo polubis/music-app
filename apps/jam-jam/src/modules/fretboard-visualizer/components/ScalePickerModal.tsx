@@ -19,6 +19,7 @@ import {
 
 import css from "./ScalePickerModal.module.less";
 import { PlayManyButton } from "./PlayManyButton";
+import { useTranslation } from "react-i18next";
 
 interface ScalePickerModalProps {
   notation: NoteNotation;
@@ -73,6 +74,8 @@ const ScalePickerModal = ({
   onChange,
   onPlay,
 }: ScalePickerModalProps) => {
+  const { t } = useTranslation();
+
   const memoizedHiddenPositions = useMemo(() => hiddenPositions, []);
   const [formData, setFormData] = useState<ScalePickerModalFormData>({
     key: FIRST_NOTE_POSITION,
@@ -132,14 +135,15 @@ const ScalePickerModal = ({
 
   return (
     <Modal
-      title="Scales"
+      title={t("Scales")}
       visible
-      okText="Apply"
+      okText={t("Apply")}
+      cancelText={t("Cancel")}
       onOk={onOk}
       onCancel={handleCancel}
     >
       <Form layout="vertical">
-        <Item label="Scale key">
+        <Item label={t("ScaleKey")}>
           <Select
             value={formData.key}
             style={{ width: "100%" }}
@@ -152,7 +156,7 @@ const ScalePickerModal = ({
             ))}
           </Select>
         </Item>
-        <Item label="Scale type">
+        <Item label={t("ScaleType")}>
           <Select
             value={formData.type}
             style={{ width: "100%" }}
@@ -165,7 +169,7 @@ const ScalePickerModal = ({
             ))}
           </Select>
         </Item>
-        <Item label="Scale mode">
+        <Item label={t("ScaleMode")}>
           <div style={{ display: "flex" }}>
             <Select
               value={formData.modeName}
@@ -184,7 +188,7 @@ const ScalePickerModal = ({
             <PlayManyButton onClick={() => onPlay(pickedScale.positions)} />
           </div>
         </Item>
-        <Item label="Preview">
+        <Item label={t("Preview")}>
           <div className={css.preview}>
             {pickedScale.positions.map((position, idx) => (
               <NoteButton
@@ -199,12 +203,12 @@ const ScalePickerModal = ({
           </div>
         </Item>
 
-        <Item label="How scales works?">
+        <Item label={`${t("HowScalesWorks")}?`}>
           <Link
             href="https://www.youtube.com/watch?v=Vq2xt2D3e3E&t=881s"
             target="_blank"
           >
-            Scales tutorial by NewJazz
+            {t("ScalesTutorialBy")} NewJazz
           </Link>
         </Item>
       </Form>

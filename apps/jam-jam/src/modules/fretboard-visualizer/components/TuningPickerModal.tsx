@@ -16,6 +16,7 @@ import {
 
 import css from "./TuningPickerModal.module.less";
 import { PlayManyButton } from "./PlayManyButton";
+import { useTranslation } from "react-i18next";
 
 const { Item } = Form;
 
@@ -44,6 +45,7 @@ const TuningPickerModal = ({
   onCancel,
   onPlay,
 }: TuningPickerModalProps) => {
+  const { t } = useTranslation();
   const initTuning = useMemo(() => tuning, []);
   const [formData, setFormData] = useState<TuningPickerModalFormData>({
     tuning: [...initTuning],
@@ -121,14 +123,15 @@ const TuningPickerModal = ({
 
   return (
     <Modal
-      title="Edit tuning"
+      title={t("EditTuning")}
       visible
-      okText="Apply"
+      okText={t("Apply")}
+      cancelText={t("Cancel")}
       onOk={onOk}
       onCancel={handleCancel}
     >
       <Form layout="vertical">
-        <Item label="Common tunings">
+        <Item label={t("CommonTunings")}>
           <Select
             value={selectValue}
             className={css.commonTuningSelect}
@@ -153,7 +156,7 @@ const TuningPickerModal = ({
       </Form>
 
       {formData.tuning.map(({ position, id }, itemIdx) => (
-        <Item key={id} label={`String ${id + 1}`}>
+        <Item key={id} label={`${t("String")} ${id + 1}`}>
           <Select
             value={position}
             style={{ width: 120, marginLeft: "6px" }}
@@ -166,7 +169,7 @@ const TuningPickerModal = ({
             ))}
           </Select>
           {itemIdx === formData.tuning.length - 1 && (
-            <Tooltip title="Remove string">
+            <Tooltip title={t("RemoveString")}>
               <Button
                 className={css.removeStringBtn}
                 type="ghost"
@@ -187,7 +190,7 @@ const TuningPickerModal = ({
         onClick={handleAddString}
         style={{ marginRight: "15px" }}
       >
-        Add string
+        {t("AddString")}
       </Button>
 
       <PlayManyButton onClick={onPlay} />

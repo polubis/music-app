@@ -1,5 +1,6 @@
 import { Button, Tooltip } from "antd";
 import { useToggle } from "dk";
+import { useTranslation } from "react-i18next";
 import {
   GuitarStringTuning,
   NoteNotation,
@@ -25,13 +26,14 @@ const TuningPicker = ({
   onChange,
   onPlay,
 }: TuningPickerProps) => {
+  const { t } = useTranslation();
   const [isOpen, { open, close }] = useToggle();
 
   return (
     <div className={className}>
-      <Tooltip title="Allows to customize guitar tuning">
+      <Tooltip title={t("TuningTooltip")}>
         <Button type="primary" onClick={open}>
-          Tuning
+          {t("Tuning")}
         </Button>
       </Tooltip>
 

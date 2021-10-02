@@ -3,6 +3,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import { GuitarStringsFilters, useGuitarStringsFiltersSave } from "../models";
 
 import css from "./SavedFilters.module.less";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text } = Typography;
 
@@ -12,6 +13,8 @@ interface SavedFiltersProps {
 }
 
 const SavedFilters = ({ filters, onApply }: SavedFiltersProps) => {
+  const { t } = useTranslation();
+
   const {
     saveFilters,
     currentSavedFilters,
@@ -26,13 +29,13 @@ const SavedFilters = ({ filters, onApply }: SavedFiltersProps) => {
         {savedFiltersList.length > 0 ? (
           <>
             <header className={css.tileHeader}>
-              <Title level={5}>Saved filters</Title>
+              <Title level={5}>{t("SavedFilters")}</Title>
               <Button
                 type="primary"
                 disabled={areSavedFiltersUsed}
                 onClick={saveFilters}
               >
-                Save
+                {t("Save")}
               </Button>
             </header>
             <div className={css.tags}>
@@ -44,10 +47,10 @@ const SavedFilters = ({ filters, onApply }: SavedFiltersProps) => {
                   onClose={(e) => e.preventDefault()}
                   closeIcon={
                     <Popconfirm
-                      title={`Are you sure to delete ${savedFilters.name}`}
+                      title={`${t("AreYouSureToDelete")} ${savedFilters.name}`}
                       onConfirm={() => removeFilters(savedFilters.name)}
-                      okText="Yes"
-                      cancelText="No"
+                      okText={t("Yes")}
+                      cancelText={t("No")}
                     >
                       <CloseOutlined />
                     </Popconfirm>
@@ -58,7 +61,7 @@ const SavedFilters = ({ filters, onApply }: SavedFiltersProps) => {
                       : "geekblue"
                   }
                 >
-                  {savedFilters.name}
+                  {t("Filters")} {savedFilters.name}
                 </Tag>
               ))}
             </div>
@@ -69,7 +72,9 @@ const SavedFilters = ({ filters, onApply }: SavedFiltersProps) => {
               height: 60,
             }}
             description={
-              <Text className={css.noSavedFilters}>No saved filters yet?</Text>
+              <Text className={css.noSavedFilters}>
+                {t("NoSavedFiltersYet")}?
+              </Text>
             }
           >
             <Button
@@ -77,7 +82,7 @@ const SavedFilters = ({ filters, onApply }: SavedFiltersProps) => {
               disabled={areSavedFiltersUsed}
               onClick={saveFilters}
             >
-              Save filters
+              {t("SaveFilters")}
             </Button>
           </Empty>
         )}
