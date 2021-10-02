@@ -9,6 +9,8 @@ import {
   MAX_NOTES_COUNT,
   useNotesPlay,
   Note,
+  getNoteName,
+  NotePosition,
 } from "./models";
 import { Fretboard, NoteButton } from "./components";
 import { Switch, Slider, Typography, Form, Tooltip } from "antd";
@@ -50,11 +52,35 @@ const FretboardVisualizer = () => {
     },
   ] = useGuitarStringsFilters();
 
-  const { update, play, isEnabled, isEnabling } = useNotesPlay();
+  const { update, play, playMany, isEnabled, isEnabling } = useNotesPlay();
 
   const handleFretboardNoteClick = (note: Note): void => {
     isEnabled && play(note);
     toggleNotesHidden(note.position);
+  };
+
+  const handleTuningPlay = (): void => {
+    playMany(
+      filters.tuning
+        .map((item) => ({
+          ...item,
+          name: getNoteName(filters.notation, item.position),
+          notation: filters.notation,
+        }))
+        .reverse()
+    );
+  };
+
+  const handleScalePlay = (positions: NotePosition[]): void => {
+    playMany(
+      positions.map((position, idx) => ({
+        position,
+        id: idx,
+        octave: idx === positions.length - 1 ? 5 : 4,
+        name: getNoteName(filters.notation, position),
+        notation: filters.notation,
+      }))
+    );
   };
 
   useEffect(() => {
@@ -86,6 +112,7 @@ const FretboardVisualizer = () => {
                 tuning={filters.tuning}
                 notation={filters.notation}
                 onChange={updateTuning}
+                onPlay={handleTuningPlay}
               />
 
               <Tooltip title="Turns on/off sound">
@@ -139,6 +166,7 @@ const FretboardVisualizer = () => {
                 className={css.scalePicker}
                 hiddenPositions={filters.hiddenPositions}
                 onChange={updateScale}
+                onPlay={handleScalePlay}
               />
 
               <Tooltip title="Shows/hides octaves numbers in notes">

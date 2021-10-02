@@ -4,3 +4,4 @@ export * from "./Changelog";
 export * from "./TuningPicker";
 export * from "./ScalePicker";
 export * from "./SavedFilters";
+export * from "./PlayManyButton";

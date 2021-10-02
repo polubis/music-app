@@ -20,7 +20,6 @@ const Changelog = () => {
       >
         {/* ADD OCTAVE PICK ON TUNING CHANGE */}
         {/* ADD OPTION TO DISPLAY CURRENTLY USED SCALE AND TUNING */}
-        {/* PLAY NOTES SEQUENCE ON SCALE CHANGE AND TUNING CHANGE */}
         {/* THINK ABOUT CLICKING ITEMS FROM OUTER RANGE IN FRETS */}
         <Collapse defaultActiveKey={["1"]}>
           <Panel header="Version 1.0.0 - done" key="1">

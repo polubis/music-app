@@ -15,6 +15,7 @@ import {
 } from "../models";
 
 import css from "./TuningPickerModal.module.less";
+import { PlayManyButton } from "./PlayManyButton";
 
 const { Item } = Form;
 
@@ -25,6 +26,7 @@ interface TuningPickerModalProps {
   onChange: (tuning: GuitarStringTuning[]) => void;
   onOk: () => void;
   onCancel: () => void;
+  onPlay: () => void;
 }
 
 const { Option, OptGroup } = Select;
@@ -40,6 +42,7 @@ const TuningPickerModal = ({
   onChange,
   onOk,
   onCancel,
+  onPlay,
 }: TuningPickerModalProps) => {
   const initTuning = useMemo(() => tuning, []);
   const [formData, setFormData] = useState<TuningPickerModalFormData>({
@@ -182,9 +185,12 @@ const TuningPickerModal = ({
         disabled={formData.tuning.length === MAX_STRINGS_COUNT}
         icon={<PlusCircleOutlined />}
         onClick={handleAddString}
+        style={{ marginRight: "15px" }}
       >
         Add string
       </Button>
+
+      <PlayManyButton onClick={onPlay} />
     </Modal>
   );
 };

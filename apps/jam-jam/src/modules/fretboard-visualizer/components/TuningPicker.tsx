@@ -14,6 +14,7 @@ export interface TuningPickerProps {
   tunings: DescribedGuitarStringTuning[];
   tuning: GuitarStringTuning[];
   onChange: (tuning: GuitarStringTuning[]) => void;
+  onPlay: () => void;
 }
 
 const TuningPicker = ({
@@ -22,6 +23,7 @@ const TuningPicker = ({
   tuning,
   tunings,
   onChange,
+  onPlay,
 }: TuningPickerProps) => {
   const [isOpen, { open, close }] = useToggle();
 
@@ -41,6 +43,7 @@ const TuningPicker = ({
           onOk={close}
           onChange={onChange}
           onCancel={close}
+          onPlay={onPlay}
         />
       )}
     </div>

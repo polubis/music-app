@@ -9,6 +9,7 @@ interface ScalePickerProps {
   hiddenPositions: NotePosition[];
   notation: NoteNotation;
   onChange: (positions: NotePosition[]) => void;
+  onPlay: (positions: NotePosition[]) => void;
 }
 
 const ScalePicker = ({
@@ -16,6 +17,7 @@ const ScalePicker = ({
   className = "",
   notation,
   onChange,
+  onPlay,
 }: ScalePickerProps) => {
   const [isOpen, { open, close }] = useToggle();
 
@@ -34,6 +36,7 @@ const ScalePicker = ({
           notation={notation}
           onOk={close}
           onCancel={close}
+          onPlay={onPlay}
         />
       )}
     </div>

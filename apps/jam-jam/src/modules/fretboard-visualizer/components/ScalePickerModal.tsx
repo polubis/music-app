@@ -17,6 +17,7 @@ import {
 } from "../models";
 
 import css from "./ScalePickerModal.module.less";
+import { PlayManyButton } from "./PlayManyButton";
 
 interface ScalePickerModalProps {
   notation: NoteNotation;
@@ -24,6 +25,7 @@ interface ScalePickerModalProps {
   onOk: () => void;
   onChange: (positions: NotePosition[]) => void;
   onCancel: () => void;
+  onPlay: (positions: NotePosition[]) => void;
 }
 
 const { Link } = Typography;
@@ -68,6 +70,7 @@ const ScalePickerModal = ({
   hiddenPositions,
   onOk,
   onChange,
+  onPlay,
 }: ScalePickerModalProps) => {
   const memoizedHiddenPositions = useMemo(() => hiddenPositions, []);
   const [formData, setFormData] = useState<ScalePickerModalFormData>({
@@ -157,33 +160,36 @@ const ScalePickerModal = ({
           </Select>
         </Item>
         <Item label="Scale mode">
-          <Select
-            value={formData.modeName}
-            style={{ width: "100%" }}
-            onChange={handleModeChange}
-          >
-            {pickedScale.modes.map((mode) => (
-              <Option key={mode.name} value={mode.name}>
-                {mode.name}:{" "}
-                {mode.pattern
-                  .map((position) => SCALE_INTERVAL_NOTATION_DICT[position])
-                  .join(",")}
-              </Option>
-            ))}
-          </Select>
+          <div style={{ display: "flex" }}>
+            <Select
+              value={formData.modeName}
+              style={{ width: "100%", marginRight: "14px" }}
+              onChange={handleModeChange}
+            >
+              {pickedScale.modes.map((mode) => (
+                <Option key={mode.name} value={mode.name}>
+                  {mode.name}:{" "}
+                  {mode.pattern
+                    .map((position) => SCALE_INTERVAL_NOTATION_DICT[position])
+                    .join(",")}
+                </Option>
+              ))}
+            </Select>
+            <PlayManyButton onClick={() => onPlay(pickedScale.positions)} />
+          </div>
         </Item>
         <Item label="Preview">
           <div className={css.preview}>
-            {pickedScale.positions
-              .filter((_, idx) => idx < pickedScale.positions.length - 1)
-              .map((position, idx) => (
-                <NoteButton
-                  className={css.previewBtn}
-                  key={idx}
-                  position={position}
-                  notation={notation}
-                />
-              ))}
+            {pickedScale.positions.map((position, idx) => (
+              <NoteButton
+                className={css.previewBtn}
+                key={idx}
+                position={position}
+                notation={notation}
+                octave={idx === pickedScale.positions.length - 1 ? 5 : 4}
+                uncolored={idx === pickedScale.positions.length - 1}
+              />
+            ))}
           </div>
         </Item>
 
