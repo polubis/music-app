@@ -18,7 +18,7 @@ import {
   ScalePicker,
   SavedFilters,
 } from "./components";
-import { Switch, Slider, Typography, Form } from "antd";
+import { Switch, Slider, Typography, Form, Tooltip } from "antd";
 import { SoundOutlined, FontSizeOutlined } from "@ant-design/icons";
 
 import css from "./FretboardVisualizer.module.less";
@@ -81,21 +81,25 @@ const FretboardVisualizer = () => {
                 onChange={updateTuning}
               />
 
-              <Switch
-                checkedChildren={<SoundOutlined />}
-                unCheckedChildren={<SoundOutlined />}
-                loading={isEnabling}
-                checked={isEnabled}
-                onChange={update}
-                className={css.switch}
-              />
+              <Tooltip title="Turns on/off sound">
+                <Switch
+                  checkedChildren={<SoundOutlined />}
+                  unCheckedChildren={<SoundOutlined />}
+                  loading={isEnabling}
+                  checked={isEnabled}
+                  onChange={update}
+                  className={css.switch}
+                />
+              </Tooltip>
 
-              <Switch
-                checked={isRightOrientation(filters.orientation)}
-                checkedChildren="Right"
-                unCheckedChildren="Left"
-                onChange={toggleOrientation}
-              />
+              <Tooltip title="Changes guitar orientation to left/right">
+                <Switch
+                  checked={isRightOrientation(filters.orientation)}
+                  checkedChildren="Right"
+                  unCheckedChildren="Left"
+                  onChange={toggleOrientation}
+                />
+              </Tooltip>
             </header>
 
             <Form className={css.settingsForm}>
@@ -130,20 +134,24 @@ const FretboardVisualizer = () => {
                 onChange={updateScale}
               />
 
-              <Switch
-                className={css.switch}
-                checked={filters.octavesDisplayed}
-                checkedChildren={<FontSizeOutlined />}
-                unCheckedChildren={<FontSizeOutlined />}
-                onChange={toggleOctavesDisplayed}
-              />
+              <Tooltip title="Shows/hides octaves numbers in notes">
+                <Switch
+                  className={css.switch}
+                  checked={filters.octavesDisplayed}
+                  checkedChildren={<FontSizeOutlined />}
+                  unCheckedChildren={<FontSizeOutlined />}
+                  onChange={toggleOctavesDisplayed}
+                />
+              </Tooltip>
 
-              <Switch
-                checked={isSharpNotation(filters.notation)}
-                checkedChildren={NoteNotation.Sharp}
-                unCheckedChildren={NoteNotation.Bmoll}
-                onChange={toggleNotesNotation}
-              />
+              <Tooltip title="Changes notes notation">
+                <Switch
+                  checked={isSharpNotation(filters.notation)}
+                  checkedChildren={NoteNotation.Sharp}
+                  unCheckedChildren={NoteNotation.Bmoll}
+                  onChange={toggleNotesNotation}
+                />
+              </Tooltip>
             </header>
 
             <div className={css.notes}>

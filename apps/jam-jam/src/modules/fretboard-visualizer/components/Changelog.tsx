@@ -19,7 +19,6 @@ const ChangeLog = () => {
         onCancel={toggle}
       >
         {/* ADD LAZY LOADING */}
-        {/* ADD TOOLTIPS */}
         {/* ADD OCTAVE PICK ON TUNING CHANGE */}
         {/* ADD PROMPT IF NO SAMPLE FOR NOTE */}
         {/* ADD NEW BADGE */}

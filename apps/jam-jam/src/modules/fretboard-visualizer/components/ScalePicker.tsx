@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import { useToggle } from "dk";
 
 import { ScalePickerModal } from "./ScalePickerModal";
@@ -21,9 +21,11 @@ const ScalePicker = ({
 
   return (
     <div className={className}>
-      <Button type="primary" onClick={open}>
-        Scales
-      </Button>
+      <Tooltip title="Displays scale on fretboard">
+        <Button type="primary" onClick={open}>
+          Scales
+        </Button>
+      </Tooltip>
 
       {isOpen && (
         <ScalePickerModal

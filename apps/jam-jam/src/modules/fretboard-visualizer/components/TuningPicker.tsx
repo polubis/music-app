@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import { useToggle } from "dk";
 import {
   GuitarStringTuning,
@@ -27,9 +27,12 @@ const TuningPicker = ({
 
   return (
     <div className={className}>
-      <Button type="primary" onClick={open}>
-        Tuning
-      </Button>
+      <Tooltip title="Allows to customize guitar tuning">
+        <Button type="primary" onClick={open}>
+          Tuning
+        </Button>
+      </Tooltip>
+
       {isOpen && (
         <TuningPickerModal
           tuning={tuning}
