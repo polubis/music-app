@@ -19,14 +19,13 @@ const ChangeLog = () => {
         onCancel={toggle}
       >
         {/* ADD LAZY LOADING */}
+        {/* ADD TOOLTIPS */}
         {/* ADD OCTAVE PICK ON TUNING CHANGE */}
         {/* ADD PROMPT IF NO SAMPLE FOR NOTE */}
         {/* ADD NEW BADGE */}
         {/* ADD OPTION TO DISPLAY CURRENTLY USED SCALE AND TUNING */}
         {/* PLAY NOTES SEQUENCE ON SCALE CHANGE AND TUNING CHANGE */}
         {/* THINK ABOUT CLICKING ITEMS FROM OUTER RANGE IN FRETS */}
-        {/* ADD CONFIRM DELETE PROMPT */}
-        {/* DISPLAY OCTAVES */}
         <Collapse defaultActiveKey={["1"]}>
           <Panel header="Version 1.0.0 - done" key="1">
             <p>- Notes notation switch</p>

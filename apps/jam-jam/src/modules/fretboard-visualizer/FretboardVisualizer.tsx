@@ -7,7 +7,6 @@ import {
   NOTES_POSITIONS,
   MIN_NOTES_COUNT,
   MAX_NOTES_COUNT,
-  useGuitarStringsFiltersSave,
   useNotesPlay,
   Note,
 } from "./models";
@@ -17,14 +16,15 @@ import {
   TuningPicker,
   ChangeLog,
   ScalePicker,
+  SavedFilters,
 } from "./components";
-import { Switch, Slider, Typography, Form, Button, Empty, Tag } from "antd";
+import { Switch, Slider, Typography, Form } from "antd";
 import { SoundOutlined, FontSizeOutlined } from "@ant-design/icons";
 
 import css from "./FretboardVisualizer.module.less";
 import { useEffect } from "react";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const { Item } = Form;
 
 const FretboardVisualizer = () => {
@@ -42,14 +42,6 @@ const FretboardVisualizer = () => {
       toggleOctavesDisplayed,
     },
   ] = useGuitarStringsFilters();
-
-  const {
-    saveFilters,
-    currentSavedFilters,
-    savedFiltersList,
-    areSavedFiltersUsed,
-    removeFilters,
-  } = useGuitarStringsFiltersSave(filters);
 
   const { update, play, isEnabled, isEnabling } = useNotesPlay();
 
@@ -167,58 +159,7 @@ const FretboardVisualizer = () => {
             </div>
           </div>
 
-          <div className={css.tile}>
-            {savedFiltersList.length > 0 ? (
-              <>
-                <header className={css.tileHeader}>
-                  <Title level={5}>Saved filters</Title>
-                  <Button
-                    type="primary"
-                    disabled={areSavedFiltersUsed}
-                    onClick={saveFilters}
-                  >
-                    Save
-                  </Button>
-                </header>
-                <div className={css.tags}>
-                  {savedFiltersList.map((savedFilters, idx) => (
-                    <Tag
-                      closable
-                      key={savedFilters.name}
-                      onClick={() => applyFilters(savedFilters.filters)}
-                      onClose={() => removeFilters(savedFilters.name)}
-                      color={
-                        currentSavedFilters?.name === savedFilters.name
-                          ? "green"
-                          : "geekblue"
-                      }
-                    >
-                      {savedFilters.name}
-                    </Tag>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <Empty
-                imageStyle={{
-                  height: 60,
-                }}
-                description={
-                  <Text className={css.noSavedFilters}>
-                    No saved filters yet?
-                  </Text>
-                }
-              >
-                <Button
-                  type="primary"
-                  disabled={areSavedFiltersUsed}
-                  onClick={saveFilters}
-                >
-                  Save filters
-                </Button>
-              </Empty>
-            )}
-          </div>
+          <SavedFilters filters={filters} onApply={applyFilters} />
         </section>
       </div>
 
