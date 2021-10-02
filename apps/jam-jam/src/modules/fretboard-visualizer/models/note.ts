@@ -12,6 +12,7 @@ import {
   FIRST_NOTE_OCTAVE,
   LAST_NOTE_OCTAVE,
   NotesRange,
+  MID_OCTAVE,
 } from "./defs";
 import { isBNotation, isSharpNotation } from "./notation";
 
@@ -62,3 +63,20 @@ export const NOTES_THEME: NotesTheme = [
   "#c572cc",
   "#cc72a8",
 ];
+
+export const getOctavesFromPositions = (
+  positions: NotePosition[]
+): NoteOctave[] => {
+  let octaves: NoteOctave[] = [];
+  let currOctave: NoteOctave = MID_OCTAVE;
+
+  for (let i = 0; i < positions.length; i++) {
+    if (positions[i] < (positions[i - 1] || -1)) {
+      currOctave = (currOctave + 1) as NoteOctave;
+    }
+
+    octaves.push(currOctave);
+  }
+
+  return octaves;
+};

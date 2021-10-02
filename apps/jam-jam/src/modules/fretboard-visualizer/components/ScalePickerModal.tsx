@@ -14,6 +14,7 @@ import {
   Scale,
   ScaleMode,
   SCALE_INTERVAL_NOTATION_DICT,
+  getOctavesFromPositions,
 } from "../models";
 
 import css from "./ScalePickerModal.module.less";
@@ -124,6 +125,11 @@ const ScalePickerModal = ({
     onCancel();
   };
 
+  const octaves = useMemo(
+    () => getOctavesFromPositions(pickedScale.positions),
+    [pickedScale]
+  );
+
   return (
     <Modal
       title="Scales"
@@ -186,7 +192,7 @@ const ScalePickerModal = ({
                 key={idx}
                 position={position}
                 notation={notation}
-                octave={idx === pickedScale.positions.length - 1 ? 5 : 4}
+                octave={octaves[idx]}
                 uncolored={idx === pickedScale.positions.length - 1}
               />
             ))}

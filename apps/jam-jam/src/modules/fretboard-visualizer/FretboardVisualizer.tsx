@@ -11,6 +11,7 @@ import {
   Note,
   getNoteName,
   NotePosition,
+  getOctavesFromPositions,
 } from "./models";
 import { Fretboard, NoteButton } from "./components";
 import { Switch, Slider, Typography, Form, Tooltip } from "antd";
@@ -72,11 +73,12 @@ const FretboardVisualizer = () => {
   };
 
   const handleScalePlay = (positions: NotePosition[]): void => {
+    const octaves = getOctavesFromPositions(positions);
     playMany(
       positions.map((position, idx) => ({
         position,
         id: idx,
-        octave: idx === positions.length - 1 ? 5 : 4,
+        octave: octaves[idx],
         name: getNoteName(filters.notation, position),
         notation: filters.notation,
       }))

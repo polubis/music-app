@@ -33,6 +33,7 @@ export const FIRST_NOTE_POSITION = NOTES_POSITIONS[0];
 export const LAST_NOTE_POSITION = NOTES_POSITIONS[NOTES_POSITIONS.length - 1];
 
 export const NOTES_OCTAVES = [0, 1, 2, 3, 4, 5, 6, 7, 8] as const;
+export const MID_OCTAVE = NOTES_OCTAVES[4];
 export const FIRST_NOTE_OCTAVE = NOTES_OCTAVES[0];
 export const LAST_NOTE_OCTAVE = NOTES_OCTAVES[NOTES_OCTAVES.length - 1];
 
