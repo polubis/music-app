@@ -1,5 +1,6 @@
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import { useToggle } from "dk";
+import { useTranslation } from "react-i18next";
 import {
   GuitarStringTuning,
   NoteNotation,
@@ -13,9 +14,8 @@ export interface TuningPickerProps {
   notation: NoteNotation;
   tunings: DescribedGuitarStringTuning[];
   tuning: GuitarStringTuning[];
-  isLeftOrientation: boolean;
-  currentTuningName: string;
   onChange: (tuning: GuitarStringTuning[]) => void;
+  onPlay: () => void;
 }
 
 const TuningPicker = ({
@@ -23,27 +23,29 @@ const TuningPicker = ({
   notation,
   tuning,
   tunings,
-  isLeftOrientation,
-  currentTuningName,
   onChange,
+  onPlay,
 }: TuningPickerProps) => {
+  const { t } = useTranslation();
   const [isOpen, { open, close }] = useToggle();
 
   return (
     <div className={className}>
-      <Button type="primary" onClick={open}>
-        Set tuning
-      </Button>
+      <Tooltip title={t("TuningTooltip")}>
+        <Button type="primary" onClick={open}>
+          {t("Tuning")}
+        </Button>
+      </Tooltip>
+
       {isOpen && (
         <TuningPickerModal
           tuning={tuning}
           notation={notation}
           tunings={tunings}
-          isLeftOrientation={isLeftOrientation}
-          currentTuningName={currentTuningName}
           onOk={close}
           onChange={onChange}
           onCancel={close}
+          onPlay={onPlay}
         />
       )}
     </div>

@@ -19,27 +19,34 @@ interface NoteButtonProps
   > {
   position: NotePosition;
   notation: NoteNotation;
-  unactive?: boolean;
+  uncolored?: boolean;
+  ghosty?: boolean;
+  octave?: number;
 }
 
 const NoteButton = ({
   className = "",
   style = {},
   notation,
-  unactive,
+  uncolored,
+  ghosty,
+  octave,
   position,
   ...props
 }: NoteButtonProps) => {
   return (
     <button
       {...props}
-      className={`${css.btn} ${className} ${unactive ? css.unactive : ""}`}
+      className={`${css.btn} ${className} ${uncolored ? css.uncolored : ""} ${
+        ghosty ? css.ghosty : ""
+      }`}
       style={{
         ...style,
-        ...(unactive ? {} : { background: NOTES_THEME[position] }),
+        ...(uncolored ? {} : { background: NOTES_THEME[position] }),
       }}
     >
-      {getNoteName(notation, position)}
+      <span className={css.name}>{getNoteName(notation, position)}</span>
+      {octave !== undefined && <span className={css.octave}>{octave}</span>}
     </button>
   );
 };

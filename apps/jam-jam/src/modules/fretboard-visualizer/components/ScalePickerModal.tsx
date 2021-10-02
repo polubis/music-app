@@ -1,5 +1,5 @@
 import { Modal, Select, Form, Typography } from "antd";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { NoteButton } from "./NoteButton";
 import {
   NOTES_POSITIONS,
@@ -14,9 +14,12 @@ import {
   Scale,
   ScaleMode,
   SCALE_INTERVAL_NOTATION_DICT,
+  getOctavesFromPositions,
 } from "../models";
 
 import css from "./ScalePickerModal.module.less";
+import { PlayManyButton } from "./PlayManyButton";
+import { useTranslation } from "react-i18next";
 
 interface ScalePickerModalProps {
   notation: NoteNotation;
@@ -24,6 +27,7 @@ interface ScalePickerModalProps {
   onOk: () => void;
   onChange: (positions: NotePosition[]) => void;
   onCancel: () => void;
+  onPlay: (positions: NotePosition[]) => void;
 }
 
 const { Link } = Typography;
@@ -68,7 +72,10 @@ const ScalePickerModal = ({
   hiddenPositions,
   onOk,
   onChange,
+  onPlay,
 }: ScalePickerModalProps) => {
+  const { t } = useTranslation();
+
   const memoizedHiddenPositions = useMemo(() => hiddenPositions, []);
   const [formData, setFormData] = useState<ScalePickerModalFormData>({
     key: FIRST_NOTE_POSITION,
@@ -85,6 +92,7 @@ const ScalePickerModal = ({
     const pickedScale = pickScale(newFormData);
     setFormData(newFormData);
     setPickedScale(pickedScale);
+    onChange(pickedScale.positions);
   };
 
   const handleTypeChange = (type: ScaleType): void => {
@@ -97,6 +105,7 @@ const ScalePickerModal = ({
     const pickedScale = pickScale(newFormData);
     setFormData(newFormData);
     setPickedScale(pickedScale);
+    onChange(pickedScale.positions);
   };
 
   const handleModeChange = (modeName: string): void => {
@@ -107,6 +116,7 @@ const ScalePickerModal = ({
     const pickedScale = pickScale(newFormData);
     setFormData(newFormData);
     setPickedScale(pickedScale);
+    onChange(pickedScale.positions);
   };
 
   const handleCancel = (): void => {
@@ -118,20 +128,22 @@ const ScalePickerModal = ({
     onCancel();
   };
 
-  useEffect(() => {
-    onChange(pickedScale.positions);
-  }, [pickedScale]);
+  const octaves = useMemo(
+    () => getOctavesFromPositions(pickedScale.positions),
+    [pickedScale]
+  );
 
   return (
     <Modal
-      title="Pick scale"
+      title={t("Scales")}
       visible
-      okText="Apply"
+      okText={t("Apply")}
+      cancelText={t("Cancel")}
       onOk={onOk}
       onCancel={handleCancel}
     >
       <Form layout="vertical">
-        <Item label="Scale key">
+        <Item label={t("ScaleKey")}>
           <Select
             value={formData.key}
             style={{ width: "100%" }}
@@ -144,7 +156,7 @@ const ScalePickerModal = ({
             ))}
           </Select>
         </Item>
-        <Item label="Scale type">
+        <Item label={t("ScaleType")}>
           <Select
             value={formData.type}
             style={{ width: "100%" }}
@@ -157,23 +169,26 @@ const ScalePickerModal = ({
             ))}
           </Select>
         </Item>
-        <Item label="Scale mode">
-          <Select
-            value={formData.modeName}
-            style={{ width: "100%" }}
-            onChange={handleModeChange}
-          >
-            {pickedScale.modes.map((mode) => (
-              <Option key={mode.name} value={mode.name}>
-                {mode.name}:{" "}
-                {mode.pattern
-                  .map((position) => SCALE_INTERVAL_NOTATION_DICT[position])
-                  .join(",")}
-              </Option>
-            ))}
-          </Select>
+        <Item label={t("ScaleMode")}>
+          <div style={{ display: "flex" }}>
+            <Select
+              value={formData.modeName}
+              style={{ width: "100%", marginRight: "14px" }}
+              onChange={handleModeChange}
+            >
+              {pickedScale.modes.map((mode) => (
+                <Option key={mode.name} value={mode.name}>
+                  {mode.name}:{" "}
+                  {mode.pattern
+                    .map((position) => SCALE_INTERVAL_NOTATION_DICT[position])
+                    .join(",")}
+                </Option>
+              ))}
+            </Select>
+            <PlayManyButton onClick={() => onPlay(pickedScale.positions)} />
+          </div>
         </Item>
-        <Item label="Preview">
+        <Item label={t("Preview")}>
           <div className={css.preview}>
             {pickedScale.positions.map((position, idx) => (
               <NoteButton
@@ -181,17 +196,19 @@ const ScalePickerModal = ({
                 key={idx}
                 position={position}
                 notation={notation}
+                octave={octaves[idx]}
+                uncolored={idx === pickedScale.positions.length - 1}
               />
             ))}
           </div>
         </Item>
 
-        <Item label="How scales works?">
+        <Item label={`${t("HowScalesWorks")}?`}>
           <Link
             href="https://www.youtube.com/watch?v=Vq2xt2D3e3E&t=881s"
             target="_blank"
           >
-            Scales tutorial by NewJazz
+            {t("ScalesTutorialBy")} NewJazz
           </Link>
         </Item>
       </Form>
