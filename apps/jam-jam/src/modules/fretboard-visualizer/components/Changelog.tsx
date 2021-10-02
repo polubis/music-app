@@ -3,7 +3,7 @@ import { useToggle } from "dk";
 
 const { Panel } = Collapse;
 
-const ChangeLog = () => {
+const Changelog = () => {
   const [open, { toggle }] = useToggle();
 
   return (
@@ -18,7 +18,6 @@ const ChangeLog = () => {
         cancelText="Close"
         onCancel={toggle}
       >
-        {/* ADD LAZY LOADING */}
         {/* ADD OCTAVE PICK ON TUNING CHANGE */}
         {/* ADD PROMPT IF NO SAMPLE FOR NOTE */}
         {/* ADD NEW BADGE */}
@@ -46,6 +45,7 @@ const ChangeLog = () => {
             <p>- Improve display on desktop and mobile</p>
             <p>- Improve guitar orientation change</p>
             <p>- Add option to display octaves</p>
+            <p>- Add new scales</p>
           </Panel>
           <Panel header="Version 1.0.2" key="3">
             <p>- Add option to pick chords on fretboard</p>
@@ -72,4 +72,4 @@ const ChangeLog = () => {
   );
 };
 
-export { ChangeLog };
+export { Changelog };

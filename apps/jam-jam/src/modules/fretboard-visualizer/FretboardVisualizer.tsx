@@ -10,22 +10,29 @@ import {
   useNotesPlay,
   Note,
 } from "./models";
-import {
-  Fretboard,
-  NoteButton,
-  TuningPicker,
-  ChangeLog,
-  ScalePicker,
-  SavedFilters,
-} from "./components";
+import { Fretboard, NoteButton } from "./components";
 import { Switch, Slider, Typography, Form, Tooltip } from "antd";
 import { SoundOutlined, FontSizeOutlined } from "@ant-design/icons";
 
 import css from "./FretboardVisualizer.module.less";
 import { useEffect } from "react";
+import { withLazy } from "dk";
 
 const { Title } = Typography;
 const { Item } = Form;
+
+const SavedFilters = withLazy(() =>
+  import("./components/SavedFilters").then((m) => ({ default: m.SavedFilters }))
+);
+const TuningPicker = withLazy(() =>
+  import("./components/TuningPicker").then((m) => ({ default: m.TuningPicker }))
+);
+const ScalePicker = withLazy(() =>
+  import("./components/ScalePicker").then((m) => ({ default: m.ScalePicker }))
+);
+const Changelog = withLazy(() =>
+  import("./components/Changelog").then((m) => ({ default: m.Changelog }))
+);
 
 const FretboardVisualizer = () => {
   const [
@@ -65,7 +72,7 @@ const FretboardVisualizer = () => {
         <header className={css.header}>
           <Title level={2}>JamJam</Title>
 
-          <ChangeLog />
+          <Changelog />
         </header>
 
         <section className={css.filters}>
