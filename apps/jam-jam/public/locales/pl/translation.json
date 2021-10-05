@@ -39,5 +39,6 @@
   "Changelog": "Aktualności",
   "WhatsAdded": "Co nowego",
   "Close": "Zamknij",
-  "Ok": "Rozumiem"
+  "Ok": "Rozumiem",
+  "PickedScale": "Akutalna skala: {{mode}} w tonacji {{key}}"
 }

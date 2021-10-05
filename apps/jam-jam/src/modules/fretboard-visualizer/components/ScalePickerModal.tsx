@@ -15,6 +15,7 @@ import {
   ScaleMode,
   SCALE_INTERVAL_NOTATION_DICT,
   getOctavesFromPositions,
+  KeyedNamedScale,
 } from "../models";
 
 import css from "./ScalePickerModal.module.less";
@@ -23,6 +24,7 @@ import { useTranslation } from "react-i18next";
 
 interface ScalePickerModalProps {
   notation: NoteNotation;
+  usedScale: KeyedNamedScale | undefined;
   hiddenPositions: NotePosition[];
   onOk: () => void;
   onChange: (positions: NotePosition[]) => void;
@@ -70,6 +72,7 @@ const ScalePickerModal = ({
   notation,
   onCancel,
   hiddenPositions,
+  usedScale,
   onOk,
   onChange,
   onPlay,
@@ -77,11 +80,19 @@ const ScalePickerModal = ({
   const { t } = useTranslation();
 
   const memoizedHiddenPositions = useMemo(() => hiddenPositions, []);
-  const [formData, setFormData] = useState<ScalePickerModalFormData>({
-    key: FIRST_NOTE_POSITION,
-    type: ScaleType.Major,
-    modeName: SCALES[0].modes[0].name,
-  });
+  const [formData, setFormData] = useState<ScalePickerModalFormData>(
+    usedScale
+      ? {
+          key: usedScale.key,
+          type: usedScale.type,
+          modeName: usedScale.mode.name,
+        }
+      : {
+          key: FIRST_NOTE_POSITION,
+          type: ScaleType.Major,
+          modeName: SCALES[0].modes[0].name,
+        }
+  );
   const [pickedScale, setPickedScale] = useState(pickScale(formData));
 
   const handleKeyChange = (key: NotePosition): void => {
@@ -128,6 +139,11 @@ const ScalePickerModal = ({
     onCancel();
   };
 
+  const handleOk = (): void => {
+    onChange(pickedScale.positions);
+    onOk();
+  };
+
   const octaves = useMemo(
     () => getOctavesFromPositions(pickedScale.positions),
     [pickedScale]
@@ -139,7 +155,7 @@ const ScalePickerModal = ({
       visible
       okText={t("Apply")}
       cancelText={t("Cancel")}
-      onOk={onOk}
+      onOk={handleOk}
       onCancel={handleCancel}
     >
       <Form layout="vertical">
@@ -205,6 +221,7 @@ const ScalePickerModal = ({
 
         <Item label={`${t("HowScalesWorks")}?`}>
           <Link
+            rel="nofollow"
             href="https://www.youtube.com/watch?v=Vq2xt2D3e3E&t=881s"
             target="_blank"
           >
