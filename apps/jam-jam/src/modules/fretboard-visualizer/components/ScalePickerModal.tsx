@@ -221,6 +221,7 @@ const ScalePickerModal = ({
 
         <Item label={`${t("HowScalesWorks")}?`}>
           <Link
+            rel="nofollow"
             href="https://www.youtube.com/watch?v=Vq2xt2D3e3E&t=881s"
             target="_blank"
           >
