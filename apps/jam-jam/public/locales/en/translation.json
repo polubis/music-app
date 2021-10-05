@@ -39,5 +39,6 @@
   "Changelog": "Changelog",
   "WhatsAdded": "What's added",
   "Close": "Close",
-  "Ok": "Ok"
+  "Ok": "Ok",
+  "PickedScale": "Current scale: {{mode}} in key {{key}}"
 }

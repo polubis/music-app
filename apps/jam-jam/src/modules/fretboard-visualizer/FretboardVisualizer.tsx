@@ -12,6 +12,7 @@ import {
   getNoteName,
   NotePosition,
   getOctavesFromPositions,
+  findScaleByHiddenPositions,
 } from "./models";
 import { Fretboard, NoteButton } from "./components";
 import { Switch, Slider, Typography, Form, Tooltip } from "antd";
@@ -22,8 +23,9 @@ import { useEffect } from "react";
 import { withLazy } from "dk";
 import { LanguageSelect } from "components";
 import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 const { Item } = Form;
 
 const SavedFilters = withLazy(() =>
@@ -97,14 +99,17 @@ const FretboardVisualizer = () => {
     }
   }, []);
 
+  const usedScale = useMemo(
+    () => findScaleByHiddenPositions(filters.notation, filters.hiddenPositions),
+    [filters]
+  );
+
   return (
     <div className={css.container}>
       <div className={css.layout}>
         <header className={css.header}>
           <Title level={2}>JamJam</Title>
-
           <LanguageSelect />
-
           <Changelog />
         </header>
 
@@ -173,6 +178,7 @@ const FretboardVisualizer = () => {
                 className={css.scalePicker}
                 hiddenPositions={filters.hiddenPositions}
                 onChange={updateScale}
+                usedScale={usedScale}
                 onPlay={handleScalePlay}
               />
 
@@ -207,6 +213,14 @@ const FretboardVisualizer = () => {
                 />
               ))}
             </div>
+
+            <Text className={css.pickedScale}>
+              {usedScale &&
+                t("PickedScale", {
+                  key: getNoteName(filters.notation, usedScale.key),
+                  mode: usedScale.mode.name,
+                })}
+            </Text>
           </div>
 
           <SavedFilters filters={filters} onApply={applyFilters} />

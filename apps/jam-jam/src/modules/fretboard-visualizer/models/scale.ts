@@ -7,8 +7,10 @@ import {
   KeyedScale,
   ScaleInterval,
   ScaleMode,
+  KeyedNamedScale,
+  NoteNotation,
 } from "./defs";
-import { isNotePosition } from "./note";
+import { getNoteName, isNotePosition } from "./note";
 
 const slicePattern = (pattern: ScaleInterval[]): ScaleInterval[] => {
   const length = pattern.length;
@@ -131,5 +133,47 @@ export const createKeyedScale = (
     type,
     positions,
     modes,
+    mode,
   };
+};
+
+const getAllPosibileKeyedScales = (): KeyedScale[] => {
+  const positions: KeyedScale[] = [];
+
+  for (let i = 0; i < NOTES_POSITIONS.length; i++) {
+    for (let j = 0; j < SCALES.length; j++) {
+      const scale = SCALES[j];
+      scale.modes.forEach((mode) => {
+        positions.push(createKeyedScale(NOTES_POSITIONS[i], scale, mode));
+      });
+    }
+  }
+
+  return positions;
+};
+
+export const ALL_POSIBLE_KEYED_SCALES = getAllPosibileKeyedScales();
+
+export const findScaleByHiddenPositions = (
+  notation: NoteNotation,
+  hiddenPositions: NotePosition[]
+): KeyedNamedScale | undefined => {
+  const positionsToCompare = NOTES_POSITIONS.filter(
+    (p) => !hiddenPositions.includes(p)
+  );
+  positionsToCompare.push(positionsToCompare[0]);
+  const positionsToCompareAsStr = positionsToCompare.join("");
+
+  const foundScale = ALL_POSIBLE_KEYED_SCALES.find(
+    (scale) => scale.positions.join("") === positionsToCompareAsStr
+  );
+
+  return foundScale
+    ? {
+        ...foundScale,
+        notesNames: foundScale.positions.map((position) =>
+          getNoteName(notation, position)
+        ),
+      }
+    : undefined;
 };

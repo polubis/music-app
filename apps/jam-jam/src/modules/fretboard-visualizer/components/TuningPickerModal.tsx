@@ -114,6 +114,11 @@ const TuningPickerModal = ({
     onChange(newFormData.tuning);
   };
 
+  const handleOk = (): void => {
+    onChange(formData.tuning);
+    onOk();
+  };
+
   const groupedTunings = useMemo(() => groupTunings(tunings), [tunings]);
 
   const selectValue = useMemo(
@@ -127,7 +132,7 @@ const TuningPickerModal = ({
       visible
       okText={t("Apply")}
       cancelText={t("Cancel")}
-      onOk={onOk}
+      onOk={handleOk}
       onCancel={handleCancel}
     >
       <Form layout="vertical">

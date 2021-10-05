@@ -156,6 +156,11 @@ export interface Scale {
 export interface KeyedScale extends Scale {
   key: NotePosition;
   positions: NotePosition[];
+  mode: ScaleMode;
+}
+
+export interface KeyedNamedScale extends KeyedScale {
+  notesNames: NoteName[];
 }
 
 export const SCALE_INTERVAL_NOTATION_DICT: Record<
