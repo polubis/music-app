@@ -1,7 +1,7 @@
 {
   "short_name": "JamJam",
   "name": "JamJam",
-  "description": "Fans of musical progress",
+  "description": "Fretboard visualization and musical progress",
   "icons": [
     {
       "src": "favicon.png",

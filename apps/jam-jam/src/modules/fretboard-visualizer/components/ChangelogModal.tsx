@@ -42,9 +42,7 @@ const ChangelogModal = ({ onOk, onCancel }: ChangelogModalProps) => {
           <p>Add option to display octaves</p>
           <p>Add new scales</p>
         </Timeline.Item>
-        <Timeline.Item color="blue">
-          <p>Add option to pick chords on fretboard</p>
-          <p>Add option to play chords in speakers</p>
+        <Timeline.Item color="green">
           <p>Improve initial load performance</p>
           <p>Add octave pick on tuning change</p>
           <p>Add highlight of picked scale</p>
@@ -53,6 +51,8 @@ const ChangelogModal = ({ onOk, onCancel }: ChangelogModalProps) => {
         <Timeline.Item color="blue">
           <p>Add option to log in and create account</p>
           <p>Improve initial load performance</p>
+          <p>Add option to pick chords on fretboard</p>
+          <p>Add option to play chords in speakers</p>
         </Timeline.Item>
         <Timeline.Item color="blue">
           <p>Apply new design</p>

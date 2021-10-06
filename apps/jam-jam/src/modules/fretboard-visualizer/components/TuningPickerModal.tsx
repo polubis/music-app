@@ -1,4 +1,4 @@
-import { Button, Modal, Select, Tooltip, Form } from "antd";
+import { Button, Modal, Select, Tooltip, Form, InputNumber } from "antd";
 import { PlusCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useMemo, useState } from "react";
 import {
@@ -12,6 +12,9 @@ import {
   DescribedGuitarStringTuning,
   groupTunings,
   getTuningName,
+  NoteOctave,
+  FIRST_NOTE_OCTAVE,
+  LAST_NOTE_OCTAVE,
 } from "../models";
 
 import css from "./TuningPickerModal.module.less";
@@ -74,7 +77,6 @@ const TuningPickerModal = ({
   };
 
   const handleAddString = (): void => {
-    // TODO: Add octave calculations later
     const newFormData: TuningPickerModalFormData = {
       ...formData,
       tuning: [...formData.tuning],
@@ -109,6 +111,17 @@ const TuningPickerModal = ({
     const newFormData: TuningPickerModalFormData = {
       ...formData,
       tuning: foundTuning.tuning,
+    };
+    setFormData(newFormData);
+    onChange(newFormData.tuning);
+  };
+
+  const handleOctaveChange = (octave: NoteOctave, id: number): void => {
+    const newFormData: TuningPickerModalFormData = {
+      ...formData,
+      tuning: formData.tuning.map((item) =>
+        item.id === id ? { ...item, octave } : item
+      ),
     };
     setFormData(newFormData);
     onChange(newFormData.tuning);
@@ -160,8 +173,8 @@ const TuningPickerModal = ({
         </Item>
       </Form>
 
-      {formData.tuning.map(({ position, id }, itemIdx) => (
-        <Item key={id} label={`${t("String")} ${id + 1}`}>
+      {formData.tuning.map(({ position, id, octave }, itemIdx) => (
+        <Item key={id} label={`(${t("String")} / ${t("Octave")}) ${id + 1}`}>
           <Select
             value={position}
             style={{ width: 120, marginLeft: "6px" }}
@@ -173,6 +186,13 @@ const TuningPickerModal = ({
               </Option>
             ))}
           </Select>
+          <InputNumber
+            value={octave}
+            style={{ marginLeft: "12px" }}
+            min={FIRST_NOTE_OCTAVE}
+            max={LAST_NOTE_OCTAVE}
+            onChange={(value) => handleOctaveChange(value, id)}
+          />
           {itemIdx === formData.tuning.length - 1 && (
             <Tooltip title={t("RemoveString")}>
               <Button
