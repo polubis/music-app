@@ -135,11 +135,6 @@ export enum ScaleType {
   MelodicMinor = "Melodic minor",
   HarmonicMinor = "Harmonic minor",
   HarmonicMajor = "Harmonic major",
-  Augmented = "Augmented",
-  Diminished = "Diminished",
-  WholeTone = "Whole tone",
-  Pentatonic = "Pentatonic",
-  Hemitonic = "Hemitonic",
 }
 
 export interface ScaleMode {
@@ -156,7 +151,6 @@ export interface Scale {
 export interface KeyedScale extends Scale {
   key: NotePosition;
   positions: NotePosition[];
-  mode: ScaleMode;
 }
 
 export interface KeyedNamedScale extends KeyedScale {

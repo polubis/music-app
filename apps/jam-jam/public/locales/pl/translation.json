@@ -40,6 +40,6 @@
   "WhatsAdded": "Co nowego",
   "Close": "Zamknij",
   "Ok": "Rozumiem",
-  "PickedScale": "Akutalna skala: {{mode}} w tonacji {{key}}",
+  "PickedScale": "Akutalna skala: {{type}} w tonacji {{key}}",
   "Octave": "Oktawa"
 }

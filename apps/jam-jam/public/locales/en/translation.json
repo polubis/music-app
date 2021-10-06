@@ -40,6 +40,6 @@
   "WhatsAdded": "What's added",
   "Close": "Close",
   "Ok": "Ok",
-  "PickedScale": "Current scale: {{mode}} in key {{key}}",
+  "PickedScale": "Current scale: {{type}} in key of {{key}}",
   "Octave": "Octave"
 }

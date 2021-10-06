@@ -21,6 +21,7 @@ import {
 import css from "./ScalePickerModal.module.less";
 import { PlayManyButton } from "./PlayManyButton";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 interface ScalePickerModalProps {
   notation: NoteNotation;
@@ -85,7 +86,7 @@ const ScalePickerModal = ({
       ? {
           key: usedScale.key,
           type: usedScale.type,
-          modeName: usedScale.mode.name,
+          modeName: usedScale.modes[0].name
         }
       : {
           key: FIRST_NOTE_POSITION,
@@ -148,6 +149,10 @@ const ScalePickerModal = ({
     () => getOctavesFromPositions(pickedScale.positions),
     [pickedScale]
   );
+
+  useEffect(() => {
+    onChange(pickedScale.positions);
+  }, []);
 
   return (
     <Modal

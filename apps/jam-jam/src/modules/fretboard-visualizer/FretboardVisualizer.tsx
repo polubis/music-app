@@ -210,7 +210,7 @@ const FretboardVisualizer = () => {
               {usedScale &&
                 t("PickedScale", {
                   key: getNoteName(filters.notation, usedScale.key),
-                  mode: usedScale.mode.name,
+                  type: usedScale.type,
                 })}
             </Text>
           </div>

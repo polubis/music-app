@@ -40,7 +40,7 @@ const ScalePicker = ({
           usedScale
             ? t("PickedScale", {
                 key: getNoteName(notation, usedScale.key),
-                mode: usedScale.mode.name,
+                type: usedScale.type,
               })
             : t("ScalesTooltip")
         }
