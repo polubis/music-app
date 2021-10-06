@@ -15,7 +15,7 @@ import {
   findScaleByHiddenPositions,
 } from "./models";
 import { Fretboard, NoteButton } from "./components";
-import { Switch, Slider, Typography, Form, Tooltip } from "antd";
+import { Switch, Slider, Typography, Form, Tooltip, Image } from "antd";
 import { SoundOutlined, FontSizeOutlined } from "@ant-design/icons";
 
 import css from "./FretboardVisualizer.module.less";
@@ -108,7 +108,7 @@ const FretboardVisualizer = () => {
     <div className={css.container}>
       <div className={css.layout}>
         <header className={css.header}>
-          <Title level={2}>JamJam</Title>
+          <Image width={64} preview={false} src="logo64.png" />
           <LanguageSelect />
           <Changelog />
         </header>

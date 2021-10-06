@@ -47,7 +47,7 @@ const SavedFilters = ({ filters, onApply }: SavedFiltersProps) => {
                   onClose={(e) => e.preventDefault()}
                   closeIcon={
                     <Popconfirm
-                      title={`${t("AreYouSureToDelete")} ${savedFilters.name}`}
+                      title={t("AreYouSureToDelete") + '?'}
                       onConfirm={() => removeFilters(savedFilters.name)}
                       okText={t("Yes")}
                       cancelText={t("No")}

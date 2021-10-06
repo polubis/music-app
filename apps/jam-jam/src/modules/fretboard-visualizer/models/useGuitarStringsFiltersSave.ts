@@ -42,7 +42,7 @@ export const useGuitarStringsFiltersSave = (filters: GuitarStringsFilters) => {
       COOKIE_NAME,
       savedFiltersList.filter((savedFilter) => savedFilter.name !== name)
     );
-    message.success(t("FiltersRemoved", { name }));
+    message.success(t("FiltersRemoved"));
   };
 
   return {
