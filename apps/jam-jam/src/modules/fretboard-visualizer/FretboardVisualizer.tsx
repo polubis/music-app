@@ -20,26 +20,18 @@ import { SoundOutlined, FontSizeOutlined } from "@ant-design/icons";
 
 import css from "./FretboardVisualizer.module.less";
 import { useEffect } from "react";
-import { withLazy } from "dk";
 import { LanguageSelect } from "components";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
+import {
+  SavedFilters,
+  Changelog,
+  TuningPicker,
+  ScalePicker,
+} from "./components";
 
 const { Title, Text } = Typography;
 const { Item } = Form;
-
-const SavedFilters = withLazy(() =>
-  import("./components/SavedFilters").then((m) => ({ default: m.SavedFilters }))
-);
-const TuningPicker = withLazy(() =>
-  import("./components/TuningPicker").then((m) => ({ default: m.TuningPicker }))
-);
-const ScalePicker = withLazy(() =>
-  import("./components/ScalePicker").then((m) => ({ default: m.ScalePicker }))
-);
-const Changelog = withLazy(() =>
-  import("./components/Changelog").then((m) => ({ default: m.Changelog }))
-);
 
 const FretboardVisualizer = () => {
   const { t } = useTranslation();

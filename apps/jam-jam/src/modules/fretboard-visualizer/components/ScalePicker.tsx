@@ -1,7 +1,6 @@
 import { Button, Tooltip } from "antd";
-import { useToggle } from "dk";
+import { useToggle, withLazy } from "dk";
 
-import { ScalePickerModal } from "./ScalePickerModal";
 import {
   getNoteName,
   KeyedNamedScale,
@@ -18,6 +17,10 @@ interface ScalePickerProps {
   onChange: (positions: NotePosition[]) => void;
   onPlay: (positions: NotePosition[]) => void;
 }
+
+const ScalePickerModal = withLazy(() =>
+  import("./ScalePickerModal").then((m) => ({ default: m.ScalePickerModal }))
+);
 
 const ScalePicker = ({
   hiddenPositions,

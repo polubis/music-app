@@ -1,13 +1,11 @@
 import { Button, Tooltip } from "antd";
-import { useToggle } from "dk";
+import { useToggle, withLazy } from "dk";
 import { useTranslation } from "react-i18next";
 import {
   GuitarStringTuning,
   NoteNotation,
   DescribedGuitarStringTuning,
 } from "../models";
-
-import { TuningPickerModal } from "./TuningPickerModal";
 
 export interface TuningPickerProps {
   className?: string;
@@ -17,6 +15,10 @@ export interface TuningPickerProps {
   onChange: (tuning: GuitarStringTuning[]) => void;
   onPlay: () => void;
 }
+
+const TuningPickerModal = withLazy(() =>
+  import("./TuningPickerModal").then((m) => ({ default: m.TuningPickerModal }))
+);
 
 const TuningPicker = ({
   className = "",
