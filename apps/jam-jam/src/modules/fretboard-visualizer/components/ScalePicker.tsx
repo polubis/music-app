@@ -1,5 +1,5 @@
 import { Button, Tooltip } from "antd";
-import { useToggle, withLazy } from "dk";
+import { useToggle } from "dk";
 
 import {
   getNoteName,
@@ -8,6 +8,7 @@ import {
   NotePosition,
 } from "../models";
 import { useTranslation } from "react-i18next";
+import loadable from "@loadable/component";
 
 interface ScalePickerProps {
   className?: string;
@@ -18,9 +19,9 @@ interface ScalePickerProps {
   onPlay: (positions: NotePosition[]) => void;
 }
 
-const ScalePickerModal = withLazy(() =>
-  import("./ScalePickerModal").then((m) => ({ default: m.ScalePickerModal }))
-);
+const ScalePickerModal = loadable(() => import("./ScalePickerModal"), {
+  resolveComponent: (imported) => imported.ScalePickerModal,
+});
 
 const ScalePicker = ({
   hiddenPositions,

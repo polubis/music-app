@@ -1,10 +1,11 @@
+import loadable from "@loadable/component";
 import { Button } from "antd";
-import { useToggle, withLazy } from "dk";
+import { useToggle } from "dk";
 import { useTranslation } from "react-i18next";
 
-const ChangelogModal = withLazy(() =>
-  import("./ChangelogModal").then((m) => ({ default: m.ChangelogModal }))
-);
+const ChangelogModal = loadable(() => import("./ChangelogModal"), {
+  resolveComponent: (imported) => imported.ChangelogModal,
+});
 
 const Changelog = () => {
   const { t } = useTranslation();
