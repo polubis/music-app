@@ -34,7 +34,7 @@ const TuningPicker = ({
 
   return (
     <div className={className}>
-      <Tooltip title={t("TuningTooltip")}>
+      <Tooltip title={t("Allows to customize guitar tuning")}>
         <Button type="primary" onClick={open}>
           {t("Tuning")}
         </Button>

@@ -34,7 +34,7 @@ export const useGuitarStringsFiltersSave = (filters: GuitarStringsFilters) => {
       ...savedFiltersList,
       { name: savedFiltersList.length + 1, filters },
     ]);
-    message.success(t("FiltersHasBeenSaved"));
+    message.success(t("Filters has been saved"));
   };
 
   const removeFilters = (name: string): void => {
@@ -42,7 +42,7 @@ export const useGuitarStringsFiltersSave = (filters: GuitarStringsFilters) => {
       COOKIE_NAME,
       savedFiltersList.filter((savedFilter) => savedFilter.name !== name)
     );
-    message.success(t("FiltersRemoved"));
+    message.success(t("Filters has been removed"));
   };
 
   return {

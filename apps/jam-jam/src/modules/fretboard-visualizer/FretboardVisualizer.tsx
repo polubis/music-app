@@ -142,7 +142,7 @@ const FretboardVisualizer = () => {
                   onPlay={handleTuningPlay}
                 />
 
-                <Tooltip title={t("SoundTooltip")}>
+                <Tooltip title={t("Turns on/off sound")}>
                   <Switch
                     checkedChildren={<SoundOutlined />}
                     unCheckedChildren={<SoundOutlined />}
@@ -153,7 +153,7 @@ const FretboardVisualizer = () => {
                   />
                 </Tooltip>
 
-                <Tooltip title={t("GuitarOrientationTooltip")}>
+                <Tooltip title={t("Changes guitar orientation to left/right")}>
                   <Switch
                     checked={isRightOrientation(filters.orientation)}
                     checkedChildren={t("Right")}
@@ -164,7 +164,7 @@ const FretboardVisualizer = () => {
               </header>
 
               <Form className={css.settingsForm}>
-                <Item label={t("FretsCount")} className={css.item}>
+                <Item label={t("Frets count")} className={css.item}>
                   <Slider
                     min={MIN_NOTES_COUNT}
                     max={MAX_NOTES_COUNT}
@@ -172,7 +172,7 @@ const FretboardVisualizer = () => {
                     onChange={updateFretsCount}
                   />
                 </Item>
-                <Item label={t("VisibleFrets")} className={css.item}>
+                <Item label={t("Visible frets")} className={css.item}>
                   <Slider
                     min={MIN_NOTES_COUNT}
                     max={filters.notesCount}
@@ -197,7 +197,7 @@ const FretboardVisualizer = () => {
                   onPlay={handleScalePlay}
                 />
 
-                <Tooltip title={t("OctaveDisplayTooltip")}>
+                <Tooltip title={t("Shows/hides octaves numbers in notes")}>
                   <Switch
                     className={css.switch}
                     checked={filters.octavesDisplayed}
@@ -207,7 +207,7 @@ const FretboardVisualizer = () => {
                   />
                 </Tooltip>
 
-                <Tooltip title={t("NotationTooltip")}>
+                <Tooltip title={t("Changes notes notation")}>
                   <Switch
                     checked={isSharpNotation(filters.notation)}
                     checkedChildren={NoteNotation.Sharp}
@@ -231,10 +231,9 @@ const FretboardVisualizer = () => {
 
               <Text className={css.pickedScale}>
                 {usedScale &&
-                  t("PickedScale", {
-                    key: getNoteName(filters.notation, usedScale.key),
-                    type: usedScale.type,
-                  })}
+                  `${t("Current scale")}: ${usedScale.type}, ${t(
+                    "key of"
+                  )}: ${getNoteName(filters.notation, usedScale.key)}`}
               </Text>
             </div>
 

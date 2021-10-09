@@ -141,7 +141,7 @@ const TuningPickerModal = ({
 
   return (
     <Modal
-      title={t("EditTuning")}
+      title={t("Edit tuning")}
       visible
       okText={t("Apply")}
       cancelText={t("Cancel")}
@@ -194,7 +194,7 @@ const TuningPickerModal = ({
             onChange={(value) => handleOctaveChange(value, id)}
           />
           {itemIdx === formData.tuning.length - 1 && (
-            <Tooltip title={t("RemoveString")}>
+            <Tooltip title={t("Remove string")}>
               <Button
                 className={css.removeStringBtn}
                 type="ghost"
@@ -215,7 +215,7 @@ const TuningPickerModal = ({
         onClick={handleAddString}
         style={{ marginRight: "15px" }}
       >
-        {t("AddString")}
+        {t("Add string")}
       </Button>
 
       <PlayManyButton onClick={onPlay} />

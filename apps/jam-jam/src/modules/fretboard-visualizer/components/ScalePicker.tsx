@@ -39,11 +39,10 @@ const ScalePicker = ({
       <Tooltip
         title={
           usedScale
-            ? t("PickedScale", {
-                key: getNoteName(notation, usedScale.key),
-                type: usedScale.type,
-              })
-            : t("ScalesTooltip")
+            ? `${t("Current scale")}: ${usedScale.type}, ${t(
+                "key of"
+              )}: ${getNoteName(notation, usedScale.key)}`
+            : t("Displays scales on fretboard")
         }
       >
         <Button type="primary" onClick={open}>
