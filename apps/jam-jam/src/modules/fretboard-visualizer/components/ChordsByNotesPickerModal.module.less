@@ -1,0 +1,27 @@
+@import "~ui/styles/theme.less";
+@import "~ui/styles/mixins.less";
+
+.listContainer {
+  .list {
+    display: grid;
+    grid-template-columns: repeat(3, calc(33.33% - 8px));
+    grid-template-rows: auto;
+    gap: 12px;
+
+    .play {
+      margin-left: auto;
+    }
+
+    .listItemContent {
+      .row();
+    }
+
+    & > * {
+      max-width: unset !important;
+    }
+  }
+
+  &:not(:last-of-type) {
+    margin-bottom: 24px;
+  }
+}

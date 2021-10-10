@@ -126,6 +126,13 @@ export const useGuitarStringsFilters = () => {
     });
   };
 
+  const updateHiddenPositions = (positions: NotePosition[]): void => {
+    applyFilters({
+      ...filters,
+      hiddenPositions: positions,
+    });
+  };
+
   const toggleOctavesDisplayed = (): void => {
     applyFilters({ ...filters, octavesDisplayed: !filters.octavesDisplayed });
   };
@@ -141,6 +148,7 @@ export const useGuitarStringsFilters = () => {
       updateTuning,
       applyFilters,
       updateScale,
+      updateHiddenPositions,
       toggleOctavesDisplayed,
     },
   ] as const;

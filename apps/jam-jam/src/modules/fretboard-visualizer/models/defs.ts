@@ -171,3 +171,18 @@ export interface NamedGuitarStringsFilters {
   name: string;
   filters: GuitarStringsFilters;
 }
+
+export enum ChordType {
+  Major = "Major",
+  Minor = "Minor",
+  Diminished = "Diminished",
+  Augmented = "Augmented",
+}
+
+export interface Chord {
+  id: string;
+  rootPosition: NotePosition;
+  positions: NotePosition[];
+  type: ChordType;
+  postFix: string;
+}

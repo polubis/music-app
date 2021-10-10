@@ -80,3 +80,8 @@ export const getOctavesFromPositions = (
 
   return octaves;
 };
+
+export const createNotePosition = (value: number): NotePosition =>
+  isNotePosition(value)
+    ? value
+    : ((value - LAST_NOTE_POSITION - 1) as NotePosition);

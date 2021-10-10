@@ -2,7 +2,6 @@ import {
   NotePosition,
   Scale,
   NOTES_POSITIONS,
-  LAST_NOTE_POSITION,
   ScaleType,
   KeyedScale,
   ScaleInterval,
@@ -10,7 +9,7 @@ import {
   KeyedNamedScale,
   NoteNotation,
 } from "./defs";
-import { getNoteName, isNotePosition } from "./note";
+import { createNotePosition, getNoteName } from "./note";
 
 const slicePattern = (pattern: ScaleInterval[]): ScaleInterval[] => {
   const length = pattern.length;
@@ -77,12 +76,6 @@ export const SCALES: Scale[] = [
     "Locrian bb7",
   ]),
 ];
-
-const createNotePosition = (value: number): NotePosition => {
-  return isNotePosition(value)
-    ? value
-    : ((value - LAST_NOTE_POSITION - 1) as NotePosition);
-};
 
 export const createKeyedScale = (
   key: NotePosition,

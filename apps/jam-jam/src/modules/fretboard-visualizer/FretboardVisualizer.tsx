@@ -13,6 +13,7 @@ import {
   NotePosition,
   getOctavesFromPositions,
   findScaleByHiddenPositions,
+  Chord,
 } from "./models";
 import { Fretboard, NoteButton } from "./components";
 import { Switch, Slider, Typography, Form, Tooltip, Image } from "antd";
@@ -30,6 +31,7 @@ import {
   TuningPicker,
   ScalePicker,
 } from "./components";
+import { ChordsByNotesPicker } from "./components/ChordsByNotesPicker";
 
 const { Title, Text } = Typography;
 const { Item } = Form;
@@ -47,6 +49,7 @@ const FretboardVisualizer = () => {
       updateTuning,
       updateScale,
       applyFilters,
+      updateHiddenPositions,
       toggleOctavesDisplayed,
     },
   ] = useGuitarStringsFilters();
@@ -74,6 +77,19 @@ const FretboardVisualizer = () => {
     const octaves = getOctavesFromPositions(positions);
     playMany(
       positions.map((position, idx) => ({
+        position,
+        id: idx,
+        octave: octaves[idx],
+        name: getNoteName(filters.notation, position),
+        notation: filters.notation,
+      }))
+    );
+  };
+
+  const handlePlayChord = (chord: Chord): void => {
+    const octaves = getOctavesFromPositions(chord.positions);
+    playMany(
+      chord.positions.map((position, idx) => ({
         position,
         id: idx,
         octave: octaves[idx],
@@ -123,6 +139,12 @@ const FretboardVisualizer = () => {
               alt="JamJam logo"
               preview={false}
               src="logo64.png"
+            />
+            <ChordsByNotesPicker
+              notation={filters.notation}
+              hiddenPositions={filters.hiddenPositions}
+              onPlayChord={handlePlayChord}
+              onChange={updateHiddenPositions}
             />
             <LanguageSelect />
             <Changelog />

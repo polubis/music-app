@@ -1,12 +1,7 @@
 import { Button, Tooltip } from "antd";
 import { useToggle } from "dk";
 
-import {
-  getNoteName,
-  KeyedNamedScale,
-  NoteNotation,
-  NotePosition,
-} from "../models";
+import { KeyedNamedScale, NoteNotation, NotePosition } from "../models";
 import { useTranslation } from "react-i18next";
 import loadable from "@loadable/component";
 
@@ -36,15 +31,7 @@ const ScalePicker = ({
 
   return (
     <div className={className}>
-      <Tooltip
-        title={
-          usedScale
-            ? `${t("Current scale")}: ${usedScale.type}, ${t(
-                "key of"
-              )}: ${getNoteName(notation, usedScale.key)}`
-            : t("Displays scales on fretboard")
-        }
-      >
+      <Tooltip title={t("Displays scales on fretboard")}>
         <Button type="primary" onClick={open}>
           {t("Scales")}
         </Button>
