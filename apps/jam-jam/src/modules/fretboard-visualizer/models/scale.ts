@@ -7,8 +7,10 @@ import {
   KeyedScale,
   ScaleInterval,
   ScaleMode,
+  KeyedNamedScale,
+  NoteNotation,
 } from "./defs";
-import { isNotePosition } from "./note";
+import { getNoteName, isNotePosition } from "./note";
 
 const slicePattern = (pattern: ScaleInterval[]): ScaleInterval[] => {
   const length = pattern.length;
@@ -74,55 +76,38 @@ export const SCALES: Scale[] = [
     "Lydian augmented #2",
     "Locrian bb7",
   ]),
-  createScale([2, 1, 2, 1, 2, 1, 2, 1], ScaleType.Diminished, [
-    "Diminished",
-    "Inverted diminished",
-  ]),
-  createScale([2, 1, 2, 1, 2, 1, 2, 1], ScaleType.WholeTone, ["Whole tone"]),
-  createScale([3, 1, 3, 1, 3, 1], ScaleType.Augmented, [
-    "Augmented",
-    "Inverted augmented",
-  ]),
-  createScale([3, 2, 2, 3, 2], ScaleType.Pentatonic, [
-    "Pentatonic 1",
-    "Pentatonic 2",
-    "Pentatonic 3",
-    "Pentatonic 4",
-    "Pentatonic 5",
-  ]),
-  createScale([1, 4, 2, 1, 4], ScaleType.Hemitonic, [
-    "Hemitonic 1",
-    "Hemitonic 2",
-    "Hemitonic 3",
-    "Hemitonic 4",
-    "Hemitonic 5",
-  ]),
 ];
+
+const createNotePosition = (value: number): NotePosition => {
+  return isNotePosition(value)
+    ? value
+    : ((value - LAST_NOTE_POSITION - 1) as NotePosition);
+};
 
 export const createKeyedScale = (
   key: NotePosition,
   { pattern, type, modes }: Scale,
   mode: ScaleMode
 ): KeyedScale => {
-  const foundPositionIdx = NOTES_POSITIONS.findIndex(
-    (position) => position === key
+  const foundModeIdx = modes.findIndex(
+    (currMode) => currMode.name === mode.name
   );
 
-  if (foundPositionIdx === -1) {
-    throw new Error("createScale() [CANNOT_FIND_POSITION]");
+  if (foundModeIdx === -1) {
+    throw new Error("createScale() [CANNOT_FIND_MODE]");
   }
 
-  const positions: NotePosition[] = [key];
-  let currPosition = key;
+  const intervalsSum = pattern
+    .filter((_, idx) => idx < foundModeIdx)
+    .reduce((acc, interval) => interval + acc, 0);
+
+  let position = createNotePosition(key + intervalsSum);
+  const positions = [position];
 
   for (let i = 0; i < mode.pattern.length; i++) {
-    const nextPosition = currPosition + mode.pattern[i];
-
-    currPosition = isNotePosition(nextPosition)
-      ? nextPosition
-      : ((nextPosition - LAST_NOTE_POSITION - 1) as NotePosition);
-
-    positions.push(currPosition);
+    const nextPosition = position + mode.pattern[i];
+    position = createNotePosition(nextPosition);
+    positions.push(position);
   }
 
   return {
@@ -132,4 +117,45 @@ export const createKeyedScale = (
     positions,
     modes,
   };
+};
+
+const getAllPosibileKeyedScales = (): KeyedScale[] => {
+  const positions: KeyedScale[] = [];
+
+  for (let i = 0; i < NOTES_POSITIONS.length; i++) {
+    for (let j = 0; j < SCALES.length; j++) {
+      const scale = SCALES[j];
+      scale.modes.forEach((mode) => {
+        positions.push(createKeyedScale(NOTES_POSITIONS[i], scale, mode));
+      });
+    }
+  }
+
+  return positions;
+};
+
+export const ALL_POSIBLE_KEYED_SCALES = getAllPosibileKeyedScales();
+
+export const findScaleByHiddenPositions = (
+  notation: NoteNotation,
+  hiddenPositions: NotePosition[]
+): KeyedNamedScale | undefined => {
+  const positionsToCompare = NOTES_POSITIONS.filter(
+    (p) => !hiddenPositions.includes(p)
+  );
+  positionsToCompare.push(positionsToCompare[0]);
+  const positionsToCompareAsStr = positionsToCompare.join("");
+
+  const foundScale = ALL_POSIBLE_KEYED_SCALES.find(
+    (scale) => scale.positions.join("") === positionsToCompareAsStr
+  );
+
+  return foundScale
+    ? {
+        ...foundScale,
+        notesNames: foundScale.positions.map((position) =>
+          getNoteName(notation, position)
+        ),
+      }
+    : undefined;
 };

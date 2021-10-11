@@ -15,14 +15,17 @@ import {
   ScaleMode,
   SCALE_INTERVAL_NOTATION_DICT,
   getOctavesFromPositions,
+  KeyedNamedScale,
 } from "../models";
 
 import css from "./ScalePickerModal.module.less";
 import { PlayManyButton } from "./PlayManyButton";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 interface ScalePickerModalProps {
   notation: NoteNotation;
+  usedScale: KeyedNamedScale | undefined;
   hiddenPositions: NotePosition[];
   onOk: () => void;
   onChange: (positions: NotePosition[]) => void;
@@ -70,6 +73,7 @@ const ScalePickerModal = ({
   notation,
   onCancel,
   hiddenPositions,
+  usedScale,
   onOk,
   onChange,
   onPlay,
@@ -77,11 +81,19 @@ const ScalePickerModal = ({
   const { t } = useTranslation();
 
   const memoizedHiddenPositions = useMemo(() => hiddenPositions, []);
-  const [formData, setFormData] = useState<ScalePickerModalFormData>({
-    key: FIRST_NOTE_POSITION,
-    type: ScaleType.Major,
-    modeName: SCALES[0].modes[0].name,
-  });
+  const [formData, setFormData] = useState<ScalePickerModalFormData>(
+    usedScale
+      ? {
+          key: usedScale.key,
+          type: usedScale.type,
+          modeName: usedScale.modes[0].name
+        }
+      : {
+          key: FIRST_NOTE_POSITION,
+          type: ScaleType.Major,
+          modeName: SCALES[0].modes[0].name,
+        }
+  );
   const [pickedScale, setPickedScale] = useState(pickScale(formData));
 
   const handleKeyChange = (key: NotePosition): void => {
@@ -128,10 +140,19 @@ const ScalePickerModal = ({
     onCancel();
   };
 
+  const handleOk = (): void => {
+    onChange(pickedScale.positions);
+    onOk();
+  };
+
   const octaves = useMemo(
     () => getOctavesFromPositions(pickedScale.positions),
     [pickedScale]
   );
+
+  useEffect(() => {
+    onChange(pickedScale.positions);
+  }, []);
 
   return (
     <Modal
@@ -139,11 +160,11 @@ const ScalePickerModal = ({
       visible
       okText={t("Apply")}
       cancelText={t("Cancel")}
-      onOk={onOk}
+      onOk={handleOk}
       onCancel={handleCancel}
     >
       <Form layout="vertical">
-        <Item label={t("ScaleKey")}>
+        <Item label={t("Scale key")}>
           <Select
             value={formData.key}
             style={{ width: "100%" }}
@@ -156,7 +177,7 @@ const ScalePickerModal = ({
             ))}
           </Select>
         </Item>
-        <Item label={t("ScaleType")}>
+        <Item label={t("Scale type")}>
           <Select
             value={formData.type}
             style={{ width: "100%" }}
@@ -169,7 +190,7 @@ const ScalePickerModal = ({
             ))}
           </Select>
         </Item>
-        <Item label={t("ScaleMode")}>
+        <Item label={t("Scale mode")}>
           <div style={{ display: "flex" }}>
             <Select
               value={formData.modeName}
@@ -203,12 +224,13 @@ const ScalePickerModal = ({
           </div>
         </Item>
 
-        <Item label={`${t("HowScalesWorks")}?`}>
+        <Item label={`${t("How scales works")}?`}>
           <Link
+            rel="nofollow"
             href="https://www.youtube.com/watch?v=Vq2xt2D3e3E&t=881s"
             target="_blank"
           >
-            {t("ScalesTutorialBy")} NewJazz
+            {t("Scales tutorial by")} NewJazz
           </Link>
         </Item>
       </Form>

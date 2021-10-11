@@ -1,15 +1,11 @@
-import { Suspense } from "react";
-import ReactDOM from "react-dom";
-
-import { LoadingLanguageFallback } from "components";
+import { render } from "react-snapshot";
 
 import { App } from "./App";
 
 import "./i18n";
 
-ReactDOM.render(
-  <Suspense fallback={<LoadingLanguageFallback />}>
-    <App />
-  </Suspense>,
-  document.getElementById("root")
-);
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+
+render(<App />, document.getElementById("root"));
+
+serviceWorkerRegistration.register();
