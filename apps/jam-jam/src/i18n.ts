@@ -4,19 +4,22 @@ import { initReactI18next } from "react-i18next";
 import Backend from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 
-const backend = new Backend({
-  loadPath: "/translations/{{lng}}.json",
-});
+export const SUPPORTED_LNGS = ["en", "pl"];
+export const [ENG_LNG] = SUPPORTED_LNGS;
 
 i18n
-  .use(backend)
+  .use(new Backend())
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: "en",
+    fallbackLng: ENG_LNG,
+    supportedLngs: SUPPORTED_LNGS,
     debug: false,
     interpolation: {
       escapeValue: false,
+    },
+    react: {
+      useSuspense: false,
     },
   });
 

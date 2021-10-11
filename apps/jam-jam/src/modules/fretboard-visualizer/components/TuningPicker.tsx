@@ -1,3 +1,4 @@
+import loadable from "@loadable/component";
 import { Button, Tooltip } from "antd";
 import { useToggle } from "dk";
 import { useTranslation } from "react-i18next";
@@ -7,8 +8,6 @@ import {
   DescribedGuitarStringTuning,
 } from "../models";
 
-import { TuningPickerModal } from "./TuningPickerModal";
-
 export interface TuningPickerProps {
   className?: string;
   notation: NoteNotation;
@@ -17,6 +16,10 @@ export interface TuningPickerProps {
   onChange: (tuning: GuitarStringTuning[]) => void;
   onPlay: () => void;
 }
+
+const TuningPickerModal = loadable(() => import("./TuningPickerModal"), {
+  resolveComponent: (imported) => imported.TuningPickerModal,
+});
 
 const TuningPicker = ({
   className = "",
@@ -31,7 +34,7 @@ const TuningPicker = ({
 
   return (
     <div className={className}>
-      <Tooltip title={t("TuningTooltip")}>
+      <Tooltip title={t("Allows to customize guitar tuning")}>
         <Button type="primary" onClick={open}>
           {t("Tuning")}
         </Button>

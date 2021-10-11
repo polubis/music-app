@@ -29,7 +29,7 @@ const SavedFilters = ({ filters, onApply }: SavedFiltersProps) => {
         {savedFiltersList.length > 0 ? (
           <>
             <header className={css.tileHeader}>
-              <Title level={5}>{t("SavedFilters")}</Title>
+              <Title level={5}>{t("Saved filters")}</Title>
               <Button
                 type="primary"
                 disabled={areSavedFiltersUsed}
@@ -47,7 +47,7 @@ const SavedFilters = ({ filters, onApply }: SavedFiltersProps) => {
                   onClose={(e) => e.preventDefault()}
                   closeIcon={
                     <Popconfirm
-                      title={`${t("AreYouSureToDelete")} ${savedFilters.name}`}
+                      title={t("Are you sure to delete these filters") + '?'}
                       onConfirm={() => removeFilters(savedFilters.name)}
                       okText={t("Yes")}
                       cancelText={t("No")}
@@ -73,7 +73,7 @@ const SavedFilters = ({ filters, onApply }: SavedFiltersProps) => {
             }}
             description={
               <Text className={css.noSavedFilters}>
-                {t("NoSavedFiltersYet")}?
+                {t("No saved filters yet")}?
               </Text>
             }
           >
@@ -82,7 +82,7 @@ const SavedFilters = ({ filters, onApply }: SavedFiltersProps) => {
               disabled={areSavedFiltersUsed}
               onClick={saveFilters}
             >
-              {t("SaveFilters")}
+              {t("Save filters")}
             </Button>
           </Empty>
         )}

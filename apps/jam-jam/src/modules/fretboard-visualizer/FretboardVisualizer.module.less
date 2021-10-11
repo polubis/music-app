@@ -7,7 +7,7 @@
   min-height: 100vh;
 
   .layout {
-    padding: 24px 24px 12px 24px;
+    padding: 20px 20px 12px 20px;
 
     @media @desktop {
       width: 1120px;
@@ -17,14 +17,13 @@
     .header {
       .row();
 
-      & > h2 {
+      & > :first-child {
         margin: 0 auto 0 0;
-        color: @white;
       }
 
       & > :last-child {
         margin-left: 20px;
-      }      
+      }
     }
 
     .filters {
@@ -47,9 +46,15 @@
           margin-right: 16px;
         }
 
+        .pickedScale {
+          margin-top: 12px;
+          display: block;
+          color: @white;
+        }
+
         .settingsForm {
           margin-top: 24px;
-          
+
           .item {
             margin-bottom: 4px;
           }
