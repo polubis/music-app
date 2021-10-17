@@ -9,6 +9,7 @@ import {
   getNoteName,
   NoteNotation,
   NotePosition,
+  NOTES_POSITIONS,
 } from "../models";
 import {
   AUGMENTED_CHORDS,
@@ -136,14 +137,15 @@ const ChordsByNotesPickerModal = ({
     const isChord = (chord: Chord | undefined): chord is Chord =>
       chord !== undefined;
 
-    setPickedChords(newPickedChords);
-    onChange(
-      uniq(
-        Object.values(newPickedChords)
-          .filter(isChord)
-          .flatMap((chord) => chord.positions)
-      )
+    const unique = uniq(
+      Object.values(newPickedChords)
+        .filter(isChord)
+        .flatMap((chord) => chord.positions)
     );
+
+    setPickedChords(newPickedChords);
+
+    onChange(NOTES_POSITIONS.filter((pos) => !unique.includes(pos)));
   };
 
   const handlePlayChord = (chord: Chord): void => {

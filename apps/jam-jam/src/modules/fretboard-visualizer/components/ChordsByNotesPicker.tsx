@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { Chord, NoteNotation, NotePosition } from "../models";
 
 interface ChordsByNotesPickerProps {
-  className?: string;
   notation: NoteNotation;
   hiddenPositions: NotePosition[];
   onChange: (positions: NotePosition[]) => void;
@@ -20,7 +19,6 @@ const ChordsByNotesPickerModal = loadable(
 );
 
 const ChordsByNotesPicker = ({
-  className = "",
   notation,
   hiddenPositions,
   onChange,
@@ -30,7 +28,7 @@ const ChordsByNotesPicker = ({
   const { t } = useTranslation();
 
   return (
-    <div className={className}>
+    <>
       <Button type="primary" onClick={open}>
         {t("Pick notes by chords")}
       </Button>
@@ -45,7 +43,7 @@ const ChordsByNotesPicker = ({
           onPlayChord={onPlayChord}
         />
       )}
-    </div>
+    </>
   );
 };
 

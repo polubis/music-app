@@ -16,7 +16,7 @@ import {
   Chord,
 } from "./models";
 import { Fretboard, NoteButton } from "./components";
-import { Switch, Slider, Typography, Form, Tooltip, Image } from "antd";
+import { Switch, Slider, Typography, Form, Tooltip, Image, Button } from "antd";
 import { SoundOutlined, FontSizeOutlined } from "@ant-design/icons";
 import { Helmet } from "react-helmet";
 
@@ -51,6 +51,7 @@ const FretboardVisualizer = () => {
       applyFilters,
       updateHiddenPositions,
       toggleOctavesDisplayed,
+      unselectAll,
     },
   ] = useGuitarStringsFilters();
 
@@ -140,15 +141,21 @@ const FretboardVisualizer = () => {
               preview={false}
               src="logo64.png"
             />
+            <LanguageSelect />
+            <Changelog />
+          </header>
+
+          <section className={css.section}>
+            <Button type="primary" onClick={unselectAll}>
+              {t("Unselect all")}
+            </Button>
             <ChordsByNotesPicker
               notation={filters.notation}
               hiddenPositions={filters.hiddenPositions}
               onPlayChord={handlePlayChord}
               onChange={updateHiddenPositions}
             />
-            <LanguageSelect />
-            <Changelog />
-          </header>
+          </section>
 
           <section className={css.filters}>
             <div className={css.tile}>

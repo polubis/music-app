@@ -127,6 +127,7 @@ export const useGuitarStringsFilters = () => {
   };
 
   const updateHiddenPositions = (positions: NotePosition[]): void => {
+    console.log(positions);
     applyFilters({
       ...filters,
       hiddenPositions: positions,
@@ -135,6 +136,10 @@ export const useGuitarStringsFilters = () => {
 
   const toggleOctavesDisplayed = (): void => {
     applyFilters({ ...filters, octavesDisplayed: !filters.octavesDisplayed });
+  };
+
+  const unselectAll = (): void => {
+    applyFilters({ ...filters, hiddenPositions: [...NOTES_POSITIONS] });
   };
 
   return [
@@ -150,6 +155,7 @@ export const useGuitarStringsFilters = () => {
       updateScale,
       updateHiddenPositions,
       toggleOctavesDisplayed,
+      unselectAll,
     },
   ] as const;
 };
