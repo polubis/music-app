@@ -201,7 +201,7 @@ const FretboardVisualizer = () => {
                     onChange={updateFretsCount}
                   />
                 </Item>
-                <Item label={t("Visible frets")} className={css.item}>
+                <Item label={t("Visible notes")} className={css.item}>
                   <Slider
                     min={MIN_NOTES_COUNT}
                     max={filters.notesCount}

@@ -44,10 +44,7 @@ const generateGuitarStrings = (
 
   strings.forEach((string) => {
     string.notes.forEach((note, noteIdx) => {
-      note.hidden =
-        noteIdx === 0
-          ? false
-          : positionsDict[note.position] || !(noteIdx >= from && noteIdx <= to);
+      note.hidden = positionsDict[note.position] || !(noteIdx >= from && noteIdx <= to);
     });
   });
 
@@ -127,7 +124,6 @@ export const useGuitarStringsFilters = () => {
   };
 
   const updateHiddenPositions = (positions: NotePosition[]): void => {
-    console.log(positions);
     applyFilters({
       ...filters,
       hiddenPositions: positions,
