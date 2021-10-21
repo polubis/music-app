@@ -132,9 +132,13 @@ export type GroupedDescribedGuitarTunings = Record<
 
 export enum ScaleType {
   Major = "Major",
+  NaturalMinor = "Natural minor",
   MelodicMinor = "Melodic minor",
   HarmonicMinor = "Harmonic minor",
   HarmonicMajor = "Harmonic major",
+  Augmented = "Augmented",
+  Diminished = "Diminished",
+  WholeTone = "Whole tone",
 }
 
 export interface ScaleMode {
@@ -184,5 +188,5 @@ export interface Chord {
   rootPosition: NotePosition;
   positions: NotePosition[];
   type: ChordType;
-  postFix: string;
+  symbol: string;
 }

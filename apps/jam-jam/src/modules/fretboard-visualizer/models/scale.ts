@@ -40,40 +40,60 @@ const createScale = (
 
 export const SCALES: Scale[] = [
   createScale([2, 2, 1, 2, 2, 2, 1], ScaleType.Major, [
-    "Ionian",
+    "Ionian (Major)",
     "Dorian",
     "Phrygian",
     "Lydian",
     "Mixolydian",
-    "Natural minor",
+    "Aeolian (Natural minor)",
     "Locrian",
+  ]),
+  createScale([2, 1, 2, 2, 1, 2, 2], ScaleType.NaturalMinor, [
+    "Aeolian (Natural minor)",
+    "Locrian",
+    "Ionian (Major)",
+    "Dorian",
+    "Phrygian",
+    "Lydian",
+    "Mixolydian",
   ]),
   createScale([2, 1, 2, 2, 2, 2, 1], ScaleType.MelodicMinor, [
     "Melodic minor",
-    "Dorian b2",
+    "Dorian b2 (Phrygian #6)",
     "Lydian augmented",
     "Lydian dominant",
-    "Aeolian dominant",
-    "Half diminished",
-    "Alternate",
+    "Mixolydian b6",
+    "Aeolian b5 (Locrian #2)",
+    "Altered scale (Super Locrian)",
   ]),
   createScale([2, 1, 2, 2, 1, 3, 1], ScaleType.HarmonicMinor, [
     "Harmonic minor",
-    "Locrian 6",
-    "Major #5",
-    "Dorian #4",
+    "Locrian 13 (Locrian 6)",
+    "Ionian #5",
+    "Dorian #11 (Dorian #4)",
     "Phrygian dominant",
     "Lydian #2",
-    "Alternate dominant bb7",
+    "Super locrian bb7",
   ]),
   createScale([2, 2, 1, 2, 1, 3, 1], ScaleType.HarmonicMajor, [
-    "Harmonic major",
+    "Ionian b6 (Harmonic major)",
     "Dorian b5",
     "Phrygian b4",
     "Lydian b3",
     "Mixolydian b2",
-    "Lydian augmented #2",
+    "Lydian Augmented #2",
     "Locrian bb7",
+  ]),
+  createScale([3, 1, 3, 1, 3, 1], ScaleType.Augmented, [
+    "Augmented",
+    "Inverted augmented",
+  ]),
+  createScale([2, 1, 2, 1, 2, 1, 2, 1], ScaleType.Diminished, [
+    "Diminished (Whole tone)",
+    "Inverted diminished",
+  ]),
+  createScale([2, 1, 2, 1, 2, 1, 2, 1], ScaleType.WholeTone, [
+    "Whole tone (Diminished)",
   ]),
 ];
 
@@ -129,26 +149,24 @@ const getAllPosibileKeyedScales = (): KeyedScale[] => {
 
 export const ALL_POSIBLE_KEYED_SCALES = getAllPosibileKeyedScales();
 
-export const findScaleByHiddenPositions = (
+export const findScalesByHiddenPositions = (
   notation: NoteNotation,
   hiddenPositions: NotePosition[]
-): KeyedNamedScale | undefined => {
+): KeyedNamedScale[] => {
   const positionsToCompare = NOTES_POSITIONS.filter(
     (p) => !hiddenPositions.includes(p)
   );
   positionsToCompare.push(positionsToCompare[0]);
   const positionsToCompareAsStr = positionsToCompare.join("");
 
-  const foundScale = ALL_POSIBLE_KEYED_SCALES.find(
+  const foundScales = ALL_POSIBLE_KEYED_SCALES.filter(
     (scale) => scale.positions.join("") === positionsToCompareAsStr
-  );
+  ).map((foundScale) => ({
+    ...foundScale,
+    notesNames: foundScale.positions.map((position) =>
+      getNoteName(notation, position)
+    ),
+  }));
 
-  return foundScale
-    ? {
-        ...foundScale,
-        notesNames: foundScale.positions.map((position) =>
-          getNoteName(notation, position)
-        ),
-      }
-    : undefined;
+  return foundScales;
 };

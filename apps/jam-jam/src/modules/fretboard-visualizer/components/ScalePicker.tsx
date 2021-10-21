@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import loadable from "@loadable/component";
 
 interface ScalePickerProps {
-  className?: string;
   hiddenPositions: NotePosition[];
   notation: NoteNotation;
   usedScale: KeyedNamedScale | undefined;
@@ -20,7 +19,6 @@ const ScalePickerModal = loadable(() => import("./ScalePickerModal"), {
 
 const ScalePicker = ({
   hiddenPositions,
-  className = "",
   notation,
   usedScale,
   onChange,
@@ -30,10 +28,10 @@ const ScalePicker = ({
   const { t } = useTranslation();
 
   return (
-    <div className={className}>
+    <>
       <Tooltip title={t("Displays scales on fretboard")}>
         <Button type="primary" onClick={open}>
-          {t("Scales")}
+          {t("Pick notes by scales")}
         </Button>
       </Tooltip>
 
@@ -48,7 +46,7 @@ const ScalePicker = ({
           onPlay={onPlay}
         />
       )}
-    </div>
+    </>
   );
 };
 

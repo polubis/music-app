@@ -10,7 +10,7 @@ import { createNotePosition } from "./note";
 const createChord = (
   pattern: ScaleInterval[],
   type: ChordType,
-  postFix: string
+  symbol: string
 ): Chord[] => {
   const chords: Chord[] = [];
 
@@ -27,7 +27,7 @@ const createChord = (
     chords.push({
       rootPosition: NOTES_POSITIONS[i],
       positions,
-      postFix,
+      symbol,
       type,
       id: i + type,
     });
@@ -36,7 +36,7 @@ const createChord = (
   return chords;
 };
 
-export const MAJOR_CHORDS = createChord([4, 3], ChordType.Major, "");
-export const MINOR_CHORDS = createChord([3, 4], ChordType.Minor, "");
-export const DIMINISHED_CHORDS = createChord([3, 3], ChordType.Diminished, "");
-export const AUGMENTED_CHORDS = createChord([4, 4], ChordType.Augmented, "");
+export const MAJOR_CHORDS = createChord([4, 3], ChordType.Major, "major");
+export const MINOR_CHORDS = createChord([3, 4], ChordType.Minor, "minor");
+export const DIMINISHED_CHORDS = createChord([3, 3], ChordType.Diminished, "°");
+export const AUGMENTED_CHORDS = createChord([4, 4], ChordType.Augmented, "+");

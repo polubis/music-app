@@ -59,8 +59,11 @@ const ChordsList = (
                 checked={!!pickedChords[chord.id]}
                 onChange={() => onChordClick(chord)}
               >
-                {getNoteName(notation, chord.rootPosition)}
-                {chord.postFix} {t(type)}
+                {getNoteName(notation, chord.rootPosition)}{" "}
+                {chord.type === ChordType.Major ||
+                chord.type === ChordType.Minor
+                  ? t(chord.type)
+                  : chord.symbol}
               </Checkbox>
             }
           >

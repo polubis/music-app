@@ -12,11 +12,20 @@ import {
   getNoteName,
   NotePosition,
   getOctavesFromPositions,
-  findScaleByHiddenPositions,
+  findScalesByHiddenPositions,
   Chord,
 } from "./models";
 import { Fretboard, NoteButton } from "./components";
-import { Switch, Slider, Typography, Form, Tooltip, Image, Button } from "antd";
+import {
+  Switch,
+  Slider,
+  Typography,
+  Form,
+  Tooltip,
+  Image,
+  Button,
+  Tag,
+} from "antd";
 import { SoundOutlined, FontSizeOutlined } from "@ant-design/icons";
 import { Helmet } from "react-helmet";
 
@@ -109,10 +118,13 @@ const FretboardVisualizer = () => {
     }
   }, []);
 
-  const usedScale = useMemo(
-    () => findScaleByHiddenPositions(filters.notation, filters.hiddenPositions),
+  const usedScales = useMemo(
+    () =>
+      findScalesByHiddenPositions(filters.notation, filters.hiddenPositions),
     [filters]
   );
+
+  const usedScale = usedScales.length > 0 ? usedScales[0] : undefined;
 
   return (
     <>
@@ -154,6 +166,13 @@ const FretboardVisualizer = () => {
               hiddenPositions={filters.hiddenPositions}
               onPlayChord={handlePlayChord}
               onChange={updateHiddenPositions}
+            />
+            <ScalePicker
+              notation={filters.notation}
+              hiddenPositions={filters.hiddenPositions}
+              onChange={updateScale}
+              usedScale={usedScale}
+              onPlay={handleScalePlay}
             />
           </section>
 
@@ -217,15 +236,6 @@ const FretboardVisualizer = () => {
               <header className={css.tileHeader}>
                 <Title level={5}>{t("Notes")}</Title>
 
-                <ScalePicker
-                  notation={filters.notation}
-                  className={css.scalePicker}
-                  hiddenPositions={filters.hiddenPositions}
-                  onChange={updateScale}
-                  usedScale={usedScale}
-                  onPlay={handleScalePlay}
-                />
-
                 <Tooltip title={t("Shows/hides octaves numbers in notes")}>
                   <Switch
                     className={css.switch}
@@ -258,12 +268,13 @@ const FretboardVisualizer = () => {
                 ))}
               </div>
 
-              <Text className={css.pickedScale}>
-                {usedScale &&
-                  `${t("Current scale")}: ${usedScale.type}, ${t(
-                    "key of"
-                  )}: ${getNoteName(filters.notation, usedScale.key)}`}
-              </Text>
+              <div className={css.pickedScales}>
+                {usedScales.map((scale, idx) => (
+                  <Tag color="volcano" key={idx}>
+                    {getNoteName(filters.notation, scale.key)} {scale.type}
+                  </Tag>
+                ))}
+              </div>
             </div>
 
             <SavedFilters filters={filters} onApply={applyFilters} />

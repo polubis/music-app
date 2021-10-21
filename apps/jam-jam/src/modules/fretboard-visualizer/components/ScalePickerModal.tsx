@@ -156,7 +156,7 @@ const ScalePickerModal = ({
 
   return (
     <Modal
-      title={t("Scales")}
+      title={t("Pick notes by scales")}
       visible
       okText={t("Apply")}
       cancelText={t("Cancel")}

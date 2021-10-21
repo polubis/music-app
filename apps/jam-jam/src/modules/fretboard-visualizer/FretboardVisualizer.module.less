@@ -31,18 +31,18 @@
       justify-content: flex-end;
       margin-top: 24px;
 
-      & > :first-child {
-        margin: 0 12px 0 0;
+      & > :nth-child(2) {
+        margin: 0 12px 0 12px;
       }
 
-      @media @mobile {
+      @media @tabletDown {
         .col();
 
         & > * {
           width: 100%;
 
-          &:first-child {
-            margin: 0 0 12px 0;
+          &:nth-child(2) {
+            margin: 12px 0 12px 0;
           }
         }
       }
@@ -63,15 +63,12 @@
         background: @fillPrimary;
         border: 1px solid @black;
 
-        .scalePicker,
         .tuningPicker {
           margin-right: 16px;
         }
 
-        .pickedScale {
+        .pickedScales {
           margin-top: 12px;
-          display: block;
-          color: @white;
         }
 
         .settingsForm {
