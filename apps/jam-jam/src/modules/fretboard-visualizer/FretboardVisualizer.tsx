@@ -42,7 +42,7 @@ import {
 } from "./components";
 import { ChordsByNotesPicker } from "./components/ChordsByNotesPicker";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const { Item } = Form;
 
 const FretboardVisualizer = () => {
