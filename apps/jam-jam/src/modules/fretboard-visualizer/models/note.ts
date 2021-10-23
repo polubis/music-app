@@ -21,7 +21,7 @@ type PickNoteNotation<T extends NoteNotation> = T extends NoteNotation.Sharp
   : BNoteName;
 
 export const DEFAULT_NUMBER_OF_NOTES = 24;
-export const MIN_NOTES_COUNT = 1;
+export const MIN_NOTES_COUNT = 0;
 export const MAX_NOTES_COUNT = 27;
 export const DEFAULT_NOTES_RANGE: NotesRange = [
   MIN_NOTES_COUNT,
@@ -80,3 +80,8 @@ export const getOctavesFromPositions = (
 
   return octaves;
 };
+
+export const createNotePosition = (value: number): NotePosition =>
+  isNotePosition(value)
+    ? value
+    : ((value - LAST_NOTE_POSITION - 1) as NotePosition);

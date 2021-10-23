@@ -132,9 +132,13 @@ export type GroupedDescribedGuitarTunings = Record<
 
 export enum ScaleType {
   Major = "Major",
+  NaturalMinor = "Natural minor",
   MelodicMinor = "Melodic minor",
   HarmonicMinor = "Harmonic minor",
   HarmonicMajor = "Harmonic major",
+  Augmented = "Augmented",
+  Diminished = "Diminished",
+  WholeTone = "Whole tone",
 }
 
 export interface ScaleMode {
@@ -170,4 +174,19 @@ export const SCALE_INTERVAL_NOTATION_DICT: Record<
 export interface NamedGuitarStringsFilters {
   name: string;
   filters: GuitarStringsFilters;
+}
+
+export enum ChordType {
+  Major = "Major",
+  Minor = "Minor",
+  Diminished = "Diminished",
+  Augmented = "Augmented",
+}
+
+export interface Chord {
+  id: string;
+  rootPosition: NotePosition;
+  positions: NotePosition[];
+  type: ChordType;
+  symbol: string;
 }

@@ -44,10 +44,7 @@ const generateGuitarStrings = (
 
   strings.forEach((string) => {
     string.notes.forEach((note, noteIdx) => {
-      note.hidden =
-        noteIdx === 0
-          ? false
-          : positionsDict[note.position] || !(noteIdx >= from && noteIdx <= to);
+      note.hidden = positionsDict[note.position] || !(noteIdx >= from && noteIdx <= to);
     });
   });
 
@@ -126,8 +123,19 @@ export const useGuitarStringsFilters = () => {
     });
   };
 
+  const updateHiddenPositions = (positions: NotePosition[]): void => {
+    applyFilters({
+      ...filters,
+      hiddenPositions: positions,
+    });
+  };
+
   const toggleOctavesDisplayed = (): void => {
     applyFilters({ ...filters, octavesDisplayed: !filters.octavesDisplayed });
+  };
+
+  const unselectAll = (): void => {
+    applyFilters({ ...filters, hiddenPositions: [...NOTES_POSITIONS] });
   };
 
   return [
@@ -141,7 +149,9 @@ export const useGuitarStringsFilters = () => {
       updateTuning,
       applyFilters,
       updateScale,
+      updateHiddenPositions,
       toggleOctavesDisplayed,
+      unselectAll,
     },
   ] as const;
 };
