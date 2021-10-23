@@ -22,7 +22,29 @@
       }
 
       & > :last-child {
-        margin-left: 20px;
+        margin-left: 12px;
+      }
+    }
+
+    .section {
+      .row();
+      justify-content: flex-end;
+      margin-top: 24px;
+
+      & > :nth-child(2) {
+        margin: 0 12px 0 12px;
+      }
+
+      @media @tabletDown {
+        .col();
+
+        & > * {
+          width: 100%;
+
+          &:nth-child(2) {
+            margin: 12px 0 12px 0;
+          }
+        }
       }
     }
 
@@ -32,7 +54,7 @@
       gap: 12px;
 
       @media @desktop {
-        grid-template-columns: 400px 340px 310px;
+        grid-template-columns: 400px 340px 318px;
       }
 
       .tile {
@@ -41,15 +63,12 @@
         background: @fillPrimary;
         border: 1px solid @black;
 
-        .scalePicker,
         .tuningPicker {
           margin-right: 16px;
         }
 
-        .pickedScale {
+        .pickedScales {
           margin-top: 12px;
-          display: block;
-          color: @white;
         }
 
         .settingsForm {
@@ -87,13 +106,20 @@
         .notes {
           .wrap();
           margin: 24px auto 0 0;
-          gap: 8px;
 
           @media @desktop {
-            grid-template-columns: repeat(6, auto);
-            grid-template-rows: auto;
-            display: grid;
-            gap: 12px;
+            justify-content: space-between;
+
+            & > * {
+              &:nth-child(6),
+              &:nth-child(12) {
+                margin: 0 0 6px 0;
+              }
+            }
+          }
+
+          & > * {
+            margin: 0 6px 6px 0;
           }
         }
       }
