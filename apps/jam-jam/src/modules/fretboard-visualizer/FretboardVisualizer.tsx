@@ -14,6 +14,7 @@ import {
   getOctavesFromPositions,
   findScalesByHiddenPositions,
   Chord,
+  GROUPED_CHORDS,
 } from "./models";
 import { Fretboard, NoteButton } from "./components";
 import {
@@ -124,7 +125,34 @@ const FretboardVisualizer = () => {
     [filters]
   );
 
-  const usedScale = usedScales.length > 0 ? usedScales[0] : undefined;
+  const usedScale = useMemo(
+    () => (usedScales.length > 0 ? usedScales[0] : undefined),
+    [usedScales]
+  );
+
+  const foundScaleChords = useMemo(
+    () =>
+      usedScale
+        ? GROUPED_CHORDS.map((group) => ({
+            ...group,
+            chords: group.chords.filter((chord) =>
+              usedScale.positions.every((position) =>
+                chord.positions.includes(position)
+              )
+            ),
+          }))
+        : undefined,
+    [usedScale]
+  );
+
+  console.log(foundScaleChords);
+
+  // C major
+
+  // Start from root note -> C
+  // Take notes from lower strings
+  // If shape is taken remove all notes from shape to left expect previously taken root note
+  console.log(strings);
 
   return (
     <>

@@ -10,13 +10,9 @@ import {
   NoteNotation,
   NotePosition,
   NOTES_POSITIONS,
+  GROUPED_CHORDS,
 } from "../models";
-import {
-  AUGMENTED_CHORDS,
-  DIMINISHED_CHORDS,
-  MAJOR_CHORDS,
-  MINOR_CHORDS,
-} from "../models/chord";
+
 import { PlayManyButton } from "./PlayManyButton";
 
 import css from "./ChordsByNotesPickerModal.module.less";
@@ -83,30 +79,6 @@ const ChordsList = (
     </div>
   );
 };
-
-interface GroupedChord {
-  type: ChordType;
-  chords: Chord[];
-}
-
-const GROUPED_CHORDS: GroupedChord[] = [
-  {
-    chords: MAJOR_CHORDS,
-    type: ChordType.Major,
-  },
-  {
-    chords: MINOR_CHORDS,
-    type: ChordType.Minor,
-  },
-  {
-    chords: AUGMENTED_CHORDS,
-    type: ChordType.Augmented,
-  },
-  {
-    chords: DIMINISHED_CHORDS,
-    type: ChordType.Diminished,
-  },
-];
 
 const ChordsByNotesPickerModal = ({
   notation,
