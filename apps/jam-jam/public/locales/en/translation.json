@@ -85,5 +85,7 @@
   "Improve user experience in fretboard visualizer module": "Improve user experience in fretboard visualizer module",
   "Add additional visualization of scales and chords": "Add additional visualization of scales and chords",
   "Add 2v2 fretboard visualization game": "Add 2v2 fretboard visualization game",
-  "Add perfect pitch game": "Add perfect pitch game"
+  "Add perfect pitch game": "Add perfect pitch game",
+  "Add chords which can be used in selected scale": "Add chords which can be used in selected scale",
+  "Add chords shapes visualization": "Add chords shapes visualization"
 }
