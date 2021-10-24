@@ -126,6 +126,13 @@ const FretboardVisualizer = () => {
 
   const usedScale = usedScales.length > 0 ? usedScales[0] : undefined;
 
+  // C major
+
+  // Start from root note -> C
+  // Take notes from lower strings
+  // If shape is taken remove all notes from shape to left expect previously taken root note
+  console.log(strings);
+
   return (
     <>
       <Helmet>
