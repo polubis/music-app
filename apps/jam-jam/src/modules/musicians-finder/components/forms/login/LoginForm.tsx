@@ -5,13 +5,14 @@ import { useAuth } from "providers/auth-provider";
 import { Button, Input } from "antd";
 
 export const LoginForm = () => {
+    const { logIn, setUserData, userData } = useAuth();
+    const [isLoading, setIsLoading] = useState(false)
+
     const [data, setData] = useState<LoginData>({
         nickname: '',
         password: '',
     });
-    const [isLoading, setIsLoading] = useState(false)
 
-    const { logIn, setUserData, userData } = useAuth();
 
     const onChangeHandler = (value: string, key: keyof LoginData) => {
         setData({
@@ -29,8 +30,10 @@ export const LoginForm = () => {
 
         if (isValidForm) {
             setIsLoading(true)
+
             await logIn(data).then((res) => {
                 const data: UserData = res.data.data;
+                console.log(data)
                 setUserData(data)
             }).catch((error) => {
                 if (error.response) {
@@ -43,10 +46,6 @@ export const LoginForm = () => {
             console.log("is invalid"); //alert implementation needed
         }
     };
-
-    const action = () => {
-        console.log(userData)
-    }
 
     return (
         <div className={css.form}>
@@ -69,7 +68,6 @@ export const LoginForm = () => {
                     Confirm
                 </Button>
             </div>
-            <Button onClick={action}>Action</Button>
         </div>
     );
 };

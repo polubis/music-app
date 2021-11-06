@@ -5,13 +5,14 @@ import { useAuth } from "providers/auth-provider";
 import { Button, Input } from "antd";
 
 export const RegisterForm = () => {
+  const { register } = useAuth();
+
+  const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState<LoginData>({
     nickname: '',
     password: '',
     email: '',
   });
-  const [isLoading, setIsLoading] = useState(false)
-  const { register } = useAuth();
 
   const onChangeHandler = (value: string, key: keyof LoginData) => {
     setData({
@@ -29,6 +30,7 @@ export const RegisterForm = () => {
 
     if (isValidForm) {
       setIsLoading(true)
+
       await register(data).catch((error) => {
         if (error.response) {
           console.log(error.response.data);
