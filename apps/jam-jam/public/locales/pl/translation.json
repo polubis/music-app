@@ -87,5 +87,11 @@
   "Add 2v2 fretboard visualization game": "Dodanie możliwości rywalizacji do gry uczącej dźwięków",
   "Add perfect pitch game": "Dodanie nowego trybu - treningu słuchu",
   "Add chords which can be used in selected scale": "Wyświetlanie akordów do dobranej skali",
-  "Add chords shapes visualization": "Dodanie opalcowania akordów"
+  "Add chords shapes visualization": "Dodanie opalcowania akordów",
+
+  "Found scales": "Znalezione skale",
+  "Found scale": "Znaleziona skala",
+  "Chords built on a scale steps": "Akordy zbudowane na stopniach skali",
+  "Other chords": "Pozostałe akordy",
+  "This feature is temporary disabled": "Ta funkcjonalność jest tymczasowo wyłączona"
 }

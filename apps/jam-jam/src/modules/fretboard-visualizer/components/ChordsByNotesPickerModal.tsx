@@ -10,7 +10,6 @@ import {
   NoteNotation,
   NotePosition,
   NOTES_POSITIONS,
-  GROUPED_CHORDS,
 } from "../models";
 
 import { PlayManyButton } from "./PlayManyButton";
@@ -18,6 +17,7 @@ import { PlayManyButton } from "./PlayManyButton";
 import css from "./ChordsByNotesPickerModal.module.less";
 import { useMemo } from "react";
 import { uniq } from "lodash";
+import { GROUPED_CHORDS } from "../models/chord";
 
 interface ChordsByNotesPickerModalProps {
   notation: NoteNotation;

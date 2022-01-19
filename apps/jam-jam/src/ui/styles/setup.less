@@ -1,4 +1,5 @@
 @import "./theme.less";
+@import "./mixins.less";
 
 * {
   box-sizing: border-box;
@@ -14,4 +15,25 @@ body {
 
 html {
   font-size: 62.5%;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: @fillSecondary;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: @fillPrimary;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(@fillPrimary, 0.9);
 }

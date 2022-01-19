@@ -1,0 +1,64 @@
+@import "~ui/styles/theme.less";
+@import "~ui/styles/mixins.less";
+@import "~ui/styles/media.less";
+
+.root {
+  padding: 24px;
+
+  @media @desktop {
+    padding: 48px 140px;
+  }
+
+  & > header {
+    .row();
+
+    .title {
+      color: @white;
+      margin-bottom: 0;
+    }
+
+    .tags {
+      margin-left: 12px;
+    }
+  }
+
+  .section {
+    margin-top: 18px;
+
+    .title {
+      color: @white;
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    justify-content: center;
+    grid-gap: 20px;
+    width: 100%;
+
+    .card {
+      background: @fillPrimary;
+      border: 1px solid @black;
+      color: @white;
+
+      & > *:first-child {
+        border-bottom-color: @black;
+      }
+
+      .checkbox {
+        color: @white;
+      }
+    }
+
+    & > * {
+      .listItemContent {
+        .row();
+      }
+
+      .play {
+        margin-left: auto;
+      }
+    }
+  }
+}

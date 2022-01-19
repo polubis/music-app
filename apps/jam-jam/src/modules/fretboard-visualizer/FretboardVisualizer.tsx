@@ -14,19 +14,9 @@ import {
   getOctavesFromPositions,
   findScalesByHiddenPositions,
   Chord,
-  GROUPED_CHORDS,
 } from "./models";
-import { Fretboard, NoteButton } from "./components";
-import {
-  Switch,
-  Slider,
-  Typography,
-  Form,
-  Tooltip,
-  Image,
-  Button,
-  Tag,
-} from "antd";
+import { ChordsGrid, Fretboard, NoteButton } from "./components";
+import { Switch, Slider, Typography, Form, Tooltip, Image, Button } from "antd";
 import { SoundOutlined, FontSizeOutlined } from "@ant-design/icons";
 import { Helmet } from "react-helmet";
 
@@ -42,6 +32,7 @@ import {
   ScalePicker,
 } from "./components";
 import { ChordsByNotesPicker } from "./components/ChordsByNotesPicker";
+import { findChordsByPositions } from "./models/chord";
 
 const { Title } = Typography;
 const { Item } = Form;
@@ -130,29 +121,12 @@ const FretboardVisualizer = () => {
     [usedScales]
   );
 
-  const foundScaleChords = useMemo(
-    () =>
-      usedScale
-        ? GROUPED_CHORDS.map((group) => ({
-            ...group,
-            chords: group.chords.filter((chord) =>
-              usedScale.positions.every((position) =>
-                chord.positions.includes(position)
-              )
-            ),
-          }))
-        : undefined,
+  const chordsFromScale = useMemo(
+    () => (usedScale ? findChordsByPositions(usedScale.positions) : []),
     [usedScale]
   );
 
-  console.log(foundScaleChords);
-
-  // C major
-
-  // Start from root note -> C
-  // Take notes from lower strings
-  // If shape is taken remove all notes from shape to left expect previously taken root note
-  console.log(strings);
+  console.log(chordsFromScale);
 
   return (
     <>
@@ -295,14 +269,6 @@ const FretboardVisualizer = () => {
                   />
                 ))}
               </div>
-
-              <div className={css.pickedScales}>
-                {usedScales.map((scale, idx) => (
-                  <Tag color="volcano" key={idx}>
-                    {getNoteName(filters.notation, scale.key)} {scale.type}
-                  </Tag>
-                ))}
-              </div>
             </div>
 
             <SavedFilters filters={filters} onApply={applyFilters} />
@@ -315,6 +281,19 @@ const FretboardVisualizer = () => {
           strings={strings}
           onNoteClick={handleFretboardNoteClick}
         />
+
+        {chordsFromScale.length > 0 && (
+          <>
+            <ChordsGrid
+              chords={chordsFromScale}
+              notation={filters.notation}
+              usedScales={usedScales}
+              pickedChords={{}}
+              onChordClick={() => {}}
+              onPlayNoteClick={handlePlayChord}
+            />
+          </>
+        )}
       </div>
     </>
   );
