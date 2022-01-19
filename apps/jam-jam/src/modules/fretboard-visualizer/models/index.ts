@@ -8,4 +8,3 @@ export * from "./guitarStringTuning";
 export * from "./scale";
 export * from "./useGuitarStringsFiltersSave";
 export * from "./useNotesPlay";
-export * from "./chord";

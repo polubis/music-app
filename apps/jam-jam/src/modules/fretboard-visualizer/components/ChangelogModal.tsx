@@ -53,7 +53,6 @@ const ChangelogModal = ({ onOk, onCancel }: ChangelogModalProps) => {
         <Timeline.Item color="blue">
           <p>{t("Add option to log in and create account")}</p>
           <p>{t("Add chords which can be used in selected scale")}</p>
-          <p>{t("Add new chords types and scales")}</p>
         </Timeline.Item>
         <Timeline.Item color="blue">
           <p>{t("Apply new design")}</p>

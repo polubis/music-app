@@ -40,7 +40,10 @@ const Fretboard = ({
     >
       <div className={css.fretboard}>
         {frets.map((notes, fretIdx) => (
-          <div key={fretIdx} className={css.fret}>
+          <div
+            key={fretIdx}
+            className={`${css.fret} ${MARKERS[fretIdx] ? css.markedFret : ""}`}
+          >
             {notes.map((note) => (
               <NoteButton
                 className={css.note}

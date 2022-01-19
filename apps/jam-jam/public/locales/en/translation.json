@@ -87,5 +87,10 @@
   "Add 2v2 fretboard visualization game": "Add 2v2 fretboard visualization game",
   "Add perfect pitch game": "Add perfect pitch game",
   "Add chords which can be used in selected scale": "Add chords which can be used in selected scale",
-  "Add chords shapes visualization": "Add chords shapes visualization"
+  "Add chords shapes visualization": "Add chords shapes visualization",
+
+  "Found scales": "Found scales",
+  "Found scale": "Found scale",
+  "Chords built on a scale steps": "Chords built on a scale",
+  "Other chords": "Other chords"
 }

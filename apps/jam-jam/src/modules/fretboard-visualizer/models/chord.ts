@@ -4,15 +4,15 @@ import {
   ChordType,
   NotePosition,
   ScaleInterval,
-  Finger,
   GroupedChord,
+  ChordSymbol,
 } from "./defs";
 import { createNotePosition } from "./note";
 
 const createChord = (
   pattern: ScaleInterval[],
   type: ChordType,
-  symbol: string
+  symbol: ChordSymbol
 ): Chord[] => {
   const chords: Chord[] = [];
 
@@ -62,29 +62,15 @@ export const GROUPED_CHORDS: GroupedChord[] = [
   },
 ];
 
-// export const getChordsVariants = (chord: Chord, shapes: string[]) => {};
+export const ALL_CHORDS = [
+  ...MAJOR_CHORDS,
+  ...MINOR_CHORDS,
+  ...DIMINISHED_CHORDS,
+  ...AUGMENTED_CHORDS,
+];
 
-// const createFingersRow = (): [Finger, Finger, Finger, Finger] => {
-//   return [1, 2, 3, 1];
-// };
-
-// const C_MAJOR = MAJOR_CHORDS[0];
-// const guitarStrings = null;
-
-// getChordsVariants(guitarStrings, C_MAJOR, [
-//   [1, "-", "-", "-"],
-//   [1, "-", "-", "-"],
-//   [1, "-", "-", "-"],
-//   ["-", "-", 4, "-"],
-//   ["-", "-", 3, "-"],
-//   [1, "-", "-", "-"],
-// ]) => {
-//   // NOTE_POSITIONS and guitar strings but only with given range
-// }
-
-// [0, null, null, null],
-// [0, null, null, null],
-// [0, null, null, null],
-// [0, null, 3, null],
-// [0, null, 2, null],
-// [0, null, null, null],
+export const findChordsByPositions = (positions: NotePosition[]): Chord[] => {
+  return ALL_CHORDS.filter((chord) =>
+    chord.positions.every((position) => positions.includes(position))
+  );
+};

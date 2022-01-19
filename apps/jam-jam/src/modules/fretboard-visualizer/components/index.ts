@@ -5,3 +5,5 @@ export * from "./TuningPicker";
 export * from "./ScalePicker";
 export * from "./SavedFilters";
 export * from "./PlayManyButton";
+export * from "./ChordsByNotesPickerModal";
+export * from "./ChordsGrid";

@@ -52,10 +52,6 @@ export type NoteOctave = typeof NOTES_OCTAVES[number];
 export type ScaleInterval = typeof SCALE_INTERVALS[number];
 export type ScaleIntervalNotation = typeof SCALE_INTERVALS_NOTATION[number];
 
-export interface Ignoreable {
-  ignored?: boolean;
-}
-
 export interface Hideable {
   hidden?: boolean;
 }
@@ -66,28 +62,7 @@ export interface Identified {
 
 export type NotePosition = typeof NOTES_POSITIONS[number];
 
-export type MutedString = "x";
-
-export type OpenNote = 0;
-
-export type IgnoredNote = "-";
-
-export type Finger = 1 | 2 | 3 | 4;
-
-export type ChordVisualizationRecord =
-  | IgnoredNote
-  | MutedString
-  | OpenNote
-  | Finger;
-
-export type ChordVisualizationSet = [
-  ChordVisualizationRecord,
-  ChordVisualizationRecord,
-  ChordVisualizationRecord,
-  ChordVisualizationRecord
-];
-
-export interface Note extends Identified, Hideable, Ignoreable {
+export interface Note extends Identified, Hideable {
   octave: number; // 0 - 7 - 8 octaves on piano
   name: NoteName; // C - B or second notation
   position: NotePosition; // 0 - 11 - 12 notes
@@ -208,12 +183,14 @@ export enum ChordType {
   Augmented = "Augmented",
 }
 
+export type ChordSymbol = "minor" | "major" | "+" | "°";
+
 export interface Chord {
   id: string;
   rootPosition: NotePosition;
   positions: NotePosition[];
   type: ChordType;
-  symbol: string;
+  symbol: ChordSymbol;
 }
 
 export interface GroupedChord {
