@@ -183,10 +183,17 @@ export enum ChordType {
   Augmented = "Augmented",
 }
 
+export type ChordSymbol = "minor" | "major" | "+" | "°";
+
 export interface Chord {
   id: string;
   rootPosition: NotePosition;
   positions: NotePosition[];
   type: ChordType;
-  symbol: string;
+  symbol: ChordSymbol;
+}
+
+export interface GroupedChord {
+  type: ChordType;
+  chords: Chord[];
 }

@@ -15,17 +15,8 @@ import {
   findScalesByHiddenPositions,
   Chord,
 } from "./models";
-import { Fretboard, NoteButton } from "./components";
-import {
-  Switch,
-  Slider,
-  Typography,
-  Form,
-  Tooltip,
-  Image,
-  Button,
-  Tag,
-} from "antd";
+import { ChordsGrid, Fretboard, NoteButton } from "./components";
+import { Switch, Slider, Typography, Form, Tooltip, Image, Button } from "antd";
 import { SoundOutlined, FontSizeOutlined } from "@ant-design/icons";
 import { Helmet } from "react-helmet";
 
@@ -41,6 +32,7 @@ import {
   ScalePicker,
 } from "./components";
 import { ChordsByNotesPicker } from "./components/ChordsByNotesPicker";
+import { findChordsByPositions } from "./models/chord";
 
 const { Title } = Typography;
 const { Item } = Form;
@@ -124,7 +116,17 @@ const FretboardVisualizer = () => {
     [filters]
   );
 
-  const usedScale = usedScales.length > 0 ? usedScales[0] : undefined;
+  const usedScale = useMemo(
+    () => (usedScales.length > 0 ? usedScales[0] : undefined),
+    [usedScales]
+  );
+
+  const chordsFromScale = useMemo(
+    () => (usedScale ? findChordsByPositions(usedScale.positions) : []),
+    [usedScale]
+  );
+
+  console.log(chordsFromScale);
 
   return (
     <>
@@ -267,14 +269,6 @@ const FretboardVisualizer = () => {
                   />
                 ))}
               </div>
-
-              <div className={css.pickedScales}>
-                {usedScales.map((scale, idx) => (
-                  <Tag color="volcano" key={idx}>
-                    {getNoteName(filters.notation, scale.key)} {scale.type}
-                  </Tag>
-                ))}
-              </div>
             </div>
 
             <SavedFilters filters={filters} onApply={applyFilters} />
@@ -287,6 +281,19 @@ const FretboardVisualizer = () => {
           strings={strings}
           onNoteClick={handleFretboardNoteClick}
         />
+
+        {chordsFromScale.length > 0 && (
+          <>
+            <ChordsGrid
+              chords={chordsFromScale}
+              notation={filters.notation}
+              usedScales={usedScales}
+              pickedChords={{}}
+              onChordClick={() => {}}
+              onPlayNoteClick={handlePlayChord}
+            />
+          </>
+        )}
       </div>
     </>
   );
