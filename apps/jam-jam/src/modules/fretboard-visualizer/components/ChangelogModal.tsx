@@ -47,18 +47,19 @@ const ChangelogModal = ({ onOk, onCancel }: ChangelogModalProps) => {
           <p>{t("Add octave pick on tuning change")}</p>
           <p>{t("Add highlight of picked scale")}</p>
           <p>{t("Improve fretboard user experience")}</p>
+          <p>{t("Add option to pick chords on fretboard")}</p>
+          <p>{t("Add option to play chords in speakers")}</p>
         </Timeline.Item>
         <Timeline.Item color="blue">
           <p>{t("Add option to log in and create account")}</p>
-          <p>{t("Improve initial load performance")}</p>
-          <p>{t("Add option to pick chords on fretboard")}</p>
-          <p>{t("Add option to play chords in speakers")}</p>
+          <p>{t("Add chords which can be used in selected scale")}</p>
         </Timeline.Item>
         <Timeline.Item color="blue">
           <p>{t("Apply new design")}</p>
           <p>{t("Create fretboard visualization game")}</p>
           <p>{t("Improve user experience in fretboard visualizer module")}</p>
           <p>{t("Add additional visualization of scales and chords")}</p>
+          <p>{t("Add chords shapes visualization")}</p>
         </Timeline.Item>
         <Timeline.Item color="blue">
           <p>{t("Add 2v2 fretboard visualization game")}</p>

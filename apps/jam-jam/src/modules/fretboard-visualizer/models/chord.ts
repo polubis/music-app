@@ -4,13 +4,15 @@ import {
   ChordType,
   NotePosition,
   ScaleInterval,
+  GroupedChord,
+  ChordSymbol,
 } from "./defs";
 import { createNotePosition } from "./note";
 
 const createChord = (
   pattern: ScaleInterval[],
   type: ChordType,
-  symbol: string
+  symbol: ChordSymbol
 ): Chord[] => {
   const chords: Chord[] = [];
 
@@ -40,3 +42,35 @@ export const MAJOR_CHORDS = createChord([4, 3], ChordType.Major, "major");
 export const MINOR_CHORDS = createChord([3, 4], ChordType.Minor, "minor");
 export const DIMINISHED_CHORDS = createChord([3, 3], ChordType.Diminished, "°");
 export const AUGMENTED_CHORDS = createChord([4, 4], ChordType.Augmented, "+");
+
+export const GROUPED_CHORDS: GroupedChord[] = [
+  {
+    chords: MAJOR_CHORDS,
+    type: ChordType.Major,
+  },
+  {
+    chords: MINOR_CHORDS,
+    type: ChordType.Minor,
+  },
+  {
+    chords: AUGMENTED_CHORDS,
+    type: ChordType.Augmented,
+  },
+  {
+    chords: DIMINISHED_CHORDS,
+    type: ChordType.Diminished,
+  },
+];
+
+export const ALL_CHORDS = [
+  ...MAJOR_CHORDS,
+  ...MINOR_CHORDS,
+  ...DIMINISHED_CHORDS,
+  ...AUGMENTED_CHORDS,
+];
+
+export const findChordsByPositions = (positions: NotePosition[]): Chord[] => {
+  return ALL_CHORDS.filter((chord) =>
+    chord.positions.every((position) => positions.includes(position))
+  );
+};
