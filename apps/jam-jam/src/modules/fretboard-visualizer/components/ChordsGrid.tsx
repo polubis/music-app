@@ -5,7 +5,7 @@ import {
   ChordType,
   KeyedNamedScale,
 } from "../models";
-import { Card, Typography, Checkbox, Tag } from "antd";
+import { Card, Typography, Checkbox, Tag, Tooltip } from "antd";
 
 import css from "./ChordsGrid.module.less";
 import { useTranslation } from "react-i18next";
@@ -145,18 +145,20 @@ const ChordsGrid = ({
               className={css.card}
               size="small"
               title={
-                <Checkbox
-                  className={css.checkbox}
-                  checked={!!pickedChords[chord.id]}
-                  onChange={() => onChordClick(chord)}
-                >
-                  {getNoteName(notation, chord.rootPosition)}{" "}
-                  {chord.type === ChordType.Major ||
-                  chord.type === ChordType.Minor
-                    ? t(chord.type)
-                    : chord.symbol}
-                  <ChordInScaleSymbol symbol={chord.symbol} value={idx} />
-                </Checkbox>
+                <Tooltip title={t("This feature is temporary disabled")}>
+                  <Checkbox
+                    className={css.checkbox}
+                    checked={!!pickedChords[chord.id]}
+                    onChange={() => onChordClick(chord)}
+                  >
+                    {getNoteName(notation, chord.rootPosition)}{" "}
+                    {chord.type === ChordType.Major ||
+                    chord.type === ChordType.Minor
+                      ? t(chord.type)
+                      : chord.symbol}
+                    <ChordInScaleSymbol symbol={chord.symbol} value={idx} />
+                  </Checkbox>
+                </Tooltip>
               }
             >
               <div className={css.listItemContent}>
@@ -187,17 +189,19 @@ const ChordsGrid = ({
                 className={css.card}
                 size="small"
                 title={
-                  <Checkbox
-                    className={css.checkbox}
-                    checked={!!pickedChords[chord.id]}
-                    onChange={() => onChordClick(chord)}
-                  >
-                    {getNoteName(notation, chord.rootPosition)}{" "}
-                    {chord.type === ChordType.Major ||
-                    chord.type === ChordType.Minor
-                      ? t(chord.type)
-                      : chord.symbol}
-                  </Checkbox>
+                  <Tooltip title={t("This feature is temporary disabled")}>
+                    <Checkbox
+                      className={css.checkbox}
+                      checked={!!pickedChords[chord.id]}
+                      onChange={() => onChordClick(chord)}
+                    >
+                      {getNoteName(notation, chord.rootPosition)}{" "}
+                      {chord.type === ChordType.Major ||
+                      chord.type === ChordType.Minor
+                        ? t(chord.type)
+                        : chord.symbol}
+                    </Checkbox>
+                  </Tooltip>
                 }
               >
                 <div className={css.listItemContent}>
