@@ -48,7 +48,8 @@ const Fretboard = ({
           >
             {notes.map((note) => (
               <NoteButton
-                className={`${css.note} ${unclickable ? css.unclickable : ""}`}
+                className={css.note}
+                unclickable={unclickable}
                 uncolored={note.hidden}
                 ghosty={note.hidden}
                 octave={octavesDisplayed ? note.octave : undefined}

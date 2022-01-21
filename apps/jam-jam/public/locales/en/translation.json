@@ -97,5 +97,9 @@
 
   "Scale modes": "Scale modes",
   "Pattern": "Pattern",
-  "Show on fretboard": "Show on fretboard"
+  "Show on fretboard": "Show on fretboard",
+  "Enables or disables the automatic chord visualization": "Enables or disables the automatic chord visualization",
+  "Automatic chords visualization off": "Automatic chords visualization off",
+  "Automatic chords visualization on": "Automatic chords visualization on",
+  "At least one chord must be selected to use this option": "At least one chord must be selected to use this option"
 }

@@ -6,9 +6,11 @@ import {
   KeyedNamedScale,
   SCALE_INTERVAL_NOTATION_DICT,
   NotePosition,
-  PickedChords
+  MAX_ALLOWED_BPM,
+  MIN_ALLOWED_BPM,
+  PickedChords,
 } from "../models";
-import { Card, Typography, Checkbox, Tag, Tooltip } from "antd";
+import { Card, Typography, Checkbox, Tag, Tooltip, Switch, Slider } from "antd";
 
 import css from "./ChordsGrid.module.less";
 import { useTranslation } from "react-i18next";
@@ -16,6 +18,7 @@ import { PlayManyButton } from "./PlayManyButton";
 import { useEffect, useMemo, useState } from "react";
 import { uniq } from "lodash";
 import { ChordInScaleSymbol } from "./ChordInScaleSymbol";
+import { SwitchChangeEventHandler } from "antd/lib/switch";
 
 const { Title } = Typography;
 
@@ -24,8 +27,14 @@ interface ChordsGridProps {
   usedScales: KeyedNamedScale[];
   pickedChords: PickedChords;
   notation: NoteNotation;
+  automaticChords: boolean;
+  bpm: number;
+  automaticChordsChangeOff: boolean;
+  automaticChordsChangeLoading: boolean;
   onPlayNoteClick: (chord: Chord) => void;
+  onAutomaticChordsChange: SwitchChangeEventHandler;
   onChordClick: (chord: Chord) => void;
+  onBpmChange: (bpm: number) => void;
 }
 
 const takeScaleBaseChords = (
@@ -98,8 +107,14 @@ const ChordsGrid = ({
   pickedChords,
   notation,
   usedScales,
+  automaticChordsChangeLoading,
+  automaticChords,
+  bpm,
+  automaticChordsChangeOff,
   onPlayNoteClick,
+  onAutomaticChordsChange,
   onChordClick,
+  onBpmChange,
 }: ChordsGridProps) => {
   const [activeUsedScale, setActiveUsedScale] = useState<number>(-1);
 
@@ -179,9 +194,37 @@ const ChordsGrid = ({
       )}
 
       <section className={css.section}>
-        <Title className={css.title} level={5}>
-          {t("Chords built on a scale steps")}
-        </Title>
+        <div className={css.toolbox}>
+          <Title className={css.title} level={5}>
+            {t("Chords built on a scale steps")}
+          </Title>
+
+          <Tooltip
+            title={t(
+              automaticChordsChangeOff
+                ? "At least one chord must be selected to use this option"
+                : "Enables or disables the automatic chord visualization"
+            )}
+          >
+            <Switch
+              className={css.switch}
+              loading={automaticChordsChangeLoading}
+              disabled={automaticChordsChangeOff}
+              checked={automaticChords}
+              checkedChildren={t("Automatic chords visualization on")}
+              unCheckedChildren={t("Automatic chords visualization off")}
+              onChange={onAutomaticChordsChange}
+            />
+          </Tooltip>
+        </div>
+
+        <Slider
+          disabled={automaticChordsChangeLoading}
+          min={MIN_ALLOWED_BPM}
+          max={MAX_ALLOWED_BPM}
+          value={bpm}
+          onChange={onBpmChange}
+        />
 
         <div className={css.grid}>
           {baseScaleChords.map((chord, idx) => (
@@ -234,7 +277,7 @@ const ChordsGrid = ({
                 className={css.card}
                 size="small"
                 title={
-                  <Tooltip title={t("This feature is temporary disabled")}>
+                  <Tooltip title={t("Show on fretboard")}>
                     <Checkbox
                       className={css.checkbox}
                       checked={!!pickedChords[chord.id]}

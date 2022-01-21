@@ -199,3 +199,10 @@ export interface GroupedChord {
 }
 
 export type PickedChords = Record<string, Chord | undefined>;
+
+export const MIN_ALLOWED_BPM = 1;
+export const MAX_ALLOWED_BPM = 240;
+
+export interface AutomaticChordsVisualizationSettings {
+  bpm: number;
+}

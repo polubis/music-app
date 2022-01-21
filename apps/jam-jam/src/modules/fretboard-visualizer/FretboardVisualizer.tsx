@@ -14,6 +14,7 @@ import {
   getOctavesFromPositions,
   findScalesByHiddenPositions,
   Chord,
+  findChordsByPositions,
 } from "./models";
 import { ChordsGrid, Fretboard, NoteButton } from "./components";
 import { Switch, Slider, Typography, Form, Tooltip, Image, Button } from "antd";
@@ -32,7 +33,6 @@ import {
   ScalePicker,
 } from "./components";
 import { ChordsByNotesPicker } from "./components/ChordsByNotesPicker";
-import { findChordsByPositions } from "./models/chord";
 
 const { Title } = Typography;
 const { Item } = Form;
@@ -46,7 +46,10 @@ const FretboardVisualizer = () => {
       tunings,
       pickedChords,
       hasAtleastOnePickedChord,
+      automaticChordsVisualization,
       stringsByPickedChords,
+      preparingMetronome,
+      automaticChordsVisualizationSettings,
     },
     {
       toggleNotesNotation,
@@ -61,6 +64,9 @@ const FretboardVisualizer = () => {
       toggleOctavesDisplayed,
       unselectAll,
       pickChord,
+      toggleAutomaticChordsVisualization,
+      updateBpm,
+      toggleMetronome,
     },
   ] = useGuitarStringsFilters();
 
@@ -94,6 +100,11 @@ const FretboardVisualizer = () => {
         notation: filters.notation,
       }))
     );
+  };
+
+  const handleAutomaticChordsChange = (): void => {
+    toggleMetronome();
+    toggleAutomaticChordsVisualization();
   };
 
   const handlePlayChord = (chord: Chord): void => {
@@ -133,8 +144,6 @@ const FretboardVisualizer = () => {
     () => (usedScale ? findChordsByPositions(usedScale.positions) : []),
     [usedScale]
   );
-
-  console.log(chordsFromScale);
 
   return (
     <>
@@ -296,8 +305,14 @@ const FretboardVisualizer = () => {
               chords={chordsFromScale}
               notation={filters.notation}
               usedScales={usedScales}
+              automaticChordsChangeLoading={preparingMetronome}
+              automaticChordsChangeOff={!hasAtleastOnePickedChord}
               pickedChords={pickedChords}
               onChordClick={pickChord}
+              automaticChords={automaticChordsVisualization}
+              bpm={automaticChordsVisualizationSettings.bpm}
+              onBpmChange={updateBpm}
+              onAutomaticChordsChange={handleAutomaticChordsChange}
               onPlayNoteClick={handlePlayChord}
             />
           </>

@@ -20,6 +20,7 @@ interface NoteButtonProps
   position: NotePosition;
   notation: NoteNotation;
   uncolored?: boolean;
+  unclickable?: boolean;
   ghosty?: boolean;
   octave?: number;
 }
@@ -32,6 +33,7 @@ const NoteButton = ({
   ghosty,
   octave,
   position,
+  unclickable,
   ...props
 }: NoteButtonProps) => {
   return (
@@ -39,7 +41,7 @@ const NoteButton = ({
       {...props}
       className={`${css.btn} ${className} ${uncolored ? css.uncolored : ""} ${
         ghosty ? css.ghosty : ""
-      }`}
+      } ${unclickable ? css.unclickable : ""}`}
       style={{
         ...style,
         ...(uncolored ? {} : { background: NOTES_THEME[position] }),

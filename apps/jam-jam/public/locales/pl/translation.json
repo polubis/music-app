@@ -97,5 +97,9 @@
 
   "Scale modes": "Tryby skali",
   "Pattern": "Wzór",
-  "Show on fretboard": "Pokaż na gryfie"
+  "Show on fretboard": "Pokaż na gryfie",
+  "Enables or disables the automatic chord visualization": "Włącza lub wyłącza automatyczną wizualizacje akordów",
+  "Automatic chords visualization off": "Automatyczna wizualizacja akordów wyłączona",
+  "Automatic chords visualization on": "Automatyczne wizualizacja akordów włączona",
+  "At least one chord must be selected to use this option": "Musisz wybrać akordy, aby skorzystać z tej opcji"
 }

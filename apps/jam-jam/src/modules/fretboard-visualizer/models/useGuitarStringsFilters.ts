@@ -11,6 +11,7 @@ import {
   NOTES_POSITIONS,
   Chord,
   PickedChords,
+  AutomaticChordsVisualizationSettings,
 } from "./defs";
 import { getOppositeNotation } from "./notation";
 import {
@@ -21,6 +22,7 @@ import {
 import { DEFAULT_NUMBER_OF_NOTES, DEFAULT_NOTES_RANGE } from "./note";
 import { COMMON_TUNINGS } from "./guitarStringTuning";
 import { uniq } from "lodash";
+import { useMetronome } from "./useMetronome";
 
 const generateGuitarStrings = (
   filters: GuitarStringsFilters
@@ -67,9 +69,21 @@ const FILTERS: GuitarStringsFilters = {
 const STRINGS = generateGuitarStrings(FILTERS);
 
 export const useGuitarStringsFilters = () => {
+  const [automaticChordsVisualization, setAutomaticChordsVisualization] =
+    useState(false);
+  const [
+    automaticChordsVisualizationSettings,
+    setAutomaticChordsVisualizationSettings,
+  ] = useState<AutomaticChordsVisualizationSettings>({ bpm: 120 });
+  const [currentVisualizatedChord, setCurrentVisualizedChord] =
+    useState<Chord>();
+  const [prevPickedChords, setPrevPickedChords] = useState<PickedChords>({});
   const [pickedChords, setPickedChords] = useState<PickedChords>({});
   const [filters, setFilters] = useState(FILTERS);
   const [strings, setStrings] = useState(STRINGS);
+  const { tick, toggleMetronome, preparingMetronome } = useMetronome(
+    automaticChordsVisualizationSettings.bpm
+  );
 
   const applyFilters = (filters: GuitarStringsFilters): void => {
     setFilters(filters);
@@ -144,10 +158,23 @@ export const useGuitarStringsFilters = () => {
   };
 
   const pickChord = (chord: Chord): void => {
-    setPickedChords((prevPickedChords) => ({
-      ...prevPickedChords,
+    const newPickedChords = {
+      ...pickedChords,
       [chord.id]: prevPickedChords[chord.id] ? undefined : chord,
+    };
+    setPickedChords(newPickedChords);
+    setPrevPickedChords(newPickedChords);
+  };
+
+  const updateBpm = (bpm: number): void => {
+    setAutomaticChordsVisualizationSettings((prevSettings) => ({
+      ...prevSettings,
+      bpm,
     }));
+  };
+
+  const toggleAutomaticChordsVisualization = (): void => {
+    setAutomaticChordsVisualization((prevAutomatic) => !prevAutomatic);
   };
 
   const hasAtleastOnePickedChord = useMemo(
@@ -177,18 +204,59 @@ export const useGuitarStringsFilters = () => {
 
   useEffect(() => {
     setPickedChords({});
+    setPrevPickedChords({});
   }, [filters]);
+
+  // useEffect(() => {
+  //   if (!automaticChordsVisualization && currentVisualizatedChord) {
+  //     setCurrentVisualizedChord(undefined);
+  //     setPrevPickedChords(pickedChords);
+  //     setPickedChords(pickedChords);
+  //   }
+  // }, [pickedChords, currentVisualizatedChord, automaticChordsVisualization]);
+
+  useEffect(() => {
+    if (tick === 4) {
+      const chords = (
+        Object.values(prevPickedChords).filter((chord) => !!chord) as Chord[]
+      ).sort((a, b) => {
+        if (a.rootPosition > b.rootPosition) {
+          return 1;
+        }
+
+        if (a.rootPosition === b.rootPosition) {
+          return 0;
+        }
+
+        return -1;
+      });
+
+      console.log(chords);
+
+      const visualizedChordIdx = currentVisualizatedChord
+        ? chords.findIndex((chord) => chord.id === currentVisualizatedChord.id)
+        : -1;
+      const visualizedChord = chords[visualizedChordIdx + 1];
+
+      setCurrentVisualizedChord(visualizedChord);
+      setPickedChords({ [visualizedChord.id]: visualizedChord });
+    }
+  }, [tick, currentVisualizatedChord]);
 
   return [
     {
       strings,
       filters,
       tunings: COMMON_TUNINGS,
+      preparingMetronome,
       pickedChords,
       stringsByPickedChords,
       hasAtleastOnePickedChord,
+      automaticChordsVisualization,
+      automaticChordsVisualizationSettings,
     },
     {
+      toggleMetronome,
       toggleNotesNotation,
       toggleOrientation,
       toggleNotesHidden,
@@ -198,9 +266,11 @@ export const useGuitarStringsFilters = () => {
       applyFilters,
       updateScale,
       updateHiddenPositions,
+      toggleAutomaticChordsVisualization,
       toggleOctavesDisplayed,
       unselectAll,
       pickChord,
+      updateBpm,
     },
   ] as const;
 };
