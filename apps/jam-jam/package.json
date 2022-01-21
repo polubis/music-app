@@ -1,6 +1,6 @@
 {
   "name": "jam-jam",
-  "version": "1.0.4",
+  "version": "1.0.41",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.4",

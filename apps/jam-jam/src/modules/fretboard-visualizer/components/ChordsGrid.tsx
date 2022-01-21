@@ -4,6 +4,9 @@ import {
   NoteNotation,
   ChordType,
   KeyedNamedScale,
+  SCALE_INTERVAL_NOTATION_DICT,
+  NotePosition,
+  PickedChords
 } from "../models";
 import { Card, Typography, Checkbox, Tag, Tooltip } from "antd";
 
@@ -15,8 +18,6 @@ import { uniq } from "lodash";
 import { ChordInScaleSymbol } from "./ChordInScaleSymbol";
 
 const { Title } = Typography;
-
-type PickedChords = Record<string, Chord | undefined>;
 
 interface ChordsGridProps {
   chords: Chord[];
@@ -64,7 +65,6 @@ const pickOtherChords = (
   baseScaleChords: Chord[],
   chords: Chord[]
 ): Chord[] => {
-  console.log(baseScaleChords, chords);
   const newChords: Chord[] = [];
 
   for (let i = 0; i < chords.length; i++) {
@@ -80,6 +80,17 @@ const pickOtherChords = (
   }
 
   return newChords;
+};
+
+const swapPositionsByIdx = (
+  positions: NotePosition[],
+  idx: number
+): NotePosition[] => {
+  const unique = uniq(positions);
+  const head = unique.filter((_, currIdx) => currIdx >= idx);
+  const tail = unique.filter((pos) => !head.includes(pos));
+
+  return [...head, ...tail];
 };
 
 const ChordsGrid = ({
@@ -116,13 +127,14 @@ const ChordsGrid = ({
 
   return (
     <div className={css.root}>
-      <header>
+      <section className={css.section}>
         <Title className={css.title} level={3}>
           {t(usedScales.length > 1 ? "Found scales" : "Found scale")}
         </Title>
         <div className={css.tags}>
           {usedScales.map((scale, idx) => (
             <Tag
+              className={css.tag}
               color={activeUsedScale === idx ? "green" : "geekblue"}
               key={idx}
               onClick={() => setActiveUsedScale(idx)}
@@ -131,7 +143,40 @@ const ChordsGrid = ({
             </Tag>
           ))}
         </div>
-      </header>
+      </section>
+
+      {usedScales[activeUsedScale] && (
+        <section className={css.section}>
+          <Title className={css.title} level={5}>
+            {t("Scale modes")}
+          </Title>
+
+          <div className={css.flex}>
+            {usedScales[activeUsedScale].modes.map((mode, idx) => (
+              <Tooltip
+                key={mode.name}
+                title={
+                  t("Pattern") +
+                  ": " +
+                  mode.pattern.map(
+                    (pattern) => SCALE_INTERVAL_NOTATION_DICT[pattern]
+                  )
+                }
+              >
+                <Tag color="geekblue">
+                  {mode.name}{" "}
+                  {swapPositionsByIdx(
+                    usedScales[activeUsedScale].positions,
+                    idx
+                  )
+                    .map((position) => getNoteName(notation, position))
+                    .join(",")}
+                </Tag>
+              </Tooltip>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className={css.section}>
         <Title className={css.title} level={5}>
@@ -145,7 +190,7 @@ const ChordsGrid = ({
               className={css.card}
               size="small"
               title={
-                <Tooltip title={t("This feature is temporary disabled")}>
+                <Tooltip title={t("Show on fretboard")}>
                   <Checkbox
                     className={css.checkbox}
                     checked={!!pickedChords[chord.id]}

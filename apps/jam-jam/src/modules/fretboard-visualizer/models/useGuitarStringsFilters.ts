@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createGuitarStrings } from "./guitarString";
 import {
   NoteNotation,
@@ -9,6 +9,8 @@ import {
   NotesRange,
   GuitarStringTuning,
   NOTES_POSITIONS,
+  Chord,
+  PickedChords,
 } from "./defs";
 import { getOppositeNotation } from "./notation";
 import {
@@ -18,6 +20,7 @@ import {
 } from "./guitar";
 import { DEFAULT_NUMBER_OF_NOTES, DEFAULT_NOTES_RANGE } from "./note";
 import { COMMON_TUNINGS } from "./guitarStringTuning";
+import { uniq } from "lodash";
 
 const generateGuitarStrings = (
   filters: GuitarStringsFilters
@@ -44,7 +47,8 @@ const generateGuitarStrings = (
 
   strings.forEach((string) => {
     string.notes.forEach((note, noteIdx) => {
-      note.hidden = positionsDict[note.position] || !(noteIdx >= from && noteIdx <= to);
+      note.hidden =
+        positionsDict[note.position] || !(noteIdx >= from && noteIdx <= to);
     });
   });
 
@@ -63,6 +67,7 @@ const FILTERS: GuitarStringsFilters = {
 const STRINGS = generateGuitarStrings(FILTERS);
 
 export const useGuitarStringsFilters = () => {
+  const [pickedChords, setPickedChords] = useState<PickedChords>({});
   const [filters, setFilters] = useState(FILTERS);
   const [strings, setStrings] = useState(STRINGS);
 
@@ -138,8 +143,51 @@ export const useGuitarStringsFilters = () => {
     applyFilters({ ...filters, hiddenPositions: [...NOTES_POSITIONS] });
   };
 
+  const pickChord = (chord: Chord): void => {
+    setPickedChords((prevPickedChords) => ({
+      ...prevPickedChords,
+      [chord.id]: prevPickedChords[chord.id] ? undefined : chord,
+    }));
+  };
+
+  const hasAtleastOnePickedChord = useMemo(
+    () => Object.values(pickedChords).some((chord) => chord),
+    [pickedChords]
+  );
+
+  const stringsByPickedChords = useMemo(() => {
+    if (!hasAtleastOnePickedChord) {
+      return [];
+    }
+
+    const chords = Object.values(pickedChords).filter(
+      (chord) => chord !== undefined
+    ) as Chord[];
+
+    const positions = uniq(chords.flatMap((chord) => chord.positions));
+    const hiddenPositions = NOTES_POSITIONS.filter(
+      (position) => !positions.includes(position)
+    );
+
+    return generateGuitarStrings({
+      ...filters,
+      hiddenPositions,
+    });
+  }, [pickedChords, filters]);
+
+  useEffect(() => {
+    setPickedChords({});
+  }, [filters]);
+
   return [
-    { strings, filters, tunings: COMMON_TUNINGS },
+    {
+      strings,
+      filters,
+      tunings: COMMON_TUNINGS,
+      pickedChords,
+      stringsByPickedChords,
+      hasAtleastOnePickedChord,
+    },
     {
       toggleNotesNotation,
       toggleOrientation,
@@ -152,6 +200,7 @@ export const useGuitarStringsFilters = () => {
       updateHiddenPositions,
       toggleOctavesDisplayed,
       unselectAll,
+      pickChord,
     },
   ] as const;
 };
