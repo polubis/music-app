@@ -8,6 +8,7 @@ interface FretboardProps {
   leftHanded?: boolean;
   octavesDisplayed?: boolean;
   strings: GuitarString[];
+  unclickable?: boolean;
   onNoteClick?: (note: Note) => void;
 }
 
@@ -19,6 +20,7 @@ const Fretboard = ({
   className = "",
   leftHanded,
   octavesDisplayed,
+  unclickable,
   strings,
   onNoteClick = () => {},
 }: FretboardProps) => {
@@ -46,7 +48,7 @@ const Fretboard = ({
           >
             {notes.map((note) => (
               <NoteButton
-                className={css.note}
+                className={`${css.note} ${unclickable ? css.unclickable : ""}`}
                 uncolored={note.hidden}
                 ghosty={note.hidden}
                 octave={octavesDisplayed ? note.octave : undefined}

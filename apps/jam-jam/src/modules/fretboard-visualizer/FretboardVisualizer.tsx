@@ -40,7 +40,14 @@ const { Item } = Form;
 const FretboardVisualizer = () => {
   const { t } = useTranslation();
   const [
-    { strings, filters, tunings },
+    {
+      strings,
+      filters,
+      tunings,
+      pickedChords,
+      hasAtleastOnePickedChord,
+      stringsByPickedChords,
+    },
     {
       toggleNotesNotation,
       toggleOrientation,
@@ -53,14 +60,15 @@ const FretboardVisualizer = () => {
       updateHiddenPositions,
       toggleOctavesDisplayed,
       unselectAll,
+      pickChord,
     },
   ] = useGuitarStringsFilters();
 
   const { update, play, playMany, isEnabled, isEnabling } = useNotesPlay();
 
-  const handleFretboardNoteClick = (note: Note): void => {
+  const handleFretboardNoteClick = (note: Note, shouldToggle = true): void => {
     isEnabled && play(note);
-    toggleNotesHidden(note.position);
+    shouldToggle && toggleNotesHidden(note.position);
   };
 
   const handleTuningPlay = (): void => {
@@ -288,11 +296,21 @@ const FretboardVisualizer = () => {
               chords={chordsFromScale}
               notation={filters.notation}
               usedScales={usedScales}
-              pickedChords={{}}
-              onChordClick={() => {}}
+              pickedChords={pickedChords}
+              onChordClick={pickChord}
               onPlayNoteClick={handlePlayChord}
             />
           </>
+        )}
+
+        {hasAtleastOnePickedChord && (
+          <Fretboard
+            leftHanded={isLeftOrientation(filters.orientation)}
+            octavesDisplayed={filters.octavesDisplayed}
+            strings={stringsByPickedChords}
+            unclickable={!isEnabled}
+            onNoteClick={(note) => handleFretboardNoteClick(note, false)}
+          />
         )}
       </div>
     </>
