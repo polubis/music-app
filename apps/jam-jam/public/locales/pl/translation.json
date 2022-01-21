@@ -93,5 +93,9 @@
   "Found scale": "Znaleziona skala",
   "Chords built on a scale steps": "Akordy zbudowane na stopniach skali",
   "Other chords": "Pozostałe akordy",
-  "This feature is temporary disabled": "Ta funkcjonalność jest tymczasowo wyłączona"
+  "This feature is temporary disabled": "Ta funkcjonalność jest tymczasowo wyłączona",
+
+  "Scale modes": "Tryby skali",
+  "Pattern": "Wzór",
+  "Show on fretboard": "Pokaż na gryfie"
 }

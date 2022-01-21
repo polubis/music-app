@@ -197,3 +197,5 @@ export interface GroupedChord {
   type: ChordType;
   chords: Chord[];
 }
+
+export type PickedChords = Record<string, Chord | undefined>;

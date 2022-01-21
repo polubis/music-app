@@ -9,17 +9,8 @@
     padding: 48px 140px;
   }
 
-  & > header {
-    .row();
-
-    .title {
-      color: @white;
-      margin-bottom: 0;
-    }
-
-    .tags {
-      margin-left: 12px;
-    }
+  .tag {
+    cursor: pointer;
   }
 
   .section {
@@ -27,6 +18,14 @@
 
     .title {
       color: @white;
+    }
+
+    .flex {
+      .wrap();
+
+      & > * {
+        margin: 0 8px 8px 0;
+      }
     }
   }
 
