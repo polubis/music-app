@@ -4,7 +4,7 @@ import { CookiesProvider } from "react-cookie";
 import UserFormProvider from "providers/user-form-provider";
 import { Form } from "modules/musicians-finder/components/form/Form";
 import { Map } from "modules/musicians-finder/components/map/Map";
-import { FretboardVisualizer } from "modules/fretboard-visualizer";
+import FretboardVisualization from "modules/fretboard-visualization";
 
 import "./App.less";
 
@@ -15,7 +15,7 @@ export const App = () => {
         <Router>
           <Switch>
             <Route exact path="/">
-              <FretboardVisualizer />
+              <FretboardVisualization />
             </Route>
             <Route exact path="/form">
               <Form />

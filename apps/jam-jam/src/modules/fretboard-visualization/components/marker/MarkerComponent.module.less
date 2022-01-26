@@ -1,0 +1,29 @@
+@import "~ui/styles/theme.less";
+@import "~ui/styles/mixins.less";
+
+.marker {
+  .col();
+  align-items: center;
+  position: absolute;
+  bottom: -30px;
+  color: @white;
+
+  &.halfMarker {
+    bottom: -34px;
+
+    &::before {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border: 1px solid @appBg;
+    border-radius: 50%;
+    background: #6a6e70;
+    margin-bottom: 4px;
+  }
+}

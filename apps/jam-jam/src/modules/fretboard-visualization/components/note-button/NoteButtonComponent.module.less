@@ -1,0 +1,34 @@
+@import "~ui/styles/theme.less";
+@import "~ui/styles/mixins.less";
+
+button.btn {
+  .unselectable();
+  .centered();
+  border-radius: 50%;
+  border: 1px solid @appBg;
+  font-family: inherit;
+  font-size: 1.5rem;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+  font-weight: bold;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.24);
+  color: @appBg !important;
+
+  &.hidden {
+    opacity: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &.unavailable {
+    visibility: hidden;
+  }
+
+  .octave {
+    font-size: 1.2rem;
+    font-family: inherit;
+  }
+}
