@@ -1,0 +1,41 @@
+@import "~ui/styles/theme.less";
+@import "~ui/styles/mixins.less";
+
+.strings {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+
+  .string {
+    position: absolute;
+    background: #868686;
+    width: calc(100% - 32px);
+    right: 0;
+
+    .position-string(10);
+    .position-string(@n, @i: 1) when (@i =< @n) {
+      &:nth-of-type(@{i}) {
+        height: ~"@{i}px";
+
+        & when (@i > 1) {
+          @base: calc(((~"@{i}" * (12px + 40px)) - 20px));
+          top: calc(@base - @i / 2 * 1px);
+        }
+
+        & when (@i < 2) {
+          top: calc(12px + 20px);
+        }
+      }
+      .position-string(@n, (@i + 1));
+    }
+  }
+
+  &.rotated {
+    transform: rotate(180deg);
+
+    .string {
+      right: unset;
+      left: 0;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+@import "~ui/styles/theme.less";
+@import "~ui/styles/mixins.less";
+@import "~ui/styles/media.less";
+
+.container {
+  background: @appBg;
+  min-height: 100vh;
+
+  .layout {
+    padding: 100px 20px 100px 20px;
+
+    @media @desktop {
+      width: 1120px;
+      margin: 0 auto;
+    }
+  }
+}
