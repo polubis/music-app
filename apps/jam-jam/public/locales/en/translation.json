@@ -24,9 +24,8 @@
   "No saved filters yet": "No saved filters yet",
   "Save filters": "Save filters",
   "Guitar": "Guitar",
-  "Right": "Right",
   "Left": "Left",
-  "Changes guitar orientation to left/right": "Changes guitar orientation to left/right",
+  "Changes guitar orientation to left handed": "Changes guitar orientation to left handed",
   "Turns on/off sound": "Turns on/off sound",
   "Frets count": "Frets count",
   "Visible notes": "Visible notes",
@@ -97,5 +96,6 @@
 
   "Scale modes": "Scale modes",
   "Pattern": "Pattern",
-  "Show on fretboard": "Show on fretboard"
+  "Show on fretboard": "Show on fretboard",
+  "Single notes color": "Single notes color"
 }

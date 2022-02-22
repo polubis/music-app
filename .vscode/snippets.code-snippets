@@ -18,9 +18,7 @@
   "jj-fc": {
     "prefix": "jj-fc",
     "body": [
-      "import React from 'react'",
-      "",
-      "import css from \"./${1}.less\"",
+      "import css from \"./${1}.module.less\"",
       "",
       "interface ${1}Props {}",
       "",

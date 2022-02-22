@@ -1,0 +1,26 @@
+@import "~ui/styles/theme.less";
+@import "~ui/styles/mixins.less";
+@import "~ui/styles/media.less";
+
+.root {
+  .row();
+  margin: 0 0 24px 75px;
+
+  .switches,
+  .buttons {
+    .row();
+
+    & > *:not(:last-child) {
+      margin-right: 16px;
+    }
+  }
+
+  .divider {
+    background: @white;
+    margin: 0 20px;
+  }
+
+  .slider {
+    width: 300px;
+  }
+}

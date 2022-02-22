@@ -1,0 +1,19 @@
+@import "~ui/styles/theme.less";
+@import "~ui/styles/mixins.less";
+@import "~ui/styles/media.less";
+
+.root {
+  .row();
+
+  & > * {
+    width: 80px;
+
+    &:not(:last-child) {
+      margin-right: 6px;
+    }
+  }
+
+  button.btn {
+    color: @white;
+  }
+}

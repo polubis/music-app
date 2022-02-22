@@ -24,9 +24,8 @@
   "No saved filters yet": "Brak zapisanych filtrów",
   "Save filters": "Zapisz filtry",
   "Guitar": "Gitara",
-  "Right": "Prawa",
   "Left": "Lewa",
-  "Changes guitar orientation to left/right": "Zmienia typ gitary na lewo/prawo ręczną",
+  "Changes guitar orientation to left handed": "Zmienia gitare na leworęczną",
   "Turns on/off sound": "Włącza/wylącza dźwięk",
   "Frets count": "Liczba progów",
   "Visible notes": "Widoczne dźwięki",
@@ -97,5 +96,6 @@
 
   "Scale modes": "Tryby skali",
   "Pattern": "Wzór",
-  "Show on fretboard": "Pokaż na gryfie"
+  "Show on fretboard": "Pokaż na gryfie",
+  "Single notes color": "Dźwięki w jednym kolorze"
 }
