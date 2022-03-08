@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
 import { Note } from "music-core";
+import { Transport, Sampler, now } from "tone";
 
 const CONFIG = {
   urls: {
@@ -10,66 +10,27 @@ const CONFIG = {
   baseUrl: `${window.location.origin}/guitar/`,
 };
 
-export const useNotesPlay = () => {
-  const tone = useRef<typeof import("tone")>();
+const sampler = new Sampler(CONFIG).toDestination();
 
-  const sampler = useRef<import("tone").Sampler>();
+const play = (notes: Note[], duration: number, time: number): void => {
+  const n = now();
 
-  const audioReady = !!sampler.current;
-  const [preparingAudio, setPreparingAudio] = useState(false);
-
-  const prepareAudio = (onReady: () => void = () => {}): void => {
-    if (audioReady) {
-      onReady();
-      return;
-    }
-
-    setPreparingAudio(true);
-
-    import("tone").then((Tone) => {
-      sampler.current = new Tone.Sampler(CONFIG).toDestination();
-      tone.current = Tone;
-
-      Tone.loaded().then(() => {
-        setPreparingAudio(false);
-        onReady();
-      });
+  notes
+    .map((note) => `${note.sharpName}${note.octave}`)
+    .forEach((note, i) => {
+      sampler.triggerAttackRelease(note, duration, n + i * time);
     });
+
+  Transport.on("loopEnd", () => {
+    console.log("paused");
+  });
+};
+
+export const useNotesPlay = (duration = 0.1, time = 0.25) => {
+  const playNotes = (value: Note | Note[]): void => {
+    const notes = Array.isArray(value) ? value : [value];
+    play(notes, duration, time);
   };
 
-  const playNote = (note: Note): void => {
-    prepareAudio(() => {
-      sampler.current!.triggerAttackRelease(
-        `${note.sharpName}${note.octave}`,
-        1
-      );
-    });
-  };
-
-  const playSequence = (notes: Note[]): void => {
-    prepareAudio(() => {
-      const seq = new tone.current!.Sequence(
-        (time, note) => {
-          sampler.current!.triggerAttackRelease(note, 0.1, time);
-        },
-        notes.map((note) => `${note.sharpName}${note.octave}`)
-      ).start(0);
-      seq.loop = false;
-      tone.current!.Transport.stop();
-      tone.current!.Transport.start();
-    });
-  };
-
-  useEffect(() => {
-    return () => {
-      sampler.current?.disconnect();
-    };
-  }, []);
-
-  return {
-    preparingAudio,
-    prepareAudio,
-    playNote,
-    playSequence,
-  };
+  return { playNotes };
 };

@@ -38,7 +38,7 @@ const GuitarTuningPickerComponent = () => {
     editTuning,
     removeTuning,
   } = useGuitarTuningsProvider();
-  const { playSequence } = useNotesPlayProvider();
+  const { playNotes } = useNotesPlayProvider();
   const { guitar, changeTuning } = useGuitarProvider();
 
   const { isOpen, toggle } = useToggle();
@@ -104,7 +104,7 @@ const GuitarTuningPickerComponent = () => {
                 className={css.btn}
                 shape="circle"
                 type="primary"
-                onClick={() => playSequence(guitar.tuning.notes)}
+                onClick={() => playNotes(guitar.tuning.notes)}
               >
                 <SoundOutlined />
               </Button>

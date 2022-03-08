@@ -16,12 +16,10 @@ import { NotesRangePickerComponent } from "../notes-range-picker";
 import css from "./GuitarSettingsComponent.module.less";
 
 interface GuitarSettingsComponentProps {
-  soundLoading: boolean;
   onSoundEnabledChange: () => void;
 }
 
 const GuitarSettingsComponent = ({
-  soundLoading,
   onSoundEnabledChange,
 }: GuitarSettingsComponentProps) => {
   const { guitar, changeNotesCount, changeHand } = useGuitarProvider();
@@ -56,7 +54,6 @@ const GuitarSettingsComponent = ({
           <Switch
             checkedChildren={<SoundOutlined />}
             unCheckedChildren={<SoundOutlined />}
-            loading={soundLoading}
             checked={soundEnabled}
             onChange={onSoundEnabledChange}
           />

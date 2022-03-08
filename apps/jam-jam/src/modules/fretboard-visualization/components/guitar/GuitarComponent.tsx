@@ -28,16 +28,14 @@ const GuitarComponent = () => {
   const [frets, setFrets] = useState(guitar.frets);
   const [fretsChanged, fretsChanged$] = useSubject<Note[][]>();
 
-  const { prepareAudio, preparingAudio, playNote } = useNotesPlayProvider();
+  const { playNotes } = useNotesPlayProvider();
 
   const handleNoteClick = (note: Note): void => {
-    soundEnabled ? playNote(note) : toggleHiddenNotes(note.position);
+    soundEnabled ? playNotes(note) : toggleHiddenNotes(note.position);
   };
 
   const handleSoundEnabledChange = (): void => {
-    prepareAudio(() => {
-      toggleFilterProp("soundEnabled");
-    });
+    toggleFilterProp("soundEnabled");
   };
 
   useEffect(() => {
@@ -59,7 +57,6 @@ const GuitarComponent = () => {
   return (
     <>
       <GuitarSettingsComponent
-        soundLoading={preparingAudio}
         onSoundEnabledChange={handleSoundEnabledChange}
       />
 
